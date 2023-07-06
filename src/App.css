@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+.display {
+  background-color: rgba(251, 247, 247, 0.7);
+  background-position: center;
+  background-size: cover;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.userProducts {
+  height: fit-content;
+  background-color: rgba(108, 107, 107, 0.2);
+  box-shadow: -0em 0em 0.5em 0.3em rgb(147, 146, 146);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.image {
+  height: 10em;
+  width: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.viewmore:hover {
+  text-decoration: underline;
+  font-style: oblique;
 }
 
-.App-link {
-  color: #61dafb;
+.welcome {
+  font-style: oblique;
+  color: rgba(75, 42, 42, 0.9);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btnTrolley {
+  background-color: rgba(166, 217, 235, 0.34);
+  border-color: whitesmoke;
+  border: none;
+}
+
+.btnTrolley:hover {
+  background-color: rgba(211, 236, 245, 0.34);
+}
+
+.btnDis {
+  background-color: rgb(59, 57, 57);
+  color: wheat;
+}
+
+.btnDis:hover {
+  background-color: black;
+  color: wheat;
+}
+
+.itemName {
+  color: black;
+  font-style: italic;
+}
+
+.btnEmpty {
+  background-color: white;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.btnEmpty:hover {
+  background-color: rgba(194, 230, 243, 0.34);
+}
+
+.line {
+  color: rgba(45, 1, 1, 0.9);
 }
