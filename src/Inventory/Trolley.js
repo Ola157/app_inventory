@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row, Table } from 'react-bootstrap';
+import { Col, Container, Navbar, Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 
@@ -12,6 +12,9 @@ const Trolley = ({ cart, handleAllItem }) => {
     }, [cart, []])
 
     return (<Container className='display pb-5'>
+        <Navbar expand="lg" className='bg-black mb-2 icon py-4'>
+
+        </Navbar>
         <Row className='pt-3'>
             <Col lg={12} md={12} sm={12} xs={12} className='text-start'><Link to='/' className='d-flex justify-content-start align-items-center' style={{ textDecoration: 'none', color: 'black' }}><BiArrowBack className='m-1' />Back</Link></Col>
         </Row>
@@ -30,7 +33,7 @@ const Trolley = ({ cart, handleAllItem }) => {
                         <tbody >
                             {cart.map((a, index) =>
                                 <tr key={index} className='d-flex justify-content-evenly align-items-center'>
-                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em' }} src={require(`./assets/imgs/${a.image}`)} /></td>
+                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${a.image}`)} /></td>
                                     <td className='text-center border-0'>{a.item}</td>
                                     <td className='d-flex justify-content-center align-items-center border-0'>
                                         <button className='border-1 btnTrolley' onClick={() => handleAllItem('sub', '', a.id)}>-</button>

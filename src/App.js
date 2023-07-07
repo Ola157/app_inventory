@@ -8,18 +8,28 @@ import Trolley from './Inventory/Trolley';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
 const App = () => {
-  let [products, setProds] = useState(() => localStorage.inventory ? JSON.parse(localStorage.inventory) : []);
+  let [products, setProds] = useState([
+    { image: 'banana.jpg', item: 'banana', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 0 },
+    { image: 'orange.jpg', item: 'Orange', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 1 },
+    { image: 'avocado.jpg', item: 'Avocado', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 2 },
+    { image: 'apple.jpg', item: 'Apple', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 3 },
+    { image: 'watermelon.jpg', item: 'Water Melon', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 4 },
+    { image: 'pineapple.jpg', item: 'Pineapple', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 5 },
+    { image: 'cherry.jpg', item: 'Cherry', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 6 },
+    { image: 'strawberry.jpg', item: 'Strawberry', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 7 },
+    { image: 'mango.jpg', item: 'mango', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 9 },
+    { image: 'grape.jpg', item: 'grape', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 10 },
+    { image: 'plum.jpg', item: 'plum', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 11 },
+    { image: 'pear.jpg', item: 'pear', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 13 },
+    { image: 'peach.jpg', item: 'peach', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 14 },
+    { image: 'guava.jpg', item: 'guava', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 15 },
+    { image: 'kiwi.jpg', item: 'kiwi', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 16 },
+    { image: 'potatoe.jpg', item: 'potatoes', quantity: 100, detail: 'Ripe and Farm Fresh', price: 300, cusQty: 0, editAdd: '', id: 17 }
+  ]);
+
   const [boo, setBoo] = useState(true)
   let [cart, setCart] = useState('')
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const myFunc = async () => {
-      let localStorageinventory = products
-      await localStorage.setItem('inventory', JSON.stringify(localStorageinventory));
-    }
-    myFunc();
-  }, [products]);
 
   useEffect(() => {
     let allProds = [...products]
@@ -83,7 +93,6 @@ const App = () => {
         }) : a))
         alert('payment successful')
         navigate('/')
-        console.log(products)
         break;
 
       case any === 'empty':
@@ -100,7 +109,6 @@ const App = () => {
 
   const handleRem = (any, id, item, quantity, price, detail) => {
     let myProds = [...products]
-    console.log(any)
     switch (true) {
       case any === 'rem':
         setProds(myProds.filter((a, i) => a.id !== id));
@@ -124,7 +132,6 @@ const App = () => {
         }
         break;
     }
-    console.log(products)
 
   }
 

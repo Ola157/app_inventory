@@ -9,7 +9,7 @@ const InputPage = ({ each: { item, quantity, price, detail, image, editAdd, id }
     return (<Container className='pb-5 px-0 pe-0 display'>
         Product {index + 1}
         <hr className='w-100 my-0'></hr>
-        < img className='h-10 w-100' src={require(`./assets/imgs/${image}`)} />
+        < img className='h-10 w-100 img' src={require(`./assets/imgs/${image}`)} />
         <hr className='w-100 my-0'></hr>
         <div> {editAdd !== 'edit' ? item : <input className='border rounded text-center' onInput={(event) => setItem(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>

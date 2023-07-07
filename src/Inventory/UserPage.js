@@ -11,11 +11,11 @@ const UserPage = ({ products, cart, handleAllItem }) => {
     return (<Container fluid className='display pb-5'>
         <Navbar expand="lg" className='bg-black mb-2 icon'>
             <Container className='d-flex justify-content-end'>
-                <div className='d-xs-none'>
+                <div className='d-xs-none m-0'>
                     <Nav className="me-auto">
                         {cart.length > 0 ? <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end m-2'><button className='border-0 text-white bg-transparent' onClick={() => navigate('/trolley')}><span className='d-flex justify-content-center align-items-baseline'><sup><h6>{cart.length}</h6></sup><span><AiOutlineShoppingCart style={{ height: '1em', width: '1em' }} /></span></span></button></Col> : ''}
-                        <NavDropdown title={user} id="basic-nav-dropdown" className='bg-black '>
-                            <NavDropdown.Item href="/adminpage">
+                        <NavDropdown title={user} id="basic-nav-dropdown" className='bg-black'>
+                            <NavDropdown.Item onClick={() => navigate("/adminpage")}>
                                 Admin
                             </NavDropdown.Item>
                         </NavDropdown>
@@ -35,7 +35,7 @@ const UserPage = ({ products, cart, handleAllItem }) => {
         <Row className='d-flex justify-content-evenly my-3'>
             {products ?
                 products.map((each, index) => (<Col lg={2} md={3} sm={3} xs={4} className='m-1 text-center pe-0 px-0 border userProducts' key={index}>
-                    <img className='image' src={require(`./assets/imgs/${each.image}`)} />
+                    <img className='img' src={require(`./assets/imgs/${each.image}`)} />
                     <hr className='my-0 w-100'></hr>
                     <span className='itemName'>{each.item}</span>
                     <hr className='my-0 w-100'></hr>

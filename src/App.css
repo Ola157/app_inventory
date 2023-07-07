@@ -5,12 +5,12 @@
 }
 
 .userProducts {
-  height: fit-content;
+  height: 100%;
   background-color: rgba(108, 107, 107, 0.2);
   box-shadow: -0em 0em 0.5em 0.3em rgb(147, 146, 146);
 }
 
-.image {
+.img {
   height: 10em;
   width: 100%;
 }
