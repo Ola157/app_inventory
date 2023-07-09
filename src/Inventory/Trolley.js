@@ -3,11 +3,11 @@ import { Col, Container, Navbar, Row, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 
-const Trolley = ({ cart, handleAllItem }) => {
+const Trolley = ({ cart, handleCart }) => {
     let [total, setTotal] = useState('')
 
     useEffect(() => {
-        let tota = cart ? cart.reduce((acc, a) => acc + a.cusQty * a.price, 0) : ''
+        let tota = cart ? cart.reduce((acc, item) => acc + item.custQuantity * item.price, 0) : ''
         setTotal(tota)
     }, [cart, []])
 
@@ -31,21 +31,21 @@ const Trolley = ({ cart, handleAllItem }) => {
                             </tr>
                         </thead>
                         <tbody >
-                            {cart.map((a, index) =>
+                            {cart.filter(item => item.custQuantity > 0).map((item, index) =>
                                 <tr key={index} className='d-flex justify-content-evenly align-items-center'>
-                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${a.image}`)} /></td>
-                                    <td className='text-center border-0'>{a.item}</td>
+                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${item.image}`)} /></td>
+                                    <td className='text-center border-0'>{item.item}</td>
                                     <td className='d-flex justify-content-center align-items-center border-0'>
-                                        <button className='border-1 btnTrolley' onClick={() => handleAllItem('sub', '', a.id)}>-</button>
-                                        <input className='text-center border-0' style={{ width: '2em' }} value={a.cusQty} onInput={() => handleAllItem()} />
-                                        <button className='border-1 btnTrolley' onClick={() => handleAllItem('add', '', a.id)}>+</button>
+                                        <button className='border-1 btnTrolley' onClick={() => handleCart('sub', '', item.id)}>-</button>
+                                        <input className='text-center border-0' style={{ width: '2em' }} value={item.custQuantity} onInput={() => handleCart()} />
+                                        <button className='border-1 btnTrolley' onClick={() => handleCart('add', '', item.id)}>+</button>
                                     </td>
-                                    <td className='border-0'>${a.cusQty * a.price}</td>
+                                    <td className='border-0'>${item.custQuantity * item.price}</td>
                                 </tr>
                             )}
                         </tbody>
                     </Table> : ''}
-                <button className='border-1 border rounded btnEmpty m-4 py-4' onClick={() => handleAllItem('empty')}>Empty Trolley</button>
+                <button className='border-1 border rounded btnEmpty m-4 py-4' onClick={() => handleCart('empty')}>Empty Trolley</button>
             </Col>
 
             <Col lg={4} md={6} sm={12} xs={12} className='table-responsive m-1 mt-5'>
@@ -64,7 +64,7 @@ const Trolley = ({ cart, handleAllItem }) => {
                     </thead>
                     <tbody>
                         <tr className='d-flex justify-content-center'>
-                            <td className='w-100'><button className='py-1 my-1 mx-1 me-1 text-center border-1 w-100 btnTrolley' onClick={() => handleAllItem('checkOut')}>Proceed To Pay</button></td>
+                            <td className='w-100'><button className='py-1 my-1 mx-1 me-1 text-center border-1 w-100 btnTrolley' onClick={() => handleCart('checkOut')}>Proceed To Pay</button></td>
                         </tr>
                     </tbody>
                 </Table>

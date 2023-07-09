@@ -4,14 +4,12 @@ import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 
-const AdminPage = ({ products, handleItem, handleRem }) => {
+const AdminPage = ({ products, handleAddItem, handleEditDelete }) => {
     let [item, setItem] = useState('');
     let [quantity, setQty] = useState('');
     let [price, setPrice] = useState('');
     let [image, setImage] = useState('');
     let [detail, setDetail] = useState('');
-    let [cusQty, setValue] = useState(0);
-    let [editAdd, setAdd] = useState('')
     let [img, setImg] = useState('')
 
     const selectImage = e => {
@@ -22,9 +20,8 @@ const AdminPage = ({ products, handleItem, handleRem }) => {
 
     const handleAdd = () => {
         let id = products.length
-        handleItem({ item, quantity, image, price, detail, cusQty, editAdd, id: id++ })
+        handleAddItem({ item, quantity, image, price, detail, id: id++ })
         setDetail('')
-        setQty('')
         setItem('')
         setPrice('')
         setImage('')
@@ -68,7 +65,7 @@ const AdminPage = ({ products, handleItem, handleRem }) => {
             {products.length > 0 ?
                 <Row className='d-flex justify-content-evenly m-1'>
                     {products.map((each, index) => (<Col lg={2} md={3} sm={6} xs={12} className='border rounded text-center px-0 pe-0 product m-1 userProducts' key={index}>
-                        <DisplayItems key={index} each={each} index={index} handleRem={handleRem} />
+                        <DisplayItems key={index} each={each} index={index} handleEditDelete={handleEditDelete} />
                     </Col>
                     ))}
                 </Row >

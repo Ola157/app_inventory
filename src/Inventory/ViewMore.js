@@ -3,13 +3,13 @@ import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 
-const ViewMore = ({ products, handleAllItem }) => {
+const ViewMore = ({ cart, handleCart }) => {
     const { itemId } = useParams();
     let [viewMore, setViewedMore] = useState('')
     useEffect(() => {
-        let viewItem = products.find((a, i) => a.id === Number(itemId))
+        let viewItem = cart.find((item, i) => item.id === Number(itemId))
         setViewedMore(viewItem)
-    }, [products, []]);
+    }, [cart, []]);
 
     let { item, detail, image } = viewMore
 
@@ -35,10 +35,10 @@ const ViewMore = ({ products, handleAllItem }) => {
                     <hr className='my-0'></hr>
                     <div className='text-center itemName'>{item}</div>
                     <hr className='my-0'></hr>
-                    <div className='text-center itemName'>{detail}</div>
+                    <div className='text-center itemName p-1'>{detail}</div>
                     <hr className='my-0'></hr>
-                    {viewMore.editAdd === 'addItem' ? <div className='text-center p-1'><button className='border-0' onClick={() => handleAllItem('sub', '', Number(itemId))}> - </button><input className='border text-center' value={viewMore.cusQty} style={{ width: "30px" }} onChange={() => handleAllItem()} /><button className='border-0' onClick={() => handleAllItem('add', '', Number(itemId))}>+</button></div>
-                        : <div className='text-center'><button onClick={() => handleAllItem('addItem', '', Number(itemId))} className='py-0 border-1 border-black m-1 border rounded btnDis'>Add</button></div>}
+                    {viewMore.addItem === 'addItem' ? <div className='text-center p-1'><button className='border-0' onClick={() => handleCart('sub', '', Number(itemId))}> - </button><input className='border text-center' value={viewMore.custQuantity} style={{ width: "30px" }} onChange={() => handleCart()} /><button className='border-0' onClick={() => handleCart('add', '', Number(itemId))}>+</button></div>
+                        : <div className='text-center'><button onClick={() => handleCart('addItem', '', Number(itemId))} className='py-0 border-1 border-black m-1 border rounded btnDis'>Add</button></div>}
                 </Col>
                 : ''}
         </Row>

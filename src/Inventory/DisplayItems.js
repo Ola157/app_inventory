@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
-import { Col, Container, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap'
-const InputPage = ({ each: { item, quantity, price, detail, image, editAdd, id }, index, handleRem }) => {
+import { Container } from 'react-bootstrap'
+const InputPage = ({ each: { item, quantity, price, detail, image, itemEdit, id }, index, handleEditDelete }) => {
     let [nitem, setItem] = useState('')
     let [nquantity, setQty] = useState('')
     let [nprice, setPrice] = useState('')
     let [ndetail, setDetail] = useState('')
 
-    return (<Container className='pb-5 px-0 pe-0 display'>
+    return (<Container className='px-0 pe-0 display'>
         Product {index + 1}
         <hr className='w-100 my-0'></hr>
         < img className='h-10 w-100 img' src={require(`./assets/imgs/${image}`)} />
         <hr className='w-100 my-0'></hr>
-        <div> {editAdd !== 'edit' ? item : <input className='border rounded text-center' onInput={(event) => setItem(event.target.value)} />}</div>
+        <div> {itemEdit !== 'edit' ? item : <input className='border rounded text-center' placeholder='item' onInput={(event) => setItem(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>
-        <div> {editAdd !== 'edit' ? quantity : <input className='border rounded text-center' onInput={(event) => setQty(event.target.value)} />}</div>
+        <div> {itemEdit !== 'edit' ? quantity : <input className='border rounded text-center' placeholder='quantity' onInput={(event) => setQty(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>
-        <div> {editAdd !== 'edit' ? <>${price}</> : <input className='border rounded text-center' onInput={(event) => setPrice(event.target.value)} />}</div>
+        <div> {itemEdit !== 'edit' ? <>${price}</> : <input className='border rounded text-center' placeholder='price' onInput={(event) => setPrice(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>
-        <div> {editAdd !== 'edit' ? detail : <input className='border rounded text-center' onInput={(event) => setDetail(event.target.value)} />}</div>
+        <div className='text-center px-1 p-1'> {itemEdit !== 'edit' ? detail : <input className='border rounded text-center' placeholder='detail' onInput={(event) => setDetail(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>
-        <div><button className='border rounded py-0 m-1 btnDis' onClick={() => handleRem('rem', id)}> Delete</button >{editAdd !== 'edit' ? <button className='border rounded py-0 m-1 btnDis' onClick={() => handleRem('edit', id)}>Edit</button> : <button className='border rounded py-0 m-1 btnDis' onClick={() => handleRem('done', id, nitem, nquantity, nprice, ndetail)}>Done</button>}</div>
+        <div className='text-center'><button className='border rounded py-0 m-1 btnDis' onClick={() => handleEditDelete('rem', id)}> Delete</button >{itemEdit !== 'edit' ? <button className='border rounded py-0 m-1 btnDis' onClick={() => handleEditDelete('edit', id)}>Edit</button> : <button className='border rounded py-0 m-1 btnDis' onClick={() => handleEditDelete('done', id, nitem, nquantity, nprice, ndetail)}>Done</button>}</div>
     </Container>)
 }
 export default InputPage;
