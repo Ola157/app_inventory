@@ -37,7 +37,7 @@ const ViewMore = ({ cart, handleCart }) => {
                     <hr className='my-0'></hr>
                     <div className='text-center itemName p-1'>{detail}</div>
                     <hr className='my-0'></hr>
-                    {viewMore.addItem === 'addItem' ? <div className='text-center p-1'><button className='border-0' onClick={() => handleCart('sub', '', Number(itemId))}> - </button><input className='border text-center' value={viewMore.custQuantity} style={{ width: "30px" }} onChange={() => handleCart()} /><button className='border-0' onClick={() => handleCart('add', '', Number(itemId))}>+</button></div>
+                    {viewMore.addItem === 'addItem' ? <div className='text-center p-1'><button className='border-0' onClick={() => handleCart('sub', '', Number(itemId))}> - </button><input className='border text-center' value={viewMore.custQuantity} style={{ width: "50px" }} onChange={() => handleCart()} /><button className='border-0' onClick={() => handleCart('add', '', Number(itemId))}>+</button></div>
                         : <div className='text-center'><button onClick={() => handleCart('addItem', '', Number(itemId))} className='py-0 border-1 border-black m-1 border rounded btnDis'>Add</button></div>}
                 </Col>
                 : ''}

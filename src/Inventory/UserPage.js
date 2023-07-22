@@ -52,16 +52,16 @@ const UserPage = ({ cart, handleCart }) => {
         </Row >
 
 
-        <Row className='d-flex justify-content-evenly my-3'>
+        <Row className='d-flex justify-content-evenly my-3 p-2'>
             {cart ?
                 cart.map((item, index) =>
-                (<Col lg={2} md={3} sm={3} xs={4} className='m-1 text-center pe-0 px-0 border userProducts' key={index}>
+                (<Col lg={2} md={3} sm={3} xs={12} className='m-1 text-center pe-0 px-0 border userProducts' key={index}>
                     <img className='img' src={require(`./assets/imgs/${item.image}`)} />
                     <hr className='my-0 w-100'></hr>
                     <span className='itemName'>{item.item}</span>
                     <hr className='my-0 w-100'></hr>
                     {item.addItem === 'addItem' ?
-                        <div className='text-center p-1'><button className='border-0 btnDis' onClick={() => handleCart('sub', '', item.id)}> - </button><input className='border text-center' value={item.custQuantity} style={{ width: "30px" }} onInput={event => handleCart('event', Number(event.target.value), index)} /><button className='border-0 btnDis' onClick={() => handleCart('add', '', item.id)}>+</button></div>
+                        <div className='text-center p-1'><button className='border-0 btnDis' onClick={() => handleCart('sub', '', item.id)}> - </button><input className='border text-center' value={item.custQuantity} style={{ width: "50px" }} onInput={event => handleCart('event', Number(event.target.value), index)} /><button className='border-0 btnDis' onClick={() => handleCart('add', '', item.id)}>+</button></div>
                         : <div className='text-center'><button onClick={() => handleCart('addItem', '', item.id)} className='py-0 border-1 m-1 rounded btnDis'>Add</button></div>}
                     <hr className='my-0 w-100'></hr>
                     <button className='border-0 py-0 my-1 bg-transparent viewmore' onClick={() => navigate(`/viewmore/${item.id} `)}>view more</button>
