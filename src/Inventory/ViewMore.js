@@ -9,7 +9,7 @@ const ViewMore = ({ handleCart }) => {
     const { itemId } = useParams();
     let viewed = useSelector(state => state.allGoods)
 
-    let findViewed = viewed.find(good => good._id === itemId)
+    let findViewed = viewed ? viewed.find(good => good._id === itemId) : ''
     let { item, detail, image, _id, customerQuantity, addItem } = findViewed
 
     return (<Container fluid className='display pb-5'>
@@ -30,7 +30,7 @@ const ViewMore = ({ handleCart }) => {
 
             {findViewed ?
                 <Col lg={3} md={6} sm={12} xs={12} className='border userProducts pe-0 px-0 m-1'>
-                    {/* <div><img className='w-100' src={require(`./assets/imgs/${image}`)} /></div> */}
+                    <div><img className='w-100' src={`http://localhost:9810/${image}`} /></div>
                     <hr className='my-0'></hr>
                     <div className='text-center itemName'>{item}</div>
                     <hr className='my-0'></hr>

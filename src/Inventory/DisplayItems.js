@@ -14,7 +14,7 @@ const InputPage = ({ each: { item, quantity, price, detail, image, itemEdit, _id
     return (<Container className='px-0 pe-0 display'>
         Product {index + 1}
         <hr className='w-100 my-0'></hr>
-        {/* <div>{itemEdit !== 'edit' ? < img className='h-10 w-100 img' src={require(`./assets/imgs/${image}`)} /> : <input className='border rounded text-center' placeholder='item' onInput={setImage} />} </div> */}
+        <div>{itemEdit !== 'edit' ? < img className='h-10 w-100 img' src={`http://localhost:9810/${image}`} /> : <input className='border rounded text-center' placeholder='item' onInput={setImage} />} </div>
         <hr className='w-100 my-0'></hr>
         <div> {itemEdit ? item : <input className='border rounded text-center' placeholder='item' onInput={(event) => setItem(event.target.value)} />}</div>
         <hr className='w-100 my-1'></hr>

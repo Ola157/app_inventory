@@ -61,6 +61,7 @@ export const handleCheckingOut = (allGoods) => {
             });
             if (response.data === 'payment successful') {
                 dispatch({ type: "CHECK_OUT" })
+                handleFetch()
                 alert(response.data)
             }
             else { alert(response.data) }

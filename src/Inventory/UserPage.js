@@ -63,7 +63,7 @@ const UserPage = ({ handleCart, handleGoods }) => {
             {products ?
                 products.map((item, index) =>
                 (<Col lg={2} md={3} sm={3} xs={12} className='m-1 text-center pe-0 px-0 border userProducts' key={index}>
-                    {/* <img className='img' src={require(`./assets/imgs/${item.image}`)} /> */}
+                    <img className='img' src={`http://localhost:9810/${item.image}`} />
                     <hr className='my-0 w-100'></hr>
                     <span className='itemName'>{item.item}</span>
                     <hr className='my-0 w-100'></hr>

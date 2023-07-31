@@ -42,6 +42,7 @@ const App = () => {
 
   return (
     <>
+
       <Routes>
         <Route path='/*' element={<UserPage boo={boo} handleGoods={handleGoods} handleCart={handleCart} />} />
         <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />

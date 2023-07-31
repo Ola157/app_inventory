@@ -40,7 +40,7 @@ const Trolley = ({ handleCart, handleCheckOut }) => {
                         <tbody >
                             {cart.map((item, index) =>
                                 <tr key={index} className='d-flex justify-content-evenly align-items-center'>
-                                    {/* <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${item.image}`)} /></td> */}
+                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={`http://localhost:9810/${item.image}`} /></td>
                                     <td className='text-center border-0'>{item.item}</td>
                                     <td className='d-flex justify-content-center align-items-center border-0'>
                                         <button className='border-1 btnTrolley' onClick={() => handleCart('subtract', '', item._id)}>-</button>
