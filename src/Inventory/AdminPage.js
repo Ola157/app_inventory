@@ -1,30 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
+import axios from 'axios';
 
-const AdminPage = ({ products, handleAddItem, handleEditDelete }) => {
+const AdminPage = ({ handleAddItem, handleEditDelete }) => {
     let [item, setItem] = useState('');
     let [quantity, setQty] = useState('');
     let [price, setPrice] = useState('');
     let [image, setImage] = useState('');
     let [detail, setDetail] = useState('');
     let [img, setImg] = useState('')
+    let [products, setProducts] = useState('')
+
+    useEffect(() => {
+        const handleFetch = async () => {
+            try {
+                let response = await axios.get('http://localhost:9810/store/getAllgoods', null)
+                let { allGoods } = response.data
+                setProducts(allGoods)
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        handleFetch()
+    })
 
     const selectImage = e => {
-        img = e
-        setImage(img.substring(12))
+        setImage(e.target.files[0])
         setImg('')
     }
 
-    const handleAdd = () => {
-        let id = products.length
-        handleAddItem({ item, quantity, image, price, detail, id: id++ })
+    const handleAdd = async () => {
+        handleAddItem({ item, quantity, image, price, detail })
         setDetail('')
         setItem('')
         setPrice('')
         setImage('')
+        setQty('')
     }
 
     return (
@@ -54,7 +69,7 @@ const AdminPage = ({ products, handleAddItem, handleEditDelete }) => {
                     <input className='border rounded m-1 text-center w-100' value={detail} placeholder='Description' onInput={event => setDetail(event.target.value)} />
                 </Col>
                 <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
-                    <input className='border rounded m-1 text-center w-100' type='file' value={img} placeholder='Select Image' onInput={event => selectImage(event.target.value)} />
+                    <input className='border rounded m-1 text-center w-100' type='file' value={img} placeholder='Select Image' onInput={selectImage} />
                 </Col>
                 <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
                     <button className='border rounded m-1 text-center' onClick={() => handleAdd()}>ADD</button>
@@ -62,7 +77,7 @@ const AdminPage = ({ products, handleAddItem, handleEditDelete }) => {
                 <Col lg={12} md={12} sm={12} xs={12}><hr className='m-1 line'></hr></Col>
             </Row>
 
-            {products.length > 0 ?
+            {products ?
                 <Row className='d-flex justify-content-evenly m-1'>
                     {products.map((each, index) => (<Col lg={2} md={3} sm={6} xs={12} className='border rounded text-center px-0 pe-0 product m-1 userProducts' key={index}>
                         <DisplayItems key={index} each={each} index={index} handleEditDelete={handleEditDelete} />

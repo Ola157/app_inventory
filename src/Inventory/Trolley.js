@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Navbar, Row, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
+import { useSelector } from 'react-redux';
 
-const Trolley = ({ cart, handleCart }) => {
+const Trolley = ({ handleCart, handleCheckOut }) => {
     let [total, setTotal] = useState('')
+    let product = useSelector(state => state.allGoods)
+    let cart = product.filter(good => good.customerQuantity > 0)
+    const navigate = useNavigate('')
 
     useEffect(() => {
-        let tota = cart ? cart.reduce((acc, item) => acc + item.custQuantity * item.price, 0) : ''
+        let tota = cart ? cart.reduce((acc, item) => acc + item.customerQuantity * item.price, 0) : ''
         setTotal(tota)
+        if (cart.length === 0) {
+            navigate('/')
+        }
     }, [cart, []])
 
     return (<Container className='display pb-5'>
@@ -31,16 +38,16 @@ const Trolley = ({ cart, handleCart }) => {
                             </tr>
                         </thead>
                         <tbody >
-                            {cart.filter(item => item.custQuantity > 0).map((item, index) =>
+                            {cart.map((item, index) =>
                                 <tr key={index} className='d-flex justify-content-evenly align-items-center'>
-                                    <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${item.image}`)} /></td>
+                                    {/* <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={require(`./assets/imgs/${item.image}`)} /></td> */}
                                     <td className='text-center border-0'>{item.item}</td>
                                     <td className='d-flex justify-content-center align-items-center border-0'>
-                                        <button className='border-1 btnTrolley' onClick={() => handleCart('sub', '', item.id)}>-</button>
-                                        <input className='text-center border-0' style={{ width: '2em' }} value={item.custQuantity} onInput={() => handleCart()} />
-                                        <button className='border-1 btnTrolley' onClick={() => handleCart('add', '', item.id)}>+</button>
+                                        <button className='border-1 btnTrolley' onClick={() => handleCart('subtract', '', item._id)}>-</button>
+                                        <input className='text-center border-0' style={{ width: '2em' }} value={item.customerQuantity} onInput={() => handleCart()} />
+                                        <button className='border-1 btnTrolley' onClick={() => handleCart('add', '', item._id)}>+</button>
                                     </td>
-                                    <td className='border-0'>${item.custQuantity * item.price}</td>
+                                    <td className='border-0'>${item.customerQuantity * item.price}</td>
                                 </tr>
                             )}
                         </tbody>
@@ -64,7 +71,7 @@ const Trolley = ({ cart, handleCart }) => {
                     </thead>
                     <tbody>
                         <tr className='d-flex justify-content-center'>
-                            <td className='w-100'><button className='py-1 my-1 mx-1 me-1 text-center border-1 w-100 btnTrolley' onClick={() => handleCart('checkOut')}>Proceed To Pay</button></td>
+                            <td className='w-100'><button className='py-1 my-1 mx-1 me-1 text-center border-1 w-100 btnTrolley' onClick={() => handleCheckOut()}>Proceed To Pay</button></td>
                         </tr>
                     </tbody>
                 </Table>
