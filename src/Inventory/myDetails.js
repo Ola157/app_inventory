@@ -70,7 +70,7 @@ const MyDetails = ({ handle_Changes, handleMyDetails }) => {
 
         <Row className='d-flex justify-content-center'>
             <Col className='bg-white d-flex justify-content-center py-3 my-5' lg={10} md={10} sm={12} xs={12}>
-                <Col lg={6} md={6} sm={12} xs={12}>
+                <Col lg={5} md={5} sm={12} xs={12}>
 
                     <div className='my-2'>
                         <label className='d-block my-2 mx-1 dlabel' htmlFor="title">Title</label>
