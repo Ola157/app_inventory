@@ -17,7 +17,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
     useEffect(() => {
         const handleFetch = async () => {
             try {
-                let response = await axios.get('http://localhost:9810/store/getAllgoods', null)
+                let response = await axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods', null)
                 let { allGoods } = response.data
                 setProducts(allGoods)
             }
@@ -69,7 +69,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
                     <input className='border rounded m-1 text-center w-100' value={detail} placeholder='Description' onInput={event => setDetail(event.target.value)} />
                 </Col>
                 <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
-                    <input className='border rounded m-1 text-center w-100' type='file' value={img} placeholder='Select Image' onInput={selectImage} />
+                    <input className='border rounded m-1 text-center w-100' type='file' value={img} onChange={selectImage} />
                 </Col>
                 <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
                     <button className='border rounded m-1 text-center' onClick={() => handleAdd()}>ADD</button>
@@ -79,7 +79,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
 
             {products ?
                 <Row className='d-flex justify-content-evenly m-1'>
-                    {products.map((each, index) => (<Col lg={2} md={3} sm={6} xs={12} className='border rounded text-center px-0 pe-0 product m-1 userProducts' key={index}>
+                    {products.map((each, index) => (<Col lg={2} md={3} sm={6} xs={12} className='border rounded text-center px-0 pe-0 m-1' key={index}>
                         <DisplayItems key={index} each={each} index={index} handleEditDelete={handleEditDelete} />
                     </Col>
                     ))}

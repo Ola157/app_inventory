@@ -1,39 +1,50 @@
-let allState = ''
-const myReducer = (state = allState, action) => {
+const initialState = {
+    allGoods: [],
+    cart: [],
+    userLoggedIn: false,
+    modal: '',
+    allOrders: [],
+    personalDetails: {},
+    address: {}
+}
+
+const myReducer = (state = initialState, action) => {
     switch (action.type) {
         case "ALL_GOODS":
             return {
                 ...state,
-                allGoods: action.payload
+                allGoods: action.payload,
+                userLoggedIn: false
+            }
+        case "HANDLE_CARTFETCH":
+            return {
+                ...state,
+                cart: action.payload
+            }
+
+        case "MODAL_RESPONSE":
+            return {
+                ...state,
+                modal: action.payload
             }
 
         case "HANDLE_CART":
-            let { any, value, id } = action.payload
-
+            let { any, itemId, customerQuantity } = action.payload
             let updateGood = state.allGoods.map(good => {
-                if (good._id == id && any !== 'empty' && any !== 'checkout') {
+                if (good._id === itemId && any !== 'empty' && any !== 'checkout') {
                     return {
                         ...good,
-                        customerQuantity:
-                            any === 'addItem' && good.quantity < 1 ? good.customerQuantity = 'out of stock' :
-                                any === 'addItem' ? good.customerQuantity = 1 :
-                                    any === 'add' && good.customerQuantity >= good.quantity ? good.customerQuantity = good.quantity :
-                                        any === 'add' ? good.customerQuantity += 1 :
-                                            any === 'subtract' && good.customerQuantity >= 1 ? good.customerQuantity -= 1 :
-                                                any === 'subtract' && good.customerQuantity < 1 ? good.customerQuantity = 0 :
-                                                    good.customerQuantity,
-                        addItem:
-                            any === 'addItem' ? good.addItem = false :
-                                any === 'subtract' && good.customerQuantity < 1 ? good.addItem = true :
-                                    good.addItem,
+                        customerQuantity: any === 'addItem' ? good.customerQuantity = customerQuantity : good.customerQuantity,
+                        addItem: any === 'buy' ? false : any === 'addItem' || any ? true : good.addItem
                     }
 
                 }
 
                 if (any === 'empty') {
+
                     return {
                         ...good,
-                        customerQuantity: good.customerQuantity = 0
+                        customerQuantity: 0,
                     }
                 }
 
@@ -42,18 +53,64 @@ const myReducer = (state = allState, action) => {
 
             return {
                 ...state,
-                allGoods: updateGood
-            }
-        case "CHECK_OUT":
-            return {
-                ...state,
-                allGoods: state.allGoods.map((good) => ({
-                    ...good,
-                    customerQuantity: good.customerQuantity = 0,
-                    addItem: good.addItem = true
-                }))
+                allGoods: updateGood,
             }
 
+        case "CHECK_OUT":
+
+            return {
+                ...state,
+                allGoods: state.allGoods.map((good) => action.payload === 'payment successful' ? ({
+                    ...good,
+                    customerQuantity: 0,
+                    addItem: true,
+                }) : good),
+                modal: action.payload === 'payment successful' ? `${action.payload}, thanks for shopping with us` : state.modal
+            }
+
+        case "LOGIN_SUCCESS":
+            return {
+                ...state,
+                userLoggedIn: true
+            }
+
+        case "REG_SUCCESS":
+            return {
+                ...state,
+                userLoggedIn: 'Registered'
+            }
+
+        case "CLEAR_MODAL":
+            return {
+                ...state,
+                modal: ''
+            }
+        case "ADDRESS":
+            return {
+                ...state,
+                address: action.payload
+            }
+
+        case "PERSONAL_DETAILS":
+            let { title, email, firstName, lastName, mobNumber, alterNum } = action.payload
+            return {
+                ...state,
+                personalDetails: { title, email, firstName, lastName, mobNumber, alterNum }
+            }
+        case "ALL_ORDERS":
+            return {
+                ...state,
+                allOrders: action.payload
+            }
+        case "SHOW_ORDER":
+            let showOrder = state.allOrders.map((orders) => action.payload === orders._id ? ({
+                ...orders,
+                showOrder: !orders.showOrder
+            }) : orders)
+            return {
+                ...state,
+                allOrders: showOrder
+            }
     }
     return state
 }

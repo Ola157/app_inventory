@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import AdminPage from './Inventory/AdminPage'
-import UserPage from './Inventory/UserPage';
 import ViewMore from './Inventory/ViewMore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Trolley from './Inventory/Trolley';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleAddGoods, handleAllCart, handleAmends, handleCheckingOut, handleFetch } from './Inventory/myRedux/myActions';
+import { fetchPastOrders, handleAddGoods, handleAllCart, handleAmends, handleChanges, handleCheckingOut, handleFetch, handleFetchCart, handleModal, handle_Adress_Amends, handle_Display_Order, handle_Email_Password, handle_My_Address, handle_My_Details } from './Inventory/myRedux/myActions';
+import RegistrationPage from './Inventory/signIn';
+import UserPage from './Inventory/UserPage';
+import UserAccount from './Inventory/userAccount';
+import AllOrders from './Inventory/myOrders';
+import MyDetails from './Inventory/myDetails';
+import MyAddress from './Inventory/address';
+import MyPreference from './Inventory/preferencePage';
 
 const App = () => {
   let dispatch = useDispatch();
   let goods = useSelector(state => state.allGoods)
-  const [boo, setBoo] = useState(true)
-  const navigate = useNavigate()
   let customerQuantity = 0
   let addItem = true;
   let itemEdit = true;
 
-  const handleAddItem = async (goodsDetails) => {
+  const handleAddItem = (goodsDetails) => {
     dispatch(handleAddGoods(goodsDetails, customerQuantity, addItem, itemEdit))
   }
 
@@ -27,27 +30,70 @@ const App = () => {
     dispatch(handleFetch())
   }
 
-  const handleCart = (any, value, id) => {
-    dispatch(handleAllCart(any, value, id))
+  const handleCart = (value) => {
+    let { itemId } = value
+    let data = goods.find(good => good._id === itemId)
+    dispatch(handleAllCart(value, data))
+  }
+
+  const handle_Fetch_Cart = () => {
+    dispatch(handleFetchCart())
   }
 
   const handleCheckOut = () => {
-    let allGoods = goods.filter(good => good.customerQuantity > 0)
-    dispatch(handleCheckingOut(allGoods))
+    dispatch(handleCheckingOut())
   }
 
-  const handleEditDelete = (value) => {
-    dispatch(handleAmends(value))
+  const handleEditDelete = (data) => {
+    dispatch(handleAmends(data))
+  }
+
+  const handleLogin_SignUp = (data) => {
+    dispatch(handle_Email_Password(data))
+  }
+
+  const handle_Modal = () => {
+    dispatch(handleModal())
+  }
+
+  const handle_Changes = (data) => {
+    dispatch(handleChanges(data))
+  }
+
+  const handleFetchPastOrder = () => {
+    dispatch(fetchPastOrders())
+  }
+
+  const handleDisplay = (id) => {
+    dispatch(handle_Display_Order(id))
+  }
+
+  const handleMyAddress = () => {
+    dispatch(handle_My_Address())
+  }
+
+  const handleMyDetails = () => {
+    dispatch(handle_My_Details())
+  }
+
+  const handleAmends = (type, addressId) => {
+    dispatch(handle_Adress_Amends(type, addressId))
   }
 
   return (
     <>
 
       <Routes>
-        <Route path='/*' element={<UserPage boo={boo} handleGoods={handleGoods} handleCart={handleCart} />} />
+        <Route path='/*' element={<UserPage handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />
         <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} />} />
-        <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} />} />
+        <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} handle_Modal={handle_Modal} handle_Fetch_Cart={handle_Fetch_Cart} />} />
+        <Route path='/signIn' element={<RegistrationPage handleLogin_SignUp={handleLogin_SignUp} handle_Modal={handle_Modal} />} />
+        <Route path='/useraccount' element={<UserAccount handleMyDetails={handleMyDetails} />} />
+        <Route path='/allorders' element={<AllOrders handleDisplay={handleDisplay} handleFetchPastOrder={handleFetchPastOrder} />} />
+        <Route path='mydetails' element={<MyDetails handle_Changes={handle_Changes} handleMyDetails={handleMyDetails} />} />
+        <Route path='address' element={<MyAddress handle_Changes={handle_Changes} handleMyAddress={handleMyAddress} handleAmends={handleAmends} />} />
+        <Route path='mypref' element={<MyPreference />} />
       </Routes >
     </>
 

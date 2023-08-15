@@ -1,65 +1,200 @@
-.display {
-  background-color: rgba(251, 247, 247, 0.7);
-  background-position: center;
-  background-size: cover;
-}
+ .display {
+   background-color: rgba(233, 233, 233, 0.7);
+   background-position: center;
+   background-size: cover;
+ }
 
-.userProducts {
-  height: 100%;
-  background-color: rgba(108, 107, 107, 0.2);
-  box-shadow: -0em 0em 0.5em 0.3em rgb(147, 146, 146);
-}
+ .userProducts {
+   height: 100%;
+   background-color: rgb(200, 226, 226, 0.5);
+   box-shadow: -0em 0em 0.5em 0.3em rgb(147, 146, 146);
+   border-radius: 2px;
+   font-style: oblique;
+ }
 
-.img {
-  height: 10em;
-  width: 100%;
-}
+ .userpage {
+   font-weight: 900;
+   font-size: xx-large;
+   color: rgb(47, 47, 47);
+ }
 
-.viewmore:hover {
-  text-decoration: underline;
-  font-style: oblique;
-}
+ .myOrders {
+   background-color: white;
+ }
 
-.welcome {
-  font-style: oblique;
-  color: rgba(75, 42, 42, 0.9);
-}
+ .itemLine {
+   color: rgb(24, 33, 5);
+ }
 
-.btnTrolley {
-  background-color: rgba(166, 217, 235, 0.34);
-  border-color: whitesmoke;
-  border: none;
-}
+ .img {
+   height: 10em;
+   width: 100%;
+ }
 
-.btnTrolley:hover {
-  background-color: rgba(211, 236, 245, 0.34);
-}
+ .viewmore:hover {
+   text-decoration: underline;
+   font-style: oblique;
+ }
 
-.btnDis {
-  background-color: rgb(59, 57, 57);
-  color: wheat;
-}
+ .btnTrolley {
+   background-color: rgba(166, 217, 235, 0.34);
+   border-color: whitesmoke;
+   border: none;
+   font-weight: 900;
+   font-size: larger;
+   color: whitesmoke;
+ }
 
-.btnDis:hover {
-  background-color: black;
-  color: wheat;
-}
+ .btnTrolley:hover {
+   background-color: rgba(211, 236, 245, 0.34);
+ }
 
-.itemName {
-  color: black;
-  font-style: italic;
-}
+ .btnDis {
+   background-color: rgb(149, 107, 189);
+   color: rgb(225, 222, 215);
+ }
 
-.btnEmpty {
-  background-color: white;
-  font-size: larger;
-  font-weight: bold;
-}
+ .btnDis:hover {
+   background-color: rgb(53, 4, 99, 0.6);
+   color: rgb(229, 213, 185);
+ }
 
-.btnEmpty:hover {
-  background-color: rgba(194, 230, 243, 0.34);
-}
+ .btnEmpty {
+   background-color: white;
+   font-size: larger;
+   font-weight: bold;
+ }
 
-.line {
-  color: rgba(45, 1, 1, 0.9);
-}
+ .btnEmpty:hover {
+   background-color: rgba(194, 230, 243, 0.34);
+ }
+
+ .line {
+   color: rgba(45, 1, 1, 0.9);
+ }
+
+ .signInpage {
+   background-color: rgb(243, 243, 243);
+ }
+
+ .inputContainer {
+   background-color: white;
+   height: fit-content;
+ }
+
+ .loginButton {
+   background-color: rgb(156, 104, 205);
+   font-weight: 900;
+   font-size: large;
+   height: 2.5em;
+   width: 80%;
+   border-radius: 3px;
+ }
+
+ .label {
+   font-weight: bold;
+   font-size: large;
+   color: rgb(75, 73, 73);
+ }
+
+ .dlabel {
+   font-size: medium;
+   font-weight: 700;
+ }
+
+ .rightarrow {
+   color: rgb(54, 12, 12);
+   size: 5em;
+ }
+
+ .link {
+   color: black;
+ }
+
+ .link:hover {
+   text-decoration: none;
+ }
+
+ .regButton {
+   font-weight: 900;
+   border-color: rgb(175, 120, 226);
+   color: rgb(154, 121, 185);
+   width: 60%;
+   border-radius: 2px;
+ }
+
+ .regButton:hover {
+   background-color: rgb(79, 53, 101);
+   transition: ease-in-out 0.2s;
+ }
+
+ .userAccount {
+   font-weight: 900;
+   background-color: rgb(156, 104, 205);
+   color: white;
+   width: 50%;
+   border-radius: 2px;
+   border: none;
+ }
+
+ .personal_Address {
+   font-weight: 800;
+   font-size: xx-large;
+   color: rgb(47, 47, 47);
+ }
+
+ .userAccount:hover {
+   background-color: rgba(156, 104, 205, .7);
+   transition: ease-in-out 5ms;
+ }
+
+ .input {
+   border: 0.2px solid rgb(94, 93, 93);
+   height: 3em;
+   border-radius: 3px;
+ }
+
+ .input:hover {
+   border: 2px solid rgb(2, 2, 2);
+ }
+
+ .name {
+   border: 0.2px solid rgb(94, 93, 93);
+   height: 2em;
+   border-radius: 3px;
+ }
+
+ .name:hover {
+   border: 2px solid rgb(2, 2, 2);
+ }
+
+ .description {
+   font-weight: 900;
+   font-size: xx-large;
+   color: rgb(75, 73, 73);
+ }
+
+ .modalAlert {
+   border-radius: 4px;
+ }
+
+ .personalInput {
+   border-radius: 3px;
+   border: 1px solid black;
+ }
+
+ .datetime {
+   border: 1px solid blueviolet;
+   border-radius: 3px;
+   background-color: rgb(223, 214, 232);
+   justify-content: space-between;
+   align-items: center;
+ }
+
+ .addressButton {
+   text-decoration: underline;
+ }
+
+ .addressButton:hover {
+   text-decoration: none;
+ }
