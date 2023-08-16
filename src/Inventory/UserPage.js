@@ -5,7 +5,6 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { CiCircleAlert } from "react-icons/ci";
-import { GrSearch } from "react-icons/gr";
 import axios from 'axios';
 
 const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged }) => {
@@ -14,13 +13,13 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
     let userLogged = useSelector(state => state.userLoggedIn)
     let [customQty, setCustQty] = useState('')
     let cart = useSelector(state => state.cart)
-    let [modal, setModal] = useState("")
+    let [modal, handleToggle] = useState("")
     let [searched, setSearch] = useState('')
     let style = {
         color: 'orange'
     }
     let [total, setTotal] = useState('')
-
+    let [searchId, setItemId] = useState('')
 
     useEffect(() => {
         let checkCart = products ? products.find(good => good.addItem === false) : ''
@@ -39,7 +38,12 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
             let total = cart.reduce((acc, item) => acc + item.customerQuantity * item.price, 0)
             setTotal(total)
         }
-    }, [userLogged, products, cart])
+        if (!searchId) {
+            setSearch('')
+            handleToggle(false)
+        }
+
+    }, [userLogged, products, cart, searchId])
 
     const handleCustomerQuantiy = (event, itemId) => {
         setCustQty({ event, itemId })
@@ -51,30 +55,26 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
         const { quantity } = checkQtyAvailable;
         if (any === 'buy') {
             if (quantity > 0) {
-                setModal(false)
+                handleToggle(false)
                 return handleCart({ any, itemId });
 
             } else {
-                return setModal('Out of Stock, Item to be replenished soon');
+                return handleToggle('Out of Stock, Item to be replenished soon');
             }
         }
 
         if (any === 'addItem') {
             if (quantity < 1 || !findItem.event) {
-                setModal(false)
+                handleToggle(false)
                 return handleCart({ any: true, itemId });
             } else if (findItem.event <= quantity) {
-                setModal(false)
+                handleToggle(false)
                 return handleCart({ any, customerQuantity: findItem.event, itemId: findItem.itemId });
             } else {
                 handleCart({ any: true, itemId });
-                return setModal(`Limited Stock, Only ${quantity} available`)
+                return handleToggle(`Limited Stock, Only ${quantity} available`)
             }
         }
-    };
-
-    const handleToggle = () => {
-        setModal(!modal)
     }
 
     const handleLogout = () => {
@@ -82,27 +82,24 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
         handleUserLogged()
     }
 
-    const handleSearch = async (itemId) => {
-        if (itemId) {
-            return setTimeout(async () => {
-                try {
-                    const response = await axios.get(`https://inventory-be-seven.vercel.app/store/searchItem/${itemId}`)
+    const handleSearch = (itemId) => {
+        setTimeout(async () => {
+            setItemId(itemId)
+            try {
+                const response = await axios.get(`https://inventory-be-seven.vercel.app/store/searchItem/${itemId}`);
+                let { findItem } = response.data;
 
-                    let { findItem } = response.data
-                    if (findItem) {
-                        return setSearch(findItem)
-                    }
-                    else {
-                        setModal(response.data)
-                    }
+                if (findItem) {
+                    handleToggle(false)
+                    return setSearch(findItem);
+                } else {
+                    handleToggle(response.data);
                 }
-                catch (err) { console.error(err) };
-            }, 2000)
-        }
-
-        else if (!itemId) {
-            setSearch('')
-        }
+            }
+            catch (err) {
+                console.error(err);
+            }
+        }, 800)
     }
 
     return (<Container fluid className='display pb-5'>
@@ -126,38 +123,36 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
                 {cart && (
                     <button className='border-0 text-black bg-transparent py-0 d-flex justify-content-end align-items-center mx-1'
                         style={{ fontWeight: 'bold' }}
-                        onClick={() => navigate('/trolley')}>
+                        onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
                         {cart.length > 0 && <sup>{cart.length}</sup>}
 
                         <AiOutlineShoppingCart style={{ fontSize: '1em' }} className='me-1' />
-                        <span style={{ fontSize: '.9em' }}>  {cart.length > 0 ? <>$ {total}</> : <>$0.00</>}</span>
-
+                        <span style={{ fontSize: '.9em' }}>  {cart.length > 0 ? <>${total}</> : <>$0.00</>}</span>
                     </button>
                 )}
             </Col>
 
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                <h2 style={{ color: 'blueviolet' }}>Yesco's</h2>
+                <h2 style={{ color: 'blueviolet' }}>Express</h2>
             </Col>
 
 
 
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-center m-1 w-100'>
+            <Col lg={12} md={12} sm={12} xs={12}>
                 <input className='me-0 w-100 py-1 inputSearch' placeholder='  Search products' style={{ width: '90%' }} onInput={(event) => handleSearch(event.target.value)} />
             </Col>
         </Row>
-        {
-            modal ?
-                <Row className='d-flex justify-content-center'>
-                    <Col className='border py-1 d-flex justify-content-between align-items-center px-1 pe-1 modalAlert' lg={3} md={3} sm={3} xs={4}>
-                        <span className='px-1 py-1'><CiCircleAlert style={{ color: 'red' }} /></span>
-                        <span className='px-1 pe-1 py-1' style={style}>{modal}</span>
-                        <button className='bg-transparent border-0 pe-1 py-1' style={{ color: 'red' }} onClick={handleToggle}>
-                            x
-                        </button>
-                    </Col>
-                </Row>
-                : ''
+        {modal ?
+            <Row className='d-flex justify-content-center'>
+                <Col className='border py-1 d-flex justify-content-between align-items-center px-1 pe-1 modalAlert' lg={3} md={3} sm={3} xs={4}>
+                    <span className='px-1 py-1'><CiCircleAlert style={{ color: 'red' }} /></span>
+                    <span className='px-1 pe-1 py-1' style={style}>{modal}</span>
+                    <button className='bg-transparent border-0 pe-1 py-1' style={{ color: 'red' }} onClick={() => handleToggle(false)}>
+                        x
+                    </button>
+                </Col>
+            </Row>
+            : ''
         }
 
 
@@ -188,7 +183,7 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
                 </Col >))
             }
 
-            {typeof searched === Object &&
+            {searched &&
                 <Col lg={2} md={3} sm={3} xs={12} className='m-1 text-center pe-0 px-0 border userProducts'>
                     {/* <img className='img' src={`https://inventory-be-seven.vercel.app/${item.image}`} /> */}
 

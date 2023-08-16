@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 const MyPreference = () => {
     const navigate = useNavigate('')
@@ -9,6 +9,14 @@ const MyPreference = () => {
     }
 
     return (<Container fluid className='display'>
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
+        </Navbar>
+
         <Row className='d-flex justify-content-center'>
             <Col lg={6} md={6} sm={12} xs={12} className='mb-2'>
                 <h4 className='text-center personal_Address'>Groceries preferences</h4>

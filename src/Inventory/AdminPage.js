@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 import axios from 'axios';
 
@@ -13,6 +13,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
     let [detail, setDetail] = useState('');
     let [img, setImg] = useState('')
     let [products, setProducts] = useState('')
+    const navigate = useNavigate('')
 
     useEffect(() => {
         const handleFetch = async () => {
@@ -45,8 +46,12 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
     return (
         <Container fluid className='display pb-5'>
 
-            <Navbar expand="lg" className='bg-black mb-2 icon py-4'>
-
+            <Navbar expand="lg" className='navbar'>
+                <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                    <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                        <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                    </button>
+                </Col>
             </Navbar>
 
             <Row>

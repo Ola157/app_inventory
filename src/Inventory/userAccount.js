@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from 'react-redux';
@@ -16,6 +16,14 @@ const UserAccount = ({ handleMyDetails }) => {
 
 
     return (<Container fluid className='display'>
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
+        </Navbar>
+
         <Row>
             <Col className='text-center'>
                 <div className='my-2 userpage'>Welcome {firstNAME}</div>

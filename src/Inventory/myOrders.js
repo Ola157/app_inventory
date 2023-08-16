@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Col, Container, Row, Table } from 'react-bootstrap'
+import { Col, Container, Navbar, Row, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -14,12 +14,20 @@ const AllOrders = ({ handleDisplay, handleFetchPastOrder }) => {
         }
     }, [])
 
-    return (<Container className='display pb-5'>
+    return (<Container fluid className='display pb-5'>
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
+        </Navbar>
+
         <Row className='d-flex justify-content-center'>
             <Col className='personal_Address my-2 text-center' lg={12} md={12} sm={12} xs={12}>My orders</Col>
             {allOrders.length > 0 ?
                 <>
-                    {allOrders.map((orders, i) => (<Col key={i} lg={12} md={12} sm={12} xs={12} >
+                    {allOrders.map((orders, i) => (<Col key={i} lg={12} md={12} sm={12} xs={12} className='bg-white'>
                         <button className='my-2 d-flex  py-0 mx-1 datetime' onClick={() => handleDisplay(orders._id)}><span className='d-block'>{orders.date}</span><span className='d-block'><MdKeyboardArrowRight style={{ fontSize: 'larger' }} /></span></button>
                         {orders.showOrder &&
                             <Col className='table-responsive' lg={9} md={6} sm={12} xs={12}>

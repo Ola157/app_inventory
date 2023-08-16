@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -28,6 +28,7 @@ const MyAddress = ({ handle_Changes, handleMyAddress, handleAmends }) => {
         address: { fontWeight: '500', backgroundColor: 'rgb(156, 104, 205)', color: 'white', borderRadius: '2px', border: 'none' }
 
     }
+    const navigate = useNavigate('')
 
     useEffect(() => {
         if (true) {
@@ -63,6 +64,13 @@ const MyAddress = ({ handle_Changes, handleMyAddress, handleAmends }) => {
     }
 
     return (<Container fluid className='display pb-5'>
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
+        </Navbar>
 
         < Row className='d-flex justify-content-center'>
             <Col className='text-center'>

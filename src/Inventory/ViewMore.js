@@ -43,10 +43,13 @@ const ViewMore = ({ handleCart }) => {
     }
 
     return (<Container fluid className='display pb-5'>
-        <Navbar expand="lg" className='bg-black mb-2 icon py-4'>
-
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
         </Navbar>
-
         <Row>
             <Col lg={12} md={12} sm={12} xs={12} className='text-start'>
                 <Link to='/' className='d-flex justify-content-start align-items-center' style={{ textDecoration: 'none', color: 'black' }}><BiArrowBack className='m-1' />Back</Link>

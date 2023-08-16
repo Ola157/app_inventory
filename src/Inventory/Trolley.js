@@ -22,13 +22,17 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
                 navigate('/')
             }, 500)
         }
-        return clearTimeout(interval)
+        return () => clearTimeout(interval)
     }, [cart])
 
 
     return (<Container className='display pb-5'>
-        <Navbar expand="lg" className='bg-black mb-2 icon py-4'>
-
+        <Navbar expand="lg" className='navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
+                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
+                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                </button>
+            </Col>
         </Navbar>
 
         {modal &&
