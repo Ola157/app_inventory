@@ -5,7 +5,7 @@ const initialState = {
     modal: '',
     allOrders: [],
     personalDetails: {},
-    address: {}
+    address: {},
 }
 
 const myReducer = (state = initialState, action) => {
@@ -14,8 +14,8 @@ const myReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allGoods: action.payload,
-                userLoggedIn: false
             }
+
         case "HANDLE_CARTFETCH":
             return {
                 ...state,
@@ -110,6 +110,12 @@ const myReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allOrders: showOrder
+            }
+
+        case "LOG_OUT":
+            return {
+                ...state,
+                userLoggedIn: false
             }
     }
     return state

@@ -53,20 +53,8 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
     }
 
     return (<Container fluid className='signInpage'>
-        <Navbar expand="lg" className='bg-black mb-2 icon'>
-            <Container className='d-flex justify-content-end'>
-                <div className='d-xs-none m-0'>
-                    <Nav className="me-auto">
+        <Navbar expand="lg" className='navbar'>
 
-                        {/* <NavDropdown title={user} id="basic-nav-dropdown" className='bg-black'>
-                            <NavDropdown.Item onClick={() => navigate("/adminpage")}>
-                                Admin
-                            </NavDropdown.Item>
-                        </NavDropdown> */}
-                    </Nav>
-                </div>
-
-            </Container>
         </Navbar>
 
         < Row className='d-flex justify-content-center' >

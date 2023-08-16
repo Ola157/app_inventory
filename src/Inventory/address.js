@@ -19,7 +19,6 @@ const MyAddress = ({ handle_Changes, handleMyAddress, handleAmends }) => {
     let [delInstruct, setDeliveryInstruction] = useState('')
     let [inputErrStyle, setIES] = useState({})
     let myAddress = useSelector(state => state.address)
-    let [checkTruthy, setTruthy] = useState('')
     let [showAddress, setShowAdd] = useState(false)
     let [id, setId] = useState('')
     let style = {
@@ -91,13 +90,13 @@ const MyAddress = ({ handle_Changes, handleMyAddress, handleAmends }) => {
 
                             <select style={inputErrStyle ? inputErrStyle.errorStyle : inputErrStyle} onChange={(event) => setTitle(event.target.value)} name="title" id="title" className='personalInput w-50'>
                                 <option value="">Select</option>
-                                <option value="mr">Mx</option>
-                                <option value="mrs">Mrs</option>
-                                <option value="mr">Mr</option>
-                                <option value="miss">Miss</option>
-                                <option value="ms">Ms</option>
-                                <option value="capt">Capt</option>
-                                <option value="sir">Sir</option>
+                                <option value="Mr">Mx</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Miss">Miss</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Capt">Capt</option>
+                                <option value="Sir">Sir</option>
                             </select>
                         </div>
 

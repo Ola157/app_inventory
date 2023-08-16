@@ -20,7 +20,7 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
         if (cart.length < 1) {
             interval = setTimeout(() => {
                 navigate('/')
-            }, 1000)
+            }, 500)
         }
         return () => { clearTimeout(interval) }
     }, [cart])

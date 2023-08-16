@@ -12,7 +12,8 @@ const actionTypes = {
     ADDRESS: "ADDRESS",
     PERSONALDETAILS: "PERSONAL_DETAILS",
     ALL_ORDERS: 'ALL_ORDERS',
-    SHOW_ORDER: "SHOW_ORDER"
+    SHOW_ORDER: "SHOW_ORDER",
+    LOG_OUT: "LOG_OUT",
 };
 
 export const handleFetch = () => async (dispatch) => {
@@ -312,7 +313,6 @@ export const handle_My_Details = () => async (dispatch) => {
     catch (err) { console.error(err) }
 }
 
-
 export const handle_Adress_Amends = (type, addressId) => async (dispatch) => {
     let myJwt = localStorage.getItem('myAccessToken');
     try {
@@ -375,3 +375,8 @@ export const handle_Adress_Amends = (type, addressId) => async (dispatch) => {
         console.error(err);
     }
 };
+
+export const handle_Logged_In = () => (dispatch) => {
+
+    dispatch({ type: actionTypes.LOG_OUT })
+}

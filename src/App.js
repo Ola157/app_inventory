@@ -6,7 +6,7 @@ import './App.css'
 import Trolley from './Inventory/Trolley';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPastOrders, handleAddGoods, handleAllCart, handleAmends, handleChanges, handleCheckingOut, handleFetch, handleFetchCart, handleModal, handle_Adress_Amends, handle_Display_Order, handle_Email_Password, handle_My_Address, handle_My_Details } from './Inventory/myRedux/myActions';
+import { fetchPastOrders, handleAddGoods, handleAllCart, handleAmends, handleChanges, handleCheckingOut, handleFetch, handleFetchCart, handleModal, handle_Adress_Amends, handle_Display_Order, handle_Email_Password, handle_Logged_In, handle_My_Address, handle_My_Details, handle_Search } from './Inventory/myRedux/myActions';
 import RegistrationPage from './Inventory/signIn';
 import UserPage from './Inventory/UserPage';
 import UserAccount from './Inventory/userAccount';
@@ -79,12 +79,15 @@ const App = () => {
   const handleAmends = (type, addressId) => {
     dispatch(handle_Adress_Amends(type, addressId))
   }
+  const handleUserLogged = () => {
+    dispatch(handle_Logged_In())
+  }
 
   return (
     <>
 
       <Routes>
-        <Route path='/*' element={<UserPage handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
+        <Route path='/*' element={<UserPage handleUserLogged={handleUserLogged} handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />
         <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} />} />
         <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} handle_Modal={handle_Modal} handle_Fetch_Cart={handle_Fetch_Cart} />} />

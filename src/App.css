@@ -37,7 +37,7 @@
  }
 
  .btnTrolley {
-   background-color: rgba(166, 217, 235, 0.34);
+   background-color: rgb(154, 121, 185);
    border-color: whitesmoke;
    border: none;
    font-weight: 900;
@@ -46,7 +46,7 @@
  }
 
  .btnTrolley:hover {
-   background-color: rgba(211, 236, 245, 0.34);
+   background-color: rgba(154, 121, 185, 0.9);
  }
 
  .btnDis {
@@ -197,4 +197,25 @@
 
  .addressButton:hover {
    text-decoration: none;
+ }
+
+ .navbar {
+   /* position: fixed; */
+   /* top: 0;
+   left: 0; */
+   width: 100%;
+   background-color: rgb(236, 233, 239);
+ }
+
+ .inputSearch {
+   border: 1px solid black;
+   border-radius: 3px;
+ }
+
+ .navaccount {
+   font-size: .8em;
+ }
+
+ .navaccount:hover {
+   text-decoration: underline;
  }
