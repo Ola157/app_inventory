@@ -104,7 +104,7 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
 
     return (<Container fluid className='display pb-5'>
         <Row className='navbar d-flex justify-content-between align-items-center'>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center pe-3 mb-2'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2'>
                 {userLogged && (
                     <button className='border-0 bg-transparent d-flex justify-content-end align-items-center mx-1' onClick={() => navigate("/useraccount")}>
                         <BiUserCircle style={{ color: 'black' }} />
@@ -142,6 +142,7 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
                 <input className='me-0 w-100 py-1 inputSearch' placeholder='  Search products' style={{ width: '90%' }} onInput={(event) => handleSearch(event.target.value)} />
             </Col>
         </Row>
+
         {modal ?
             <Row className='d-flex justify-content-center'>
                 <Col className='border py-1 d-flex justify-content-between align-items-center px-1 pe-1 modalAlert' lg={3} md={3} sm={3} xs={4}>
