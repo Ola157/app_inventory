@@ -103,8 +103,8 @@ const UserPage = ({ handleCart, handleGoods, handle_Fetch_Cart, handleUserLogged
     }
 
     return (<Container fluid className='display pb-5'>
-        <Row className='navbar d-flex justify-content-between align-items-center'>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2'>
+        <Row className='navbar d-flex justify-content-between align-items-center m-0'>
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2 mx-0 me-0 w-100'>
                 {userLogged && (
                     <button className='border-0 bg-transparent d-flex justify-content-end align-items-center mx-1' onClick={() => navigate("/useraccount")}>
                         <BiUserCircle style={{ color: 'black' }} />
