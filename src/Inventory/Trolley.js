@@ -4,29 +4,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { PiWarningOctagonFill } from "react-icons/pi";
+import { PiArrowSquareLeftFill } from "react-icons/pi";
 
 const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }) => {
     const navigate = useNavigate('')
     let cart = useSelector(state => state.cart)
     let modal = useSelector(state => state.modal)
-    let [total, setTotal] = useState(cart ? cart.reduce((acc, item) => acc + item.customerQuantity * item.price, 0) : [])
+    let [total, setTotal] = useState('')
     let style = {
         color: 'blueviolet'
     }
 
     useEffect(() => {
-        handle_Fetch_Cart()
-        let interval
-        if (cart.length < 1) {
-            interval = setTimeout(() => {
-                navigate('/')
-            }, 500)
+        const updateCartTotal = cart.reduce((acc, item) => acc + item.customerQuantity * item.price, 0);
+        setTotal(updateCartTotal);
+
+        handle_Fetch_Cart();
+
+        let timeoutId;
+        if (!cart.length) {
+            timeoutId = setTimeout(() => {
+                handle_Modal()
+                navigate('/');
+            }, 500);
         }
-        return () => clearTimeout(interval)
-    }, [cart])
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [cart]);
 
 
-    return (<Container className='display pb-5'>
+    return (<Container fluid className='display pb-5'>
         <Navbar expand="lg" className='navbar'>
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
                 <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
@@ -35,13 +44,17 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
             </Col>
         </Navbar>
 
+        <Row className='d-flex justify-content-start align-items-center'>
+            <Col className='p-0 mx-3 my-1' lg={2} md={2} sm={2} xs={2}>
+                <button onClick={() => navigate('/')} className='p-0 border-0 my-1 mx-0 me-0 bg-transparent' style={{ fontSize: '1.3em' }}><PiArrowSquareLeftFill className='my-0 mx-1 me-0 p-0' /><span className='backBtn'>Homepage</span></button>
+            </Col>
+        </Row>
+
         {modal &&
             <Row className='d-flex justify-content-center'>
                 <Col className="d-flex justify-content-between align-items-baseline bg-white mx-2 me-2 py-3" lg={4} md={6} sm={12} xs={12}>
                     {modal == 'payment successful, thanks for shopping with us' ? '' : <span><PiWarningOctagonFill style={{ color: 'red' }} /></span>}
-                    <div style={style}>{modal}</div>
-                    <button className="border-0 bg-transparent" aria-label="Close">
-                    </button>
+                    <div style={style}>{modal === 'payment successful, thanks for shopping with us' || modal === 'payment unsuccessful ' ? modal : ''}</div>
                 </Col>
             </Row>
         }
@@ -70,7 +83,7 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
                                                 {item.customerQuantity}
                                             </td>
                                             <td className='border-0'>${item.customerQuantity * item.price}</td>
-                                            <td className='border-0'><button className='border-0 bg-transparent' onClick={() => handleCart({ any: 'removeItem', itemId: item._id })}>X</button></td>
+                                            <td className='border-0 text-center'><button className='border-0 bg-transparent' onClick={() => handleCart({ any: 'removeItem', itemId: item._id })}>X</button></td>
                                         </tr>
                                     )}
                                 </tbody>

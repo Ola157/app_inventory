@@ -15,7 +15,7 @@
  .userpage {
    font-weight: 900;
    font-size: xx-large;
-   color: rgb(47, 47, 47);
+   color: rgb(62, 60, 60);
  }
 
  .myOrders {
@@ -66,7 +66,18 @@
  }
 
  .btnEmpty:hover {
-   background-color: rgba(194, 230, 243, 0.34);
+   background-color: rgb(173, 136, 207);
+   color: white;
+   font-weight: bold;
+ }
+
+ .backBtn {
+   font-size: .7em;
+   font-weight: bold;
+ }
+
+ .backBtn:hover {
+   text-decoration: underline;
  }
 
  .line {

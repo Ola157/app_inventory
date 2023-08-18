@@ -89,14 +89,14 @@ const App = () => {
       <Routes>
         <Route path='/*' element={<UserPage handleUserLogged={handleUserLogged} handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />
-        <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} />} />
+        <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} handle_Modal={handle_Modal} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/signIn' element={<RegistrationPage handleLogin_SignUp={handleLogin_SignUp} handle_Modal={handle_Modal} />} />
-        <Route path='/useraccount' element={<UserAccount handleMyDetails={handleMyDetails} />} />
-        <Route path='/allorders' element={<AllOrders handleDisplay={handleDisplay} handleFetchPastOrder={handleFetchPastOrder} />} />
-        <Route path='mydetails' element={<MyDetails handle_Changes={handle_Changes} handleMyDetails={handleMyDetails} />} />
-        <Route path='address' element={<MyAddress handle_Changes={handle_Changes} handleMyAddress={handleMyAddress} handleAmends={handleAmends} />} />
-        <Route path='mypref' element={<MyPreference />} />
+        <Route path='/useraccount' element={<UserAccount handleMyDetails={handleMyDetails} handle_Fetch_Cart={handle_Fetch_Cart} />} />
+        <Route path='/allorders' element={<AllOrders handleUserLogged={handleUserLogged} handleDisplay={handleDisplay} handleFetchPastOrder={handleFetchPastOrder} />} />
+        <Route path='mydetails' element={<MyDetails handleUserLogged={handleUserLogged} handle_Changes={handle_Changes} handleMyDetails={handleMyDetails} />} />
+        <Route path='address' element={<MyAddress handleUserLogged={handleUserLogged} handle_Changes={handle_Changes} handleMyAddress={handleMyAddress} handleAmends={handleAmends} />} />
+        <Route path='mypref' element={<MyPreference handleUserLogged={handleUserLogged} />} />
       </Routes >
     </>
 

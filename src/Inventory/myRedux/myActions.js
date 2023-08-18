@@ -107,12 +107,13 @@ export const handleAllCart = (value, data) => async (dispatch) => {
 
     if (any === 'removeItem') {
         try {
-            await axios.patch(`https://inventory-be-seven.vercel.app/user/removeItem/${itemId}`, null, {
+            let response = await axios.patch(`https://inventory-be-seven.vercel.app/user/removeItem/${itemId}`, null, {
                 headers: {
                     'Authorization': `Bearer ${myJwt}`,
                 }
             })
-
+            let { cart } = response.data
+            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: cart })
         }
         catch (err) { console.log(err) }
     }

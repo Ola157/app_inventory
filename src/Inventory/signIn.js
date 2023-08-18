@@ -23,14 +23,15 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
     let style = {
         color: 'blueviolet'
     }
-
     useEffect(() => {
         const homePageReturn = () => {
             if (userLogged === true) {
+                handle_Modal()
                 navigate('/')
             }
 
             if (userLogged === "Registered") {
+                handle_Modal()
                 handleBoo(true)
             }
         }
@@ -38,10 +39,7 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
 
     }, [userLogged, modal])
 
-
-
     const handleRegistration = (type) => {
-
         if (email && password) {
             setEmail('')
             setPassword('')
@@ -69,8 +67,8 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
                         <Col className="d-flex justify-content-between align-items-baseline bg-white mx-2 me-2 py-3">
                             <span><PiWarningOctagonFill style={{ color: 'red' }} /></span>
                             <div style={style}>{modal}</div>
-                            <button className="border-0 bg-transparent" onClick={handle_Modal} aria-label="Close">
-                                <span aria-hidden="true"><MdCancel /></span>
+                            <button className="border-0 bg-transparent" onClick={() => handle_Modal()} aria-label="Close">
+                                <MdCancel />
                             </button>
                         </Col>
                     </Row>
