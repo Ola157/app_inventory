@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { BiArrowBack } from "react-icons/bi";
+import { PiArrowSquareLeftFill } from "react-icons/pi";
 import axios from 'axios';
 
 const AdminPage = ({ handleAddItem, handleEditDelete }) => {
@@ -54,12 +54,12 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
                 </Col>
             </Navbar>
 
-            <Row>
-                <Col lg={12} md={12} sm={12} xs={12} className='text-start'>
-                    <Link to='/' className='d-flex justify-content-start align-items-center' style={{ textDecoration: 'none', color: 'black' }}><BiArrowBack className='m-1' />Back</Link>
+            <Row className='d-flex justify-content-start align-items-center'>
+                <Col className='p-0 mx-3 my-1' lg={2} md={2} sm={2} xs={2}>
+                    <button onClick={() => navigate('/')} className='p-0 border-0 my-1 mx-0 me-0 bg-transparent' style={{ fontSize: '1.3em' }}><PiArrowSquareLeftFill className='my-0 mx-1 me-0 p-0' /><span className='backBtn'>Homepage</span></button>
                 </Col>
-                <Col><hr className='m-1 line'></hr></Col>
             </Row>
+
             <Row className='my-2 m-1 d-flex justify-content-evenly align-items-center border-1 border-black'>
                 <Col lg={2} md={3} sm={3} xs={4}>
                     <input className='border rounded m-1 text-center w-100' value={item} placeholder='Item Name' onInput={event => setItem(event.target.value)} />

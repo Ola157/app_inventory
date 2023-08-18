@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Navbar, Row, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { BiArrowBack } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { PiWarningOctagonFill } from "react-icons/pi";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
@@ -61,10 +60,6 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
 
         {cart.length > 0 ?
             <>
-                <Row className='pt-3'>
-                    <Col lg={12} md={12} sm={12} xs={12} className='text-start'><Link to='/' className='d-flex justify-content-start align-items-center' style={{ textDecoration: 'none', color: 'black' }}><BiArrowBack className='m-1' />Back</Link></Col>
-                </Row>
-
                 <Row className='d-flex justify-content-between my-5'>
                     <Col lg={7} md={6} sm={12} xs={12} className='table-responsive m-1' >
                         {cart ?

@@ -127,7 +127,7 @@ const ViewMore = ({ handleCart, handle_Fetch_Cart, handleUserLogged }) => {
 
         <Row className='d-flex justify-content-center m-2'>
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-center my-2'>
-                <Col lg={5} md={8} sm={12} xs={12} className='text-center m-1 userpage bg-white'>
+                <Col lg={5} md={8} sm={12} xs={12} className='text-center m-1 userpage'>
                     More Details On Product
                 </Col>
             </Col>

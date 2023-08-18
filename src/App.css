@@ -7,7 +7,7 @@
  .userProducts {
    height: 100%;
    background-color: rgb(200, 226, 226, 0.5);
-   box-shadow: -0em 0em 0.5em 0.3em rgb(147, 146, 146);
+   box-shadow: -0em 0em 0.5em 0.3em rgb(255, 255, 255);
    border-radius: 2px;
    font-style: oblique;
  }

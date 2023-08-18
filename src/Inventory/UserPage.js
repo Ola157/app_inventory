@@ -143,7 +143,7 @@ const UserPage = ({
 
 
             <Col lg={12} md={12} sm={12} xs={12}>
-                <input className='me-0 w-100 py-1 inputSearch' placeholder='  Search products' style={{ width: '90%' }} onInput={(event) => handleSearch(event.target.value)} />
+                <input className='me-0 w-100 p-1 inputSearch' placeholder='Search products' style={{ width: '90%' }} onInput={(event) => handleSearch(event.target.value)} />
             </Col>
         </Row>
 
@@ -194,10 +194,10 @@ const UserPage = ({
                     <hr className='my-0 w-100 itemLine my-2'></hr>
                     <div className='d-flex justify-content-center p-1'>
                         {searched.addItem === false ?
-                            <input className='border text-center mx-1 border rounded' style={{ width: "50px", height: '25px' }} onChange={event => handleCustomerQuantiy(Number(event.target.value), searched._id)} />
+                            <input className='border text-center mx-1 border rounded' style={{ width: "5em", height: '2.5em' }} onChange={event => handleCustomerQuantiy(Number(event.target.value), searched._id)} />
                             : ''}
                         <button className='border-0 btnDis me-1 border rounded'
-                            style={{ width: "50px", height: '25px' }}
+                            style={{ width: "5em", height: '2.5em' }}
                             onClick={searched.addItem === false ?
                                 () => handleCartItems('addItem', searched._id)
                                 :
