@@ -171,8 +171,8 @@ const UserPage = ({
                         {item.addItem === false ?
                             <input className='border text-center mx-1 border rounded' style={{ width: "50px", height: '25px' }} onChange={event => handleCustomerQuantiy(Number(event.target.value), item._id)} />
                             : ''}
-                        <button className='border-0 btnDis border rounded text-center align-self-center'
-                            style={{ width: "2.5em", height: '1.5em' }}
+                        <button className='border-0 btnDis border rounded text-center'
+                            style={{ width: "3em", height: '1.5em' }}
                             onClick={item.addItem === false ?
                                 () => handleCartItems('addItem', item._id)
                                 :
