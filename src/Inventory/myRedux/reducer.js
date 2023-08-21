@@ -29,18 +29,25 @@ const myReducer = (state = initialState, action) => {
             }
 
         case "HANDLE_CART":
-            let { any, itemId, customerQuantity } = action.payload
+            let { type, itemId } = action.payload
             let updateGood = state.allGoods.map(good => {
-                if (good._id === itemId && any !== 'empty' && any !== 'checkout') {
+                if (good._id === itemId) {
+                    console.log(type)
                     return {
                         ...good,
-                        customerQuantity: any === 'addItem' ? good.customerQuantity = customerQuantity : good.customerQuantity,
-                        addItem: any === 'buy' ? false : any === 'addItem' || any ? true : good.addItem
+                        addItem: type === 'addItem' ? false :
+                            type === 'cancel' ? good.addItem = true
+                                : good.addItem,
+                        customerQuantity: type === 'addItem' ? good.customerQuantity = 1
+                            : type == 'add' ? good.customerQuantity += 1
+                                : type === 'subtract' ? good.customerQuantity -= 1 :
+                                    type === 'cancel' ? good.customerQuantity = 0
+                                        : good.customerQuantity
                     }
 
                 }
 
-                if (any === 'empty') {
+                if (type === 'empty') {
 
                     return {
                         ...good,
@@ -50,14 +57,12 @@ const myReducer = (state = initialState, action) => {
 
                 return good
             })
-
             return {
                 ...state,
                 allGoods: updateGood,
             }
 
         case "CHECK_OUT":
-
             return {
                 ...state,
                 allGoods: state.allGoods.map((good) => action.payload === 'payment successful' ? ({

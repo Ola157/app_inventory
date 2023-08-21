@@ -74,16 +74,15 @@ export const handleFetchCart = () => async (dispatch) => {
 }
 
 
-export const handleAllCart = (value, data) => async (dispatch) => {
+export const handleAllCart = (type, itemId, goods) => async (dispatch) => {
     let myJwt = localStorage.getItem('myAccessToken')
-    let { any, itemId, customerQuantity } = value
-    dispatch({ type: "HANDLE_CART", payload: { any, itemId, customerQuantity } })
-
-    if (any === 'addItem') {
-
+    if (type === 'add' || type === 'subtract' || type === 'addItem' || type === 'cancel') {
+        dispatch({ type: actionTypes.HANDLE_CART, payload: { type, itemId } })
         setTimeout(async () => {
             try {
-                await axios.post('https://inventory-be-seven.vercel.app/user/cart', data, {
+                let custQty = goods.find(item => item._id == itemId)
+                let { customerQuantity } = custQty
+                await axios.post(`https://inventory-be-seven.vercel.app/user/cart/${itemId}`, { newCustomerQuantity: customerQuantity }, {
                     headers: {
                         'Authorization': `Bearer ${myJwt}`,
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -91,10 +90,10 @@ export const handleAllCart = (value, data) => async (dispatch) => {
                 })
             }
             catch (err) { console.log(err) }
-        }, 1000)
+        }, 2000)
     }
 
-    if (any === 'empty') {
+    if (type === 'empty') {
         try {
             await axios.delete('https://inventory-be-seven.vercel.app/user/clearCart', {
                 headers: {
@@ -105,7 +104,7 @@ export const handleAllCart = (value, data) => async (dispatch) => {
         catch (err) { console.log(err) }
     }
 
-    if (any === 'removeItem') {
+    if (type === 'removeItem') {
         try {
             let response = await axios.patch(`https://inventory-be-seven.vercel.app/user/removeItem/${itemId}`, null, {
                 headers: {

@@ -75,15 +75,17 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
                                             {/* <td className='d-flex justify-content-center border-0'><img style={{ height: '5em', width: '5em' }} src={`https://inventory-be-seven.vercel.app/${item.image}`} /></td> */}
                                             <td className='text-center border-0'>{item.item}</td>
                                             <td className='d-flex justify-content-center align-items-center border-0'>
-                                                {item.customerQuantity}
+                                                <input className='border text-center' style={{ width: "2em", height: '2em' }}
+                                                    value={item.customerQuantity}
+                                                    readOnly />
                                             </td>
                                             <td className='border-0'>${item.customerQuantity * item.price}</td>
-                                            <td className='border-0 text-center'><button className='border-0 bg-transparent' onClick={() => handleCart({ any: 'removeItem', itemId: item._id })}>X</button></td>
+                                            <td className='border-0 text-center'><button className='border-0 bg-transparent' onClick={() => handleCart('removeItem', item._id)}>X</button></td>
                                         </tr>
                                     )}
                                 </tbody>
                             </Table> : ''}
-                        <button className='border-1 border rounded btnEmpty m-4 py-4' onClick={() => handleCart({ any: 'empty' })}>Empty Trolley</button>
+                        <button className='border-1 border rounded btnEmpty m-4 py-4' onClick={() => handleCart('empty')}>Empty Trolley</button>
                     </Col>
 
                     <Col lg={4} md={6} sm={12} xs={12} className='table-responsive m-1 mt-5'>

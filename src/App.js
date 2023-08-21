@@ -30,10 +30,8 @@ const App = () => {
     dispatch(handleFetch())
   }
 
-  const handleCart = (value) => {
-    let { itemId } = value
-    let data = goods.find(good => good._id === itemId)
-    dispatch(handleAllCart(value, data))
+  const handleCart = (type, itemId) => {
+    dispatch(handleAllCart(type, itemId, goods))
   }
 
   const handle_Fetch_Cart = () => {

@@ -10,11 +10,9 @@ import { PiArrowSquareLeftFill } from "react-icons/pi";
 
 const ViewMore = ({ handleCart, handle_Fetch_Cart, handleUserLogged }) => {
     const { itemId } = useParams();
-    let viewed = useSelector(state => state.allGoods)
-    let [customerQuantity, setCustQty] = useState('')
-    let findViewed = viewed ? viewed.find(good => good._id === itemId) : ''
-    let { item, detail, image, _id, addItem } = findViewed
     let products = useSelector(state => state.allGoods)
+    let findViewed = products.find(good => good._id === itemId)
+    let { item, detail, image, _id, addItem, customerQuantity } = findViewed
     let userLogged = useSelector(state => state.userLoggedIn)
     let navigate = useNavigate()
     let [modal, handleToggle] = useState("")
@@ -32,45 +30,44 @@ const ViewMore = ({ handleCart, handle_Fetch_Cart, handleUserLogged }) => {
         }
     }, [userLogged, products, cart]);
 
-
-
-    const handleCustomerQuantiy = (event, itemId) => {
-        setCustQty({ event, itemId })
-    }
-
-    const handleCartItems = (any, itemId) => {
-        const findItem = itemId === customerQuantity.itemId ? customerQuantity : '';
-        const checkQtyAvailable = products.find(item => item._id === itemId);
-        const { quantity } = checkQtyAvailable;
-        if (any === 'buy') {
-            handleToggle(false)
-            if (!userLogged) {
-                return navigate('/signIn');
-            }
-            else if (quantity > 0 && userLogged) {
-                return handleCart({ any, itemId });
-            } else if (findItem.event > quantity) {
-                handleToggle('Out of Stock, Item to be replenished soon')
-            }
+    const handleQty = (type, id) => {
+        handleToggle(false)
+        let checkQtyAvailable = products.find(item => item._id === id)
+        let { customerQuantity, quantity } = checkQtyAvailable
+        switch (type) {
+            case 'add':
+                if (quantity > customerQuantity && quantity > 0) {
+                    return handleCart(type, id)
+                }
+                else (
+                    handleToggle(`Limited Stock, Only ${quantity} available`)
+                )
+                break;
+            case 'subtract':
+                if (customerQuantity <= 1) {
+                    return handleCart('cancel', id)
+                }
+                if (customerQuantity > 0) {
+                    return handleCart(type, id)
+                }
+                break;
+            case 'addItem':
+                if (quantity <= 1) {
+                    return handleToggle('Out of Stock, Item to be replenished soon')
+                }
+                else {
+                    handleCart(type, id)
+                }
+                break;
         }
 
-        if (any === 'addItem') {
-            if (quantity < 1 || !findItem.event) {
-                handleToggle(false)
-                return handleCart({ any: true, itemId });
-            } else if (findItem.event <= quantity) {
-                handleToggle(false)
-                return handleCart({ any, customerQuantity: findItem.event, itemId: findItem.itemId });
-            } else {
-                handleCart({ any: true, itemId });
-                handleToggle(`Limited Stock, Only ${quantity} available`)
-            }
-        }
     }
+
     const handleLogout = () => {
         localStorage.removeItem('myAccessToken')
         handleUserLogged()
     }
+
     return (<Container fluid className='display pb-5'>
         <Row className='navbar d-flex justify-content-between align-items-center m-0'>
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2 mx-0 me-0 w-100'>
@@ -93,17 +90,16 @@ const ViewMore = ({ handleCart, handle_Fetch_Cart, handleUserLogged }) => {
                 <button className='border-0 text-black bg-transparent py-0 d-flex justify-content-end align-items-center mx-1'
                     style={{ fontWeight: 'bold' }}
                     onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
-                    {userLogged && cart.length > 0 && <sup>{cart.length}</sup>}
+                    {userLogged && cart.length >= 1 && <sup>{cart.length}</sup>}
 
                     <AiOutlineShoppingCart style={{ fontSize: '1em' }} className='me-1' />
                     <span style={{ fontSize: '.9em' }}>  {userLogged ? <>${total}</> : <>$0.00</>}</span>
                 </button>
+
             </Col>
 
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
-                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
-                </button>
+                <h2 style={{ color: 'blueviolet' }}>Express</h2>
             </Col>
         </Row>
 
@@ -140,20 +136,25 @@ const ViewMore = ({ handleCart, handle_Fetch_Cart, handleUserLogged }) => {
                     <hr className='my-0'></hr>
                     <div className='text-center itemName p-1'>{detail}</div>
                     <hr className='my-0'></hr>
-                    <div className='d-flex justify-content-center p-1'>
-                        {!addItem ?
-                            <input className='border text-center mx-1 border rounded' style={{ width: "50px", height: '25px' }}
-                                onInput={event => handleCustomerQuantiy(Number(event.target.value), _id)} />
-                            : ''}
-                        <button className='border-0 btnDis me-1 border rounded'
-                            style={{ width: "50px", height: '25px' }}
-                            onClick={!addItem ?
-                                () => handleCartItems('addItem', _id)
-                                :
-                                () => handleCartItems('buy', _id)
-                            }> {!addItem ? 'Add' : 'Buy'}
-                        </button>
-                    </div>
+                    {addItem ?
+                        <div className='text-center'>
+                            <button className='border-0 border my-2 rounded text-center cartBtn'
+                                style={{ width: "3em", height: '2em' }}
+                                onClick={() => handleQty('addItem', _id)}>Add
+                            </button>
+                        </div>
+                        :
+                        <div className='d-flex justify-content-center p-1'>
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('subtract', _id)}>-</button>
+                            <input className='border-0 text-center' style={{ width: "2em", height: '2em' }}
+                                value={customerQuantity}
+                                readOnly
+                            />
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('add', _id)}>+</button>
+                        </div>
+                    }
                 </Col>
                 : ''}
         </Row>

@@ -16,7 +16,6 @@ const UserPage = ({
     const navigate = useNavigate()
     let products = useSelector(state => state.allGoods)
     let userLogged = useSelector(state => state.userLoggedIn)
-    let [customQty, setCustQty] = useState('')
     let cart = useSelector(state => state.cart)
     let [modal, handleToggle] = useState("")
     let [searched, setSearch] = useState('')
@@ -40,42 +39,6 @@ const UserPage = ({
             setTotal(total);
         }
     }, [userLogged, products, cart]);
-
-
-    const handleCustomerQuantiy = (event, itemId) => {
-        setCustQty({ event, itemId })
-    }
-
-    const handleCartItems = (any, itemId) => {
-        const findItem = itemId === customQty.itemId ? customQty : '';
-        const checkQtyAvailable = products.find(item => item._id === itemId);
-        const { quantity } = checkQtyAvailable;
-        if (any === 'buy') {
-            handleToggle(false)
-            if (!userLogged) {
-                return navigate('/signIn');
-            }
-            else if (quantity > 0 && userLogged) {
-                return handleCart({ any, itemId });
-            }
-            else {
-                return handleToggle('Out of Stock, Item to be replenished soon')
-            }
-        }
-
-        if (any === 'addItem') {
-            if (quantity < 1 || !findItem.event || findItem.event === 0) {
-                handleToggle(false)
-                return handleCart({ any: true, itemId });
-            } else if (findItem.event <= quantity) {
-                handleToggle(false)
-                return handleCart({ any, customerQuantity: findItem.event, itemId: findItem.itemId });
-            } else {
-                handleCart({ any: true, itemId });
-                handleToggle(`Limited Stock, Only ${quantity} available`)
-            }
-        }
-    }
 
     const handleSearch = (itemId) => {
         handleToggle(false)
@@ -106,6 +69,43 @@ const UserPage = ({
         handleUserLogged()
     }
 
+    const handleQty = (type, id) => {
+        handleToggle(false)
+        let checkQtyAvailable = products.find(item => item._id === id)
+        let { customerQuantity, quantity } = checkQtyAvailable
+        if (userLogged) {
+            switch (type) {
+                case 'add':
+                    if (quantity > customerQuantity && quantity > 0) {
+                        return handleCart(type, id)
+                    }
+                    else (
+                        handleToggle(`Limited Stock, Only ${quantity} available`)
+                    )
+                    break;
+                case 'subtract':
+                    if (customerQuantity <= 1) {
+                        return handleCart('cancel', id)
+                    }
+                    if (customerQuantity > 0) {
+                        return handleCart(type, id)
+                    }
+                    break;
+                case 'addItem':
+                    if (quantity <= 1) {
+                        return handleToggle('Out of Stock, Item to be replenished soon')
+                    }
+                    else {
+                        handleCart(type, id)
+                    }
+                    break;
+            }
+        }
+        else {
+            navigate('/signIn');
+        }
+    }
+
     return (<Container fluid className='display pb-5'>
         <Row className='navbar d-flex justify-content-between align-items-center m-0'>
             <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2 mx-0 me-0 w-100'>
@@ -128,7 +128,7 @@ const UserPage = ({
                 <button className='border-0 text-black bg-transparent py-0 d-flex justify-content-end align-items-center mx-1'
                     style={{ fontWeight: 'bold' }}
                     onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
-                    {userLogged && cart.length > 0 && <sup>{cart.length}</sup>}
+                    {userLogged && cart.length >= 1 && <sup>{cart.length}</sup>}
 
                     <AiOutlineShoppingCart style={{ fontSize: '1em' }} className='me-1' />
                     <span style={{ fontSize: '.9em' }}>  {userLogged ? <>${total}</> : <>$0.00</>}</span>
@@ -157,7 +157,6 @@ const UserPage = ({
             </Row>
         }
 
-
         <Row className='d-flex justify-content-evenly my-3 p-2'>
             {products && !searched &&
                 products.map((item, index) =>
@@ -167,21 +166,26 @@ const UserPage = ({
                     {/* <hr className='my-0 w-100'></hr> */}
                     <span className='itemName my-2'>{item.item}</span>
                     <hr className='my-0 w-100 itemLine my-2'></hr>
-                    <div className='d-flex justify-content-center p-1'>
-                        {item.addItem === false ?
-                            <input className='border text-center mx-1 border rounded' style={{ width: "50px", height: '25px' }} onChange={event => handleCustomerQuantiy(Number(event.target.value), item._id)} />
-                            : ''}
-                        <button className='border-0 btnDis border rounded text-center'
-                            style={{ width: "3em", height: '1.5em' }}
-                            onClick={item.addItem === false ?
-                                () => handleCartItems('addItem', item._id)
-                                :
-                                () => handleCartItems('buy', item._id)
-                            }> {item.addItem === false ? 'Add' : 'Buy'}
+
+                    {item.addItem ?
+                        <button className='border-0 cartBtn border rounded text-center'
+                            style={{ width: "3em", height: '2em' }}
+                            onClick={() => handleQty('addItem', item._id)}>Add
                         </button>
-                    </div>
+                        :
+                        <div className='d-flex justify-content-center p-1'>
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('subtract', item._id)}>-</button>
+                            <input className='border-0 text-center' style={{ width: "2em", height: '2em' }}
+                                value={item.customerQuantity}
+                                readOnly
+                            />
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('add', item._id)}>+</button>
+                        </div>
+                    }
                     < hr className='my-0 w-100 itemLine my-2' ></hr>
-                    <button className='border-0 py-0 my-2 bg-transparent viewmore' onClick={() => navigate(`/viewmore/${item._id} `)}>view more</button>
+                    <button style={{ height: '2em' }} className='border-0 py-0 my-2 bg-transparent viewmore' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate('/signIn')}>view more</button>
                 </Col >))
             }
 
@@ -192,21 +196,26 @@ const UserPage = ({
                     {/* <hr className='my-0 w-100'></hr> */}
                     <span className='itemName my-2'>{searched.item}</span>
                     <hr className='my-0 w-100 itemLine my-2'></hr>
-                    <div className='d-flex justify-content-center p-1'>
-                        {searched.addItem === false ?
-                            <input className='border text-center mx-1 border rounded' style={{ width: "5em", height: '2.5em' }} onChange={event => handleCustomerQuantiy(Number(event.target.value), searched._id)} />
-                            : ''}
-                        <button className='border-0 btnDis me-1 border rounded'
-                            style={{ width: "5em", height: '2.5em' }}
-                            onClick={searched.addItem === false ?
-                                () => handleCartItems('addItem', searched._id)
-                                :
-                                () => handleCartItems('buy', searched._id)
-                            }> {searched.addItem === false ? 'Add' : 'Buy'}
+
+                    {searched.addItem ?
+                        <button className='border-0 btnDis border rounded text-center'
+                            style={{ width: "3em", height: '2em' }}
+                            onClick={() => handleQty('addItem', searched._id)}>Add
                         </button>
-                    </div>
+                        :
+                        <div className='d-flex justify-content-center p-1'>
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('subtract', searched._id)}>-</button>
+                            <input className='border-0 text-center' style={{ width: "2em", height: '2em' }}
+                                value={searched.customerQuantity}
+                                readOnly
+                            />
+                            <button className='border-0 text-center cartBtn'
+                                onClick={() => handleQty('add', searched._id)}>+</button>
+                        </div>
+                    }
                     < hr className='my-0 w-100 itemLine my-2' ></hr>
-                    <button className='border-0 py-0 my-2 bg-transparent viewmore' onClick={() => navigate(`/viewmore/${searched._id} `)}>view more</button>
+                    <button className='border-0 py-0 my-2 bg-transparent viewmore' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate('/signIn')}>view more</button>
                 </Col >}
         </Row >
 

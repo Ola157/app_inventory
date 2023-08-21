@@ -6,7 +6,7 @@
 
  .userProducts {
    height: 100%;
-   background-color: rgb(200, 226, 226, 0.5);
+   background-color: rgba(182, 170, 189, 0.5);
    box-shadow: -0em 0em 0.5em 0.3em rgb(255, 255, 255);
    border-radius: 2px;
    font-style: oblique;
@@ -16,6 +16,13 @@
    font-weight: 900;
    font-size: xx-large;
    color: rgb(62, 60, 60);
+ }
+
+ .cartBtn {
+   color: white;
+   background-color: blueviolet;
+   height: 2em;
+   font-weight: bold;
  }
 
  .myOrders {
@@ -211,11 +218,8 @@
  }
 
  .navbar {
-   /* position: fixed; */
-   /* top: 0;
-   left: 0; */
    width: 100%;
-   background-color: rgb(236, 233, 239);
+   background-color: white;
  }
 
  .inputSearch {
