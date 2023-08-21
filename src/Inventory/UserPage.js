@@ -11,7 +11,8 @@ const UserPage = ({
     handleCart,
     handleGoods,
     handle_Fetch_Cart,
-    handleUserLogged
+    handleUserLogged,
+    handle_Modal
 }) => {
     const navigate = useNavigate()
     let products = useSelector(state => state.allGoods)
@@ -67,6 +68,7 @@ const UserPage = ({
     const handleLogout = () => {
         localStorage.removeItem('myAccessToken')
         handleUserLogged()
+        handle_Modal()
     }
 
     const handleQty = (type, id) => {
@@ -168,7 +170,7 @@ const UserPage = ({
                     <hr className='my-0 w-100 itemLine my-2'></hr>
 
                     {item.addItem ?
-                        <button className='border-0 cartBtn border rounded text-center'
+                        <button className='border-0 cartBtn border rounded'
                             style={{ width: "3em", height: '2em' }}
                             onClick={() => handleQty('addItem', item._id)}>Add
                         </button>

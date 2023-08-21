@@ -32,7 +32,6 @@ const myReducer = (state = initialState, action) => {
             let { type, itemId } = action.payload
             let updateGood = state.allGoods.map(good => {
                 if (good._id === itemId) {
-                    console.log(type)
                     return {
                         ...good,
                         addItem: type === 'addItem' ? false :

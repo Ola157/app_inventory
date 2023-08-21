@@ -132,7 +132,7 @@ export const handleCheckingOut = () => async (dispatch) => {
     catch (err) { console.log(err) }
 }
 
-export const handleAmends = (data) => async () => {
+export const handle_Amends = (data) => async () => {
     let { any, _id, nimage, nitem, nquantity, nprice, ndetail } = data
 
     switch (any) {
