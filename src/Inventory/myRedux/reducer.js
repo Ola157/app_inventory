@@ -61,6 +61,17 @@ const myReducer = (state = initialState, action) => {
                 allGoods: updateGood,
             }
 
+        case "REMOVE_ITEM":
+            let updateRemovedItem = state.allGoods.map(good => good._id === action.payload.itemId ? {
+                ...good,
+                customerQuantity: good.customerQuantity = 0,
+                addItem: true
+            } : good)
+            return {
+                ...state,
+                allGoods: updateRemovedItem
+            }
+
         case "CHECK_OUT":
             return {
                 ...state,

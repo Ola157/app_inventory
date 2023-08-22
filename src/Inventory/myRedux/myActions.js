@@ -14,6 +14,7 @@ const actionTypes = {
     ALL_ORDERS: 'ALL_ORDERS',
     SHOW_ORDER: "SHOW_ORDER",
     LOG_OUT: "LOG_OUT",
+    REMOVE_ITEM: "REMOVE_ITEM"
 };
 
 export const handleFetch = () => async (dispatch) => {
@@ -110,12 +111,16 @@ export const handleAllCart = (type, itemId, goods) => async (dispatch) => {
                 headers: {
                     'Authorization': `Bearer ${myJwt}`,
                 }
-            })
-            let { cart } = response.data
-            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: cart })
+            });
+
+            let { cart } = response.data;
+            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: cart });
+        } catch (err) {
+            console.log(err);
         }
-        catch (err) { console.log(err) }
+        dispatch({ type: actionTypes.REMOVE_ITEM, payload: { itemId } });
     }
+
 }
 
 export const handleCheckingOut = () => async (dispatch) => {
@@ -132,7 +137,7 @@ export const handleCheckingOut = () => async (dispatch) => {
     catch (err) { console.log(err) }
 }
 
-export const handle_Amends = (data) => async () => {
+export const handle_Amends = (data) => async (dispatch) => {
     let { any, _id, nimage, nitem, nquantity, nprice, ndetail } = data
 
     switch (any) {
