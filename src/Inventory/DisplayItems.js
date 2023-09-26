@@ -11,20 +11,40 @@ const InputPage = ({ each: { item, quantity, price, detail, image, itemEdit, _id
         setNImage(e.target.files[0])
     }
 
-    return (<Container className='px-0 pe-0 userProducts'>
-        Product {index + 1}
-        <hr className='w-100 my-0 itemLine'></hr>
+    return (<Container>
+        <div className='product-header'>
+            Product
+        </div>
+        <hr className='product-divider' />
         {/* <div>{itemEdit ? < img className='h-10 w-100 img' src={`http://localhost:9810/${image}`} /> : <input className='border rounded text-center' type='file' onChange={setImage} />} </div> */}
         {/* <hr className='w-100 my-0'></hr> */}
-        <div> {itemEdit ? item : <input className='border rounded text-center' placeholder='item' onInput={(event) => setItem(event.target.value)} />}</div>
-        <hr className='w-100 my-1 itemLine'></hr>
-        <div> {itemEdit ? quantity : <input className='border rounded text-center' placeholder='quantity' onInput={(event) => setQty(event.target.value)} />}</div>
-        <hr className='w-100 my-1 itemLine'></hr>
-        <div> {itemEdit ? <>${price}</> : <input className='border rounded text-center' placeholder='price' onInput={(event) => setPrice(event.target.value)} />}</div>
-        <hr className='w-100 my-1 itemLine'></hr>
-        <div className='text-center px-1 p-1'> {itemEdit ? detail : <input className='border rounded text-center' placeholder='detail' onInput={(event) => setDetail(event.target.value)} />}</div>
-        <hr className='w-100 my-1 itemLine'></hr>
-        <div className='text-center'><button className='border rounded py-0 my-1 btnDis' onClick={() => handleEditDelete({ any: 'remove', _id })}> Delete</button >{itemEdit ? <button className='border rounded py-0 m-1 btnDis' onClick={() => handleEditDelete({ any: 'edit', _id })}>Edit</button> : <button className='border rounded py-0 m-1 btnDis' onClick={() => handleEditDelete({ any: 'done', _id, nimage, nitem, nquantity, nprice, ndetail })}>Done</button>}</div>
+        <div className='product-field'>
+            {itemEdit ? item : <input className='product-input' placeholder='Item Name' onInput={(event) => setItem(event.target.value)} />}
+        </div>
+        <hr className='product-divider' />
+
+        <div className='product-field'>
+            {itemEdit ? quantity : <input className='product-input' placeholder='Quantity' onInput={(event) => setQty(event.target.value)} />}
+        </div>
+        <hr className='product-divider' />
+
+        <div className='product-field'>
+            {itemEdit ? <>${price}</> : <input className='product-input' placeholder='Price' onInput={(event) => setPrice(event.target.value)} />}
+        </div>
+        <hr className='product-divider' />
+
+        <div className='product-field'>
+            {itemEdit ? detail : <input className='product-input' placeholder='Description' onInput={(event) => setDetail(event.target.value)} />}
+        </div>
+        <hr className='product-divider' />
+
+        <div className='product-actions'>
+            <button className='btn-delete' onClick={() => handleEditDelete({ any: 'remove', _id })}> Delete</button>
+            {itemEdit
+                ? <button className='btn-edit' onClick={() => handleEditDelete({ any: 'edit', _id })}>Edit</button>
+                : <button className='btn-done' onClick={() => handleEditDelete({ any: 'done', _id, nimage, nitem, nquantity, nprice, ndetail })}>Done</button>
+            }
+        </div>
     </Container>)
 }
 export default InputPage;

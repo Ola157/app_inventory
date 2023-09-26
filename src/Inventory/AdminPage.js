@@ -44,52 +44,56 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
     }
 
     return (
-        <Container fluid className='display pb-5'>
+        <Container fluid className='inventory'>
 
             <Navbar expand="lg" className='navbar'>
-                <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                    <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
-                        <h2 style={{ color: 'blueviolet' }}>Express</h2>
+                <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
+                    <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                        Express
                     </button>
                 </Col>
             </Navbar>
 
             <Row className='d-flex justify-content-start align-items-center'>
-                <Col className='p-0 mx-3 my-1' lg={2} md={2} sm={2} xs={2}>
-                    <button onClick={() => navigate('/')} className='p-0 border-0 my-1 mx-0 me-0 bg-transparent' style={{ fontSize: '1.3em' }}><PiArrowSquareLeftFill className='my-0 mx-1 me-0 p-0' /><span className='backBtn'>Homepage</span></button>
+                <Col className='back-col'>
+                    <button onClick={() => navigate('/useraccount')} className='back-button'>
+                        <PiArrowSquareLeftFill className='back-icon' />
+                        <span className='back-text'>Homepage</span>
+                    </button>
                 </Col>
             </Row>
 
-            <Row className='my-2 m-1 d-flex justify-content-evenly align-items-center border-1 border-black'>
-                <Col lg={2} md={3} sm={3} xs={4}>
-                    <input className='border rounded m-1 text-center w-100' value={item} placeholder='Item Name' onInput={event => setItem(event.target.value)} />
+
+            <Row className='admin-input-row'>
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <input className='admin-input' value={item} placeholder='Item Name' onInput={event => setItem(event.target.value)} />
                 </Col>
-                <Col lg={2} md={3} sm={3} xs={4}>
-                    <input className='border rounded m-1 text-center w-100' value={quantity} placeholder='Quantity' onInput={event => setQty(Number(event.target.value))} />
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <input className='admin-input' value={quantity} placeholder='Quantity' onInput={event => setQty(Number(event.target.value))} />
                 </Col>
-                <Col lg={2} md={3} sm={3} xs={4}>
-                    <input className='border rounded m-1 text-center w-100' value={price} placeholder='Price' onInput={event => setPrice(Number(event.target.value))} />
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <input className='admin-input' value={price} placeholder='Price' onInput={event => setPrice(Number(event.target.value))} />
                 </Col>
-                <Col lg={2} md={3} sm={3} xs={4}>
-                    <input className='border rounded m-1 text-center w-100' value={detail} placeholder='Description' onInput={event => setDetail(event.target.value)} />
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <input className='admin-input' value={detail} placeholder='Description' onInput={event => setDetail(event.target.value)} />
                 </Col>
-                <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
-                    <input className='border rounded m-1 text-center w-100' type='file' value={img} onChange={selectImage} />
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <input className='admin-input' type='file' value={img} onChange={selectImage} />
                 </Col>
-                <Col lg={2} md={3} sm={3} xs={4} className='text-center'>
-                    <button className='border rounded m-1 text-center' onClick={() => handleAdd()}>ADD</button>
+                <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
+                    <button className='admin-add-btn' onClick={() => handleAdd()}>ADD</button>
                 </Col>
-                <Col lg={12} md={12} sm={12} xs={12}><hr className='m-1 line'></hr></Col>
             </Row>
 
-            {products ?
-                <Row className='d-flex justify-content-evenly m-1'>
-                    {products.map((each, index) => (<Col lg={2} md={3} sm={6} xs={12} className='border rounded text-center px-0 pe-0 m-1' key={index}>
-                        <DisplayItems key={index} each={each} index={index} handleEditDelete={handleEditDelete} />
-                    </Col>
+            {products &&
+                <Row className='admin-products-row'>
+                    {products.map((each, index) => (
+                        <Col className='admin-product-col' key={index} lg={3} md={3} sm={5} xs={10}>
+                            <DisplayItems each={each} handleEditDelete={handleEditDelete} />
+                        </Col>
                     ))}
-                </Row >
-                : ''}
+                </Row>
+            }
         </Container >
     )
 }

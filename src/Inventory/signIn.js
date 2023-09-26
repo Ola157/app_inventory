@@ -16,13 +16,11 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
     let [lastName, setLastName] = useState('')
     let [title, setTitle] = useState('')
     let [mobNumber, setMobNum] = useState('')
-    let [boo, handleBoo] = useState(true)
+    let [isLogin, setIsLogin] = useState(true)
     let userLogged = useSelector(state => state.userLoggedIn)
     let modal = useSelector(state => state.modal)
     let navigate = useNavigate()
-    let style = {
-        color: 'blueviolet'
-    }
+
     useEffect(() => {
         const homePageReturn = () => {
             if (userLogged === true) {
@@ -32,12 +30,12 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
 
             if (userLogged === "Registered") {
                 handle_Modal()
-                handleBoo(true)
+                setIsLogin(true)
             }
         }
         homePageReturn();
 
-    }, [userLogged, modal])
+    }, [userLogged, modal, isLogin])
 
     const handleRegistration = (type) => {
         if (email && password) {
@@ -50,97 +48,91 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
         }
     }
 
-    return (<Container fluid className='signInpage'>
+    return (<Container fluid className='inventory'>
         <Navbar expand="lg" className='navbar'>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
-                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+            <Col lg={12} className='d-flex justify-content-start navbar-col'>
+                <button className='navbar-button' onClick={() => navigate('/')}>
+                    <h2>Express</h2>
                 </button>
             </Col>
         </Navbar>
 
-        < Row className='d-flex justify-content-center' >
-            <Col lg={4} md={4} sm={12} xs={12} className='my-2'>
-
-                {modal &&
-                    <Row >
-                        <Col className="d-flex justify-content-between align-items-baseline bg-white mx-2 me-2 py-3">
-                            <span><PiWarningOctagonFill style={{ color: 'red' }} /></span>
-                            <div style={style}>{modal}</div>
-                            <button className="border-0 bg-transparent" onClick={() => handle_Modal()} aria-label="Close">
-                                <MdCancel />
-                            </button>
+        <Row className='justify-content-center'>
+            <Col lg={4} className='form-col'>
+                {modal && (
+                    <Row className="modal-alert">
+                        <Col className="modal-content" lg={8} md={5} sm={6} xs={8}>
+                            <div>{modal}</div>
                         </Col>
                     </Row>
-                }
+                )}
 
-                <Row className='d-flex justify-content-start my-3'>
+                <Row className='justify-content-start header-row'>
+                    <Col className='description'>
+                        {isLogin ? 'Log In' : 'Register'}
+                    </Col>
+                </Row>
 
-                    <Col className='description'>{boo ? 'Log In' : 'Register'}</Col>
-                </Row >
-
-                <Row className='d-flex justify-content-center mb-5'>
-                    <Col className='mx-2 me-2 py-2 border inputContainer border-0 d-flex justify-content-center align-items-center'>
-
-                        <Col >
-                            {!boo && <><Col className='d-flex justify-content-between align-items-center m-1'>
-                                <Col lg={5} md={5} sm={12} xs={12}>
-                                    <label className='d-block my-1 label'>First Name</label>
-                                    <input className='w-100 name' onInput={(event) => setFirstName(event.target.value)} />
-                                </Col>
-                                <Col lg={5} md={5} sm={12} xs={12}>
-                                    <label className='d-block my-1 label'>Last Name</label>
-                                    <input className='w-100 name' onInput={(event) => setLastName(event.target.value)} />
-                                </Col>
-                            </Col>
-
-                                <Col className='d-flex justify-content-between align-items-center m-1'>
-                                    <Col lg={5} md={5} sm={12} xs={12}>
-                                        <label className='d-block my-1 label'>Title</label>
-                                        <select className='w-100 name' onInput={(event) => setTitle(event.target.value)} >
+                <Row className='justify-content-center inputs-row'>
+                    <Col className='form-inputs'>
+                        {!isLogin && (
+                            <>
+                                <Row className='d-flex justify-content-around align-items-center'>
+                                    <Col lg={5} md={5} sm={10} xs={10}>
+                                        <label className='d-block input-label'>First Name</label>
+                                        <input className='input-field h-100' onInput={event => setFirstName(event.target.value)} />
+                                    </Col>
+                                    <Col lg={5} md={5} sm={10} xs={10}>
+                                        <label className='d-block input-label'>Last Name</label>
+                                        <input className='input-field h-100' onInput={event => setLastName(event.target.value)} />
+                                    </Col>
+                                </Row>
+                                <Row className='d-flex justify-content-around align-items-center'>
+                                    <Col lg={5} md={5} sm={10} xs={10}>
+                                        <label className='d-block input-label'>Title</label>
+                                        <select className='input-field h-100' onInput={event => setTitle(event.target.value)}>
                                             <option value="">Select</option>
                                             <option value="mr">Mr</option>
-                                            <option value="mrs">Mrs</option>
-                                            <option value="mr">Mr</option>
-                                            <option value="miss">Miss</option>
-                                            <option value="ms">Ms</option>
-                                            <option value="capt">Capt</option>
-                                            <option value="sir">Sir</option>
                                         </select>
                                     </Col>
-                                    <Col lg={5} md={5} sm={12} xs={12}>
-                                        <label className='d-block my-1 label'>Mobile Number</label>
-                                        <input className='w-100 name' onInput={(event) => setMobNum(event.target.value)} />
+                                    <Col lg={5} md={5} sm={10} xs={10}>
+                                        <label className='d-block input-label'>Mobile Number</label>
+                                        <input className='input-field h-100' onInput={event => setMobNum(event.target.value)} />
                                     </Col>
-                                </Col></>}
-                            <Col className='text-center m-1'>
-                                <div className='text-start my-1 label'><label htmlFor='email'>Email address</label></div>
-                                <div> <input id='email' className='input text-center w-100' value={email} onInput={(event) => setEmail(event.target.value)} type='email' /></div>
+                                </Row>
+                            </>
+                        )}
+
+                        <Row className='d-flex justify-content-center'>
+                            <Col lg={10} md={10} sm={10} xs={10}>
+                                <label htmlFor='email' className='input-label'>Email</label>
+                                <input id='email' className='input-field' value={email} onInput={event => setEmail(event.target.value)} type='email' />
                             </Col>
-
-                            <Col className='text-center m-1'>
-                                <div className='text-start my-1 label'><label htmlFor='password'>Password</label></div>
-                                <input className='input text-center w-100' id='password' value={password} onInput={(event) => setPassword(event.target.value)} type='password' />
+                            <Col lg={10} md={10} sm={10} xs={10}>
+                                <label htmlFor='password' className='input-label'>Password</label>
+                                <input className='input-field' id='password' value={password} onInput={event => setPassword(event.target.value)} type='password' />
                             </Col>
-
-                            <Col className='text-center m-1 my-2'> <button className='border-0 text-center text-white loginButton' onClick={boo ? () => handleRegistration('login') : () => handleRegistration('signup')}>{boo ? 'Log In' : 'Register'}</button></Col>
-
-                        </Col>
+                            <Col lg={10} md={10} sm={10} xs={10} className='text-center'>
+                                <button className='submit-button' onClick={() => handleRegistration(isLogin ? 'login' : 'signup')}>
+                                    {isLogin ? 'Log In' : 'Register'}
+                                </button>
+                            </Col>
+                        </Row>
                     </Col>
-                </Row >
+                </Row>
 
-                {boo ?
-                    <Row className='d-flex justify-content-center my-3'>
+                {isLogin && (
+                    <Row className='signup-prompt'>
                         <Col>
-                            <Col className='w-100 text-center my-2'>New To Super Groceries?</Col>
-                            <Col className='text-center w-100 my-2'><button className='text-center py-2 regButton' onClick={() => handleBoo(false)}>Register Here</button></Col>
+                            <Col className='prompt-text'>New To Super Groceries?</Col>
+                            <Col className='action-text'>
+                                <button className='signup-button' onClick={() => setIsLogin(false)}>Register Here</button>
+                            </Col>
                         </Col>
                     </Row>
-                    : ''}
-
-            </Col >
+                )}
+            </Col>
         </Row >
-
     </Container >)
 }
 export default RegistrationPage

@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import myReducer from './reducer'
 import thunk from 'redux-thunk'

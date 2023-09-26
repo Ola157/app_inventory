@@ -5,6 +5,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { CiCircleAlert } from "react-icons/ci";
+import { MdOutlineCancel } from "react-icons/md";
 import axios from 'axios';
 
 const UserPage = ({
@@ -108,118 +109,94 @@ const UserPage = ({
         }
     }
 
-    return (<Container fluid className='display pb-5'>
-        <Row className='navbar d-flex justify-content-between align-items-center m-0'>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end align-items-center mb-2 mx-0 me-0 w-100'>
-                {userLogged && (
-                    <button className='border-0 bg-transparent d-flex justify-content-end align-items-center mx-1' onClick={() => navigate("/useraccount")}>
-                        <BiUserCircle style={{ color: 'black' }} />
-                        <span style={{ fontWeight: 'bold' }} className='text-black navaccount m-1'>My account</span>
+    return (< Container fluid className='inventory' >
+
+        <Row className='inventory__navbar'>
+            <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-actions'>
+                <div className='d-flex'>
+                    {userLogged && (
+                        <button className='inventory__navbar-btn' onClick={() => navigate("/useraccount")}>
+                            <BiUserCircle className='inventory__navbar-icon' />
+                            My account
+                        </button>
+                    )}
+
+                    <button
+                        className='inventory__navbar-btn'
+                        onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
+                    >
+                        {userLogged ? 'Logout' : 'Login/register'}
                     </button>
-                )}
+                </div>
 
-                <button
-                    className='border-0 bg-transparent navaccount text-black d-flex justify-content-center align-items-center me-2 mx-1'
-                    onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
-                    style={{ fontWeight: 'bold' }}
-                >
-                    {userLogged ? 'Logout' : 'Login/register'}
+                <button className='inventory__navbar-btn inventory__navbar-cart' onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
+                    {userLogged && cart.length >= 1 && <span className='inventory__navbar-cart-count'>{cart.length}</span>}
+                    <AiOutlineShoppingCart className='inventory__navbar-icon' />
+                    {userLogged ? `$${total}` : `$0.00`}
                 </button>
-
-
-                <button className='border-0 text-black bg-transparent py-0 d-flex justify-content-end align-items-center mx-1'
-                    style={{ fontWeight: 'bold' }}
-                    onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
-                    {userLogged && cart.length >= 1 && <sup>{cart.length}</sup>}
-
-                    <AiOutlineShoppingCart style={{ fontSize: '1em' }} className='me-1' />
-                    <span style={{ fontSize: '.9em' }}>  {userLogged ? <>${total}</> : <>$0.00</>}</span>
-                </button>
-
             </Col>
 
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                <h2 style={{ color: 'blueviolet' }}>Express</h2>
+            <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
+                Express
             </Col>
 
-
-
-            <Col lg={12} md={12} sm={12} xs={12}>
-                <input className='me-0 w-100 p-1 inputSearch' placeholder='Search products' style={{ width: '90%' }} onInput={(event) => handleSearch(event.target.value)} />
+            <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-search'>
+                <input className='inventory__search-input' placeholder='Search products' onInput={(event) => handleSearch(event.target.value)} />
             </Col>
         </Row>
 
-        {modal &&
-            <Row className='d-flex justify-content-center'>
-                <Col className='border py-1 d-flex justify-content-between align-items-center px-1 pe-1 modalAlert' lg={3} md={3} sm={3} xs={4}>
-                    <span className='px-1 py-1'><CiCircleAlert style={{ color: 'red' }} /></span>
-                    <span className='px-1 pe-1 py-1 text-black' >{modal}</span>
-                    <button style={{ color: 'red' }} className='border-0' onClick={() => handleToggle(false)}>x</button>
+        {
+            modal &&
+            <Row className='inventory__alert my-2'>
+                <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
+                    <>
+                        <CiCircleAlert />
+                        {modal}
+                    </>
+                    <button className='inventory__alert-close' onClick={() => handleToggle(false)}> <MdOutlineCancel /> </button>
                 </Col>
             </Row>
         }
 
-        <Row className='d-flex justify-content-evenly my-3 p-2'>
+        <Row className='inventory__products'>
             {products && !searched &&
-                products.map((item, index) =>
-                (<Col lg={2} md={3} sm={3} xs={12} className='m-1 text-center pe-0 px-0 border userProducts' key={index}>
-                    {/* <img className='img' src={`https://inventory-be-seven.vercel.app/${item.image}`} /> */}
-
-                    {/* <hr className='my-0 w-100'></hr> */}
-                    <span className='itemName my-2'>{item.item}</span>
-                    <hr className='my-0 w-100 itemLine my-2'></hr>
-
-                    {item.addItem ?
-                        <button className='border-0 cartBtn border rounded'
-                            style={{ width: "3em", height: '2em' }}
-                            onClick={() => handleQty('addItem', item._id)}>Add
-                        </button>
-                        :
-                        <div className='d-flex justify-content-center p-1'>
-                            <button className='border-0 text-center cartBtn'
-                                onClick={() => handleQty('subtract', item._id)}>-</button>
-                            <input className='border-0 text-center' style={{ width: "2em", height: '2em' }}
-                                value={item.customerQuantity}
-                                readOnly
-                            />
-                            <button className='border-0 text-center cartBtn'
-                                onClick={() => handleQty('add', item._id)}>+</button>
+                products.map((item, index) => (
+                    <Col lg={2} md={3} sm={3} xs={5} className='inventory__product' key={index}>
+                        <span className='inventory__product-name'>{item.item}</span>
+                        <div className='inventory__product-actions'>
+                            {item.addItem ?
+                                <button className='inventory__product-btn' onClick={() => handleQty('addItem', item._id)}>Add</button>
+                                :
+                                <div className='inventory__product-qty'>
+                                    <button className='inventory__product-btn m-1' onClick={() => handleQty('subtract', item._id)}>-</button>
+                                    <input className='inventory__product-input' value={item.customerQuantity} readOnly />
+                                    <button className='inventory__product-btn m-1' onClick={() => handleQty('add', item._id)}>+</button>
+                                </div>
+                            }
                         </div>
-                    }
-                    < hr className='my-0 w-100 itemLine my-2' ></hr>
-                    <button style={{ height: '2em' }} className='border-0 py-0 my-2 bg-transparent viewmore' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate('/signIn')}>view more</button>
-                </Col >))
+                        <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate('/signIn')}>view more</button>
+                    </Col>
+                ))
             }
 
             {searched &&
-                <Col lg={2} md={3} sm={3} xs={12} className='m-1 text-center pe-0 px-0 border userProducts'>
-                    {/* <img className='img' src={`https://inventory-be-seven.vercel.app/${item.image}`} /> */}
-
-                    {/* <hr className='my-0 w-100'></hr> */}
-                    <span className='itemName my-2'>{searched.item}</span>
-                    <hr className='my-0 w-100 itemLine my-2'></hr>
-
-                    {searched.addItem ?
-                        <button className='border-0 btnDis border rounded text-center'
-                            style={{ width: "3em", height: '2em' }}
-                            onClick={() => handleQty('addItem', searched._id)}>Add
-                        </button>
-                        :
-                        <div className='d-flex justify-content-center p-1'>
-                            <button className='border-0 text-center cartBtn'
-                                onClick={() => handleQty('subtract', searched._id)}>-</button>
-                            <input className='border-0 text-center' style={{ width: "2em", height: '2em' }}
-                                value={searched.customerQuantity}
-                                readOnly
-                            />
-                            <button className='border-0 text-center cartBtn'
-                                onClick={() => handleQty('add', searched._id)}>+</button>
-                        </div>
-                    }
-                    < hr className='my-0 w-100 itemLine my-2' ></hr>
-                    <button className='border-0 py-0 my-2 bg-transparent viewmore' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate('/signIn')}>view more</button>
-                </Col >}
-        </Row >
+                <Col lg={2} md={3} sm={3} xs={5} className='inventory__product'>
+                    <span className='inventory__product-name'>{searched.item}</span>
+                    <div className='inventory__product-actions'>
+                        {searched.addItem ?
+                            <button className='inventory__product-btn' onClick={() => handleQty('addItem', searched._id)}>Add</button>
+                            :
+                            <div className='inventory__product-qty'>
+                                <button className='inventory__product-btn' onClick={() => handleQty('subtract', searched._id)}>-</button>
+                                <input className='inventory__product-input' value={searched.customerQuantity} readOnly />
+                                <button className='inventory__product-btn' onClick={() => handleQty('add', searched._id)}>+</button>
+                            </div>
+                        }
+                    </div>
+                    <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate('/signIn')}>view more</button>
+                </Col>
+            }
+        </Row>
 
     </Container >)
 }

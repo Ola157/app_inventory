@@ -7,11 +7,6 @@ import { PiArrowSquareLeftFill } from "react-icons/pi";
 
 const MyPreference = ({ handleUserLogged }) => {
     const navigate = useNavigate('')
-    let style = {
-        save: { fontWeight: '500', backgroundColor: 'rgb(156, 104, 205)', color: 'white', width: '70%', borderRadius: '2px', border: 'none' },
-        cancel: { color: 'white', backgroundColor: 'gray', width: '70%', border: 'none', fontWeight: 'bold', borderRadius: '2px' },
-    }
-
     let userLogged = useSelector(state => state.userLoggedIn)
 
     useEffect(() => {
@@ -28,50 +23,43 @@ const MyPreference = ({ handleUserLogged }) => {
         navigate('/')
     }
 
-    return (<Container fluid className='display pb-5'>
+    return (<Container fluid className='inventory'>
         <Row className='d-flex justify-content-center align-items-center m-0 navbar '>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end text-white px-4'>
-
-                {userLogged && (
-                    <button className='border-0 bg-transparent d-flex justify-content-end align-items-center mx-1' onClick={() => navigate("/useraccount")}>
-                        <BiUserCircle style={{ color: 'black' }} />
-                        <span style={{ fontWeight: 'bold' }} className='text-black navaccount m-1'>My account</span>
-                    </button>
-                )}
-
+            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end text-white mx-0 me-0 w-100'>
                 <button
-                    className='border-0 bg-transparent navaccount text-black d-flex justify-content-center align-items-center me-2 mx-1'
+                    className='inventory__navbar-btn'
                     onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
-                    style={{ fontWeight: 'bold' }}
                 >
                     {userLogged ? 'Logout' : 'Login/register'}
                 </button>
             </Col>
 
-
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-start text-white px-4'>
-                <button className='border-0 bg-transparent' onClick={() => navigate('/')}>
-                    <h2 style={{ color: 'blueviolet' }}>Express</h2>
+            <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
+                <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                    Express
                 </button>
             </Col>
         </Row>
 
         <Row className='d-flex justify-content-start align-items-center'>
-            <Col className='p-0 mx-3 my-1' lg={2} md={2} sm={2} xs={2}>
-                <button onClick={() => navigate('/useraccount')} className='p-0 border-0 my-1 mx-0 me-0 bg-transparent' style={{ fontSize: '1.3em' }}><PiArrowSquareLeftFill className='my-0 mx-1 me-0 p-0' /><span className='backBtn'>My Account</span></button>
+            <Col className='back-col'>
+                <button onClick={() => navigate('/useraccount')} className='back-button'>
+                    <PiArrowSquareLeftFill className='back-icon' />
+                    <span className='back-text'>My Account</span>
+                </button>
             </Col>
         </Row>
 
         <Row className='d-flex justify-content-center'>
             <Col lg={6} md={6} sm={12} xs={12} className='mb-2'>
-                <h4 className='text-center personal_Address'>Groceries preferences</h4>
+                <h4 className='header-title'>Groceries preferences</h4>
                 <p className='text-center' style={{ fontSize: '.9em' }}> We want to know how you like things done. So here's where you can set your product substitution and marketing communication preferences.</p>
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center bg-white'>
-            <Col lg={6} md={6} sm={12} xs={12} className='my-4'>
-                <h4 className='text-center personal_Address'>Product substitution</h4>
+        <Row className='user-action-section'>
+            <Col lg={6} className='action-box'>
+                <h4 className='header-title'>Product substitution</h4>
                 <p className='text-start' style={{ fontSize: '.9em' }}>  If an item in your online order isn't available, we can substitute it with another similar product. And if you're not happy with the substitute item, you can just return it on the spot to your delivery driver for a full refund.
 
                     Please note that any changes you make to your preference will automatically update any pending orders.
@@ -84,12 +72,12 @@ const MyPreference = ({ handleUserLogged }) => {
         </Row>
         <Row className='d-flex justify-content-center'>
             <Col lg={4} md={6} sm={6} xs={8}>
-                <div className='my-3 text-center'>
-                    <button className='py-1' style={style.save} onClick={() => navigate('/useraccount')}>Save Preference</button>
+                <div className='centered-button-section'>
+                    <button className='action-button save-button' onClick={() => navigate('/useraccount')}>Save Preference</button>
                 </div>
 
-                <div className='my-3 text-center'>
-                    <button className='py-1' style={style.cancel} onClick={() => navigate('/useraccount')}>Cancel</button>
+                <div className='centered-button-section'>
+                    <button className='action-button cancel-button' onClick={() => navigate('/useraccount')}>Cancel</button>
                 </div>
             </Col >
         </Row >
