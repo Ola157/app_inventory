@@ -3,13 +3,9 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { PiWarningOctagonFill } from "react-icons/pi";
-import { MdCancel } from "react-icons/md";
+import { useNavigate, useParams } from 'react-router-dom'
 
-
-
-const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
+const RegistrationPage = ({ handleLogin_SignUp, handle_Modal, handleCart, handleItemModal }) => {
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
     let [firstName, setFirstName] = useState('')
@@ -20,12 +16,28 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
     let userLogged = useSelector(state => state.userLoggedIn)
     let modal = useSelector(state => state.modal)
     let navigate = useNavigate()
+    const { page, itemId } = useParams()
+    let products = useSelector(state => state.allGoods)
 
     useEffect(() => {
         const homePageReturn = () => {
             if (userLogged === true) {
                 handle_Modal()
-                navigate('/')
+                if (page === 'viewmore') {
+                    navigate(`/viewmore/${itemId}`)
+                }
+                else {
+                    let checkItemQty = products.find(item => item._id === itemId)
+                    let { quantity } = checkItemQty
+                    if (quantity <= 1) {
+                        handleItemModal('Out of Stock, Item to be replenished soon')
+                        return navigate('/')
+                    }
+                    else {
+                        handleCart(page, itemId)
+                        return navigate('/')
+                    }
+                }
             }
 
             if (userLogged === "Registered") {
@@ -133,6 +145,17 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal }) => {
                 )}
             </Col>
         </Row >
+        <footer className="inventory__footer">
+            <Container>
+                <Row>
+                    <Col lg={12} className='text-center'>
+                        <p className="inventory__footer-text">
+                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                        </p>
+                    </Col>
+                </Row>
+            </Container>
+        </footer>
     </Container >)
 }
 export default RegistrationPage

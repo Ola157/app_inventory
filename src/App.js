@@ -21,6 +21,11 @@ const App = () => {
   let customerQuantity = 0
   let addItem = true;
   let itemEdit = true;
+  let [modalInfo, setModalInfo] = useState('');
+
+  const handleItemModal = (newModal) => {
+    setModalInfo(newModal)
+  }
 
   const handleAddItem = (goodsDetails) => {
     dispatch(handleAddGoods(goodsDetails, customerQuantity, addItem, itemEdit))
@@ -85,11 +90,11 @@ const App = () => {
     <>
 
       <Routes>
-        <Route path='/*' element={<UserPage handleUserLogged={handleUserLogged} handle_Modal={handle_Modal} handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
+        <Route path='/*' element={<UserPage handleItemModal={handleItemModal} modalInfo={modalInfo} handleUserLogged={handleUserLogged} handle_Modal={handle_Modal} handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />
         <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} handle_Modal={handle_Modal} handle_Fetch_Cart={handle_Fetch_Cart} />} />
-        <Route path='/signIn' element={<RegistrationPage handleLogin_SignUp={handleLogin_SignUp} handle_Modal={handle_Modal} />} />
+        <Route path='/signIn/:page/:itemId' element={<RegistrationPage handleItemModal={handleItemModal} modalInfo={modalInfo} handleCart={handleCart} handleLogin_SignUp={handleLogin_SignUp} handle_Modal={handle_Modal} />} />
         <Route path='/useraccount' element={<UserAccount handleMyDetails={handleMyDetails} handleUserLogged={handleUserLogged} handle_Fetch_Cart={handle_Fetch_Cart} />} />
         <Route path='/allorders' element={<AllOrders handleUserLogged={handleUserLogged} handleDisplay={handleDisplay} handleFetchPastOrder={handleFetchPastOrder} />} />
         <Route path='mydetails' element={<MyDetails handleUserLogged={handleUserLogged} handle_Changes={handle_Changes} handleMyDetails={handleMyDetails} />} />

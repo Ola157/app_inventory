@@ -118,6 +118,17 @@ const Trolley = ({ handleCart, handleCheckOut, handle_Fetch_Cart, handle_Modal }
                 </Col>
             </Row>
         )}
+        <footer className="inventory__footer">
+            <Container>
+                <Row>
+                    <Col lg={12} className='text-center'>
+                        <p className="inventory__footer-text">
+                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                        </p>
+                    </Col>
+                </Row>
+            </Container>
+        </footer>
     </Container>)
 }
 export default Trolley;

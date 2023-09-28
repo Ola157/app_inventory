@@ -100,6 +100,17 @@ const AllOrders = ({ handleDisplay, handleFetchPastOrder, handleUserLogged }) =>
                 </Col>
             }
         </Row>
+        <footer className="inventory__footer">
+            <Container>
+                <Row>
+                    <Col lg={12} className='text-center'>
+                        <p className="inventory__footer-text">
+                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                        </p>
+                    </Col>
+                </Row>
+            </Container>
+        </footer>
     </Container >)
 }
 export default AllOrders

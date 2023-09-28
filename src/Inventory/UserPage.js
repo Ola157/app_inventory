@@ -13,16 +13,18 @@ const UserPage = ({
     handleGoods,
     handle_Fetch_Cart,
     handleUserLogged,
-    handle_Modal
+    handle_Modal,
+    handleItemModal,
+    modalInfo
 }) => {
     const navigate = useNavigate()
     let products = useSelector(state => state.allGoods)
     let userLogged = useSelector(state => state.userLoggedIn)
     let cart = useSelector(state => state.cart)
-    let [modal, handleToggle] = useState("")
     let [searched, setSearch] = useState('')
     let [total, setTotal] = useState('')
     let [searchId, setItemId] = useState('')
+
 
     useEffect(() => {
         let checkActivity = products ? products.find((item) => item.customerQuantity > 0) : ''
@@ -43,7 +45,7 @@ const UserPage = ({
     }, [userLogged, products, cart]);
 
     const handleSearch = (itemId) => {
-        handleToggle(false)
+        handleItemModal(false)
         setTimeout(async () => {
             setItemId(itemId)
             try {
@@ -51,10 +53,10 @@ const UserPage = ({
                 let { findItem } = response.data;
 
                 if (findItem) {
-                    handleToggle(false)
+                    handleItemModal(false)
                     return setSearch(findItem);
                 } else {
-                    handleToggle(response.data);
+                    handleItemModal(response.data);
                 }
             }
             catch (err) {
@@ -73,7 +75,7 @@ const UserPage = ({
     }
 
     const handleQty = (type, id) => {
-        handleToggle(false)
+        handleItemModal(false)
         let checkQtyAvailable = products.find(item => item._id === id)
         let { customerQuantity, quantity } = checkQtyAvailable
         if (userLogged) {
@@ -83,7 +85,7 @@ const UserPage = ({
                         return handleCart(type, id)
                     }
                     else (
-                        handleToggle(`Limited Stock, Only ${quantity} available`)
+                        handleItemModal(`Limited Stock, Only ${quantity} available`)
                     )
                     break;
                 case 'subtract':
@@ -96,7 +98,7 @@ const UserPage = ({
                     break;
                 case 'addItem':
                     if (quantity <= 1) {
-                        return handleToggle('Out of Stock, Item to be replenished soon')
+                        return handleItemModal('Out of Stock, Item to be replenished soon')
                     }
                     else {
                         handleCart(type, id)
@@ -105,7 +107,7 @@ const UserPage = ({
             }
         }
         else {
-            navigate('/signIn');
+            navigate(`/signIn/${type}/${id}`);
         }
     }
 
@@ -146,14 +148,14 @@ const UserPage = ({
         </Row>
 
         {
-            modal &&
+            modalInfo &&
             <Row className='inventory__alert my-2'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
                     <>
                         <CiCircleAlert />
-                        {modal}
+                        {modalInfo}
                     </>
-                    <button className='inventory__alert-close' onClick={() => handleToggle(false)}> <MdOutlineCancel /> </button>
+                    <button className='inventory__alert-close' onClick={() => handleItemModal(false)}> <MdOutlineCancel /> </button>
                 </Col>
             </Row>
         }
@@ -174,7 +176,7 @@ const UserPage = ({
                                 </div>
                             }
                         </div>
-                        <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate('/signIn')}>view more</button>
+                        <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate(`/signIn/${'viewmore'}/${item._id}`)}>view more</button>
                     </Col>
                 ))
             }
@@ -193,10 +195,21 @@ const UserPage = ({
                             </div>
                         }
                     </div>
-                    <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate('/signIn')}>view more</button>
+                    <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate(`/signIn/${'viewmore'}/${searched._id}`)}>view more</button>
                 </Col>
             }
         </Row>
+        <footer className="inventory__footer">
+            <Container>
+                <Row>
+                    <Col lg={12} className='text-center'>
+                        <p className="inventory__footer-text">
+                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                        </p>
+                    </Col>
+                </Row>
+            </Container>
+        </footer>
 
     </Container >)
 }
