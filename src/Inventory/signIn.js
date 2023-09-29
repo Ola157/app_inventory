@@ -24,9 +24,12 @@ const RegistrationPage = ({ handleLogin_SignUp, handle_Modal, handleCart, handle
             if (userLogged === true) {
                 handle_Modal()
                 if (page === 'viewmore') {
-                    navigate(`/viewmore/${itemId}`)
+                    return navigate(`/viewmore/${itemId}`)
                 }
-                else {
+                if (page === 'home') {
+                    return navigate(`/`)
+                }
+                if (page === 'addItem') {
                     let checkItemQty = products.find(item => item._id === itemId)
                     let { quantity } = checkItemQty
                     if (quantity <= 1) {
