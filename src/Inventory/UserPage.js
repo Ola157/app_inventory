@@ -125,7 +125,7 @@ const UserPage = ({
 
                     <button
                         className='inventory__navbar-btn'
-                        onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
+                        onClick={userLogged ? () => handleLogout() : () => navigate(`/signIn/${'home'}/${'home'}`)}
                     >
                         {userLogged ? 'Logout' : 'Login/register'}
                     </button>
