@@ -49,7 +49,7 @@ const Trolley = ({
         {cart.length > 0 ? (
             <>
                 <Row className='trolley-summary-row'>
-                    <Col lg={7} md={6} sm={10} xs={10} className='text-center'>
+                    <Col sm={12} xs={12} lg={6} md={6} className='table-responsive'>
                         <Table className='trolley-table'>
 
                             <thead>
@@ -61,12 +61,15 @@ const Trolley = ({
                                 {cart.map((item, index) =>
                                     <tr key={index} className='d-flex justify-content-evenly align-items-center'>
 
-                                        <td className='d-flex justify-content-center border-0'>
+                                        <td className='d-flex justify-content-center border-0 d-block d-md-none'>
+                                            <img style={{ width: '1.6em', height: '2em' }} src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${item.image}`} />
+                                        </td>
+                                        <td className='d-flex justify-content-center border-0 d-none d-md-block'>
                                             <img style={{ width: '5em', height: '5em' }} src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${item.image}`} />
                                         </td>
                                         <td className='text-center border-0'>{item.item}</td>
                                         <td className='d-flex justify-content-center align-items-center border-0'>
-                                            <input className='border text-center' style={{ width: "4em", height: '2em' }}
+                                            <input className='border text-center' style={{ width: "3em", height: '2em' }}
                                                 value={item.userQuantity}
                                                 readOnly />
                                         </td>
@@ -75,9 +78,11 @@ const Trolley = ({
                                     </tr>
                                 )}
                             </tbody>
-                        </Table> <button className='btn-empty' onClick={() => cartHandler('clearcart')}>Clear Cart</button>
+                        </Table>
+                        <button className='btn-empty' onClick={() => cartHandler('clearcart')}>Clear Cart</button>
                     </Col>
-                    <Col lg={4} md={6} sm={12} xs={12}>
+
+                    <Col sm={12} xs={12} lg={4} md={4} className='table-responsive'>
                         <Table bordered className='order-summary-table'>
                             <thead>
                                 <tr>
@@ -97,6 +102,7 @@ const Trolley = ({
                             </tbody>
                         </Table>
                     </Col>
+
                 </Row>
             </>
         ) : (
