@@ -1,42 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, usehandleNavigation } from 'react-router-dom';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 import axios from 'axios';
 
-const AdminPage = ({ handleAddItem, handleEditDelete }) => {
+const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => {
     let [item, setItem] = useState('');
     let [quantity, setQty] = useState('');
     let [price, setPrice] = useState('');
     let [image, setImage] = useState('');
-    let [detail, setDetail] = useState('');
-    let [img, setImg] = useState('')
+    let [description, setDescription] = useState('');
     let [products, setProducts] = useState('')
-    const navigate = useNavigate('')
+    let [img, setImg] = useState('')
 
     useEffect(() => {
-        const handleFetch = async () => {
-            try {
-                let response = await axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods', null)
-                let { allGoods } = response.data
-                setProducts(allGoods)
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
         handleFetch()
     })
 
-    const selectImage = e => {
-        setImage(e.target.files[0])
-        setImg('')
+
+    const handleFetch = async () => {
+        try {
+            let response = await axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods')
+            let { allGoods } = response.data
+            setProducts(allGoods)
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
-    const handleAdd = async () => {
-        handleAddItem({ item, quantity, image, price, detail })
-        setDetail('')
+
+    const selectImage = e => {
+        let image = e.target.files[0]
+        setImage(image)
+    }
+
+    const handleAdd = () => {
+        handleAddItem({ item, quantity, image, price, description })
+        setDescription('')
         setItem('')
         setPrice('')
         setImage('')
@@ -48,7 +50,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
 
             <Navbar expand="lg" className='navbar'>
                 <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
-                    <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                    <button className='trolley-title-btn' onClick={() => handleNavigation('/')}>
                         Express
                     </button>
                 </Col>
@@ -56,7 +58,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
 
             <Row className='d-flex justify-content-start align-items-center'>
                 <Col className='back-col'>
-                    <button onClick={() => navigate('/useraccount')} className='back-button'>
+                    <button onClick={() => handleNavigation('/')} className='back-button'>
                         <PiArrowSquareLeftFill className='back-icon' />
                         <span className='back-text'>Homepage</span>
                     </button>
@@ -75,7 +77,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
                     <input className='admin-input' value={price} placeholder='Price' onInput={event => setPrice(Number(event.target.value))} />
                 </Col>
                 <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
-                    <input className='admin-input' value={detail} placeholder='Description' onInput={event => setDetail(event.target.value)} />
+                    <input className='admin-input' value={description} placeholder='Description' onInput={event => setDescription(event.target.value)} />
                 </Col>
                 <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
                     <input className='admin-input' type='file' value={img} onChange={selectImage} />
@@ -89,7 +91,7 @@ const AdminPage = ({ handleAddItem, handleEditDelete }) => {
                 <Row className='admin-products-row'>
                     {products.map((each, index) => (
                         <Col className='admin-product-col' key={index} lg={3} md={3} sm={5} xs={10}>
-                            <DisplayItems each={each} handleEditDelete={handleEditDelete} />
+                            <DisplayItems each={each} handleProductAmends={handleProductAmends} handleFetch={handleFetch} />
                         </Col>
                     ))}
                 </Row>

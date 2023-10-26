@@ -1,77 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { usehandleNavigation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 
-const MyDetails = ({ handle_Changes, handleMyDetails, handleUserLogged }) => {
+const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }) => {
     let [email, setEmail] = useState('')
-    let [conEmail, setConEmail] = useState('')
-    let [epassword, setEpassword] = useState('');
-    let [newPassword, setNpassword] = useState('')
-    let [conPassword, setConpassword] = useState('')
-    let [alterNumber, setAltNumber] = useState('')
+    let [confirmEmail, setConfirmEmail] = useState('')
+    let [existingPassword, setExistingPassword] = useState('');
+    let [newPassword, setNewpassword] = useState('')
+    let [confirmPassword, setConfirmPassword] = useState('')
+    let [alternativeNumber, setAlternativeNumber] = useState('')
     let [inputErrStyle, setIES] = useState({})
-    const navigate = useNavigate()
     let myDetails = useSelector(state => state.personalDetails)
     let [title, setTitle] = useState(myDetails.title)
     let [firstName, setFirstName] = useState(myDetails.firstName)
     let [lastName, setLastName] = useState(myDetails.lastName)
-    let [mobNumber, SetmobNumber] = useState(`+44 ${myDetails.mobNumber} `)
-    let style = {
-        errorStyle: { border: '2px solid red' },
-        save: { fontWeight: '500', backgroundColor: 'rgb(156, 104, 205)', color: 'white', width: '70%', borderRadius: '2px', border: 'none' },
-        cancel: { color: 'white', backgroundColor: 'gray', width: '70%', border: 'none', fontWeight: 'bold', borderRadius: '2px' },
-        address: { fontWeight: '500', backgroundColor: 'rgb(156, 104, 205)', color: 'white', borderRadius: '2px', border: 'none' }
-    }
-
-    let userLogged = useSelector(state => state.userLoggedIn)
+    let [mobileNumber, SetMobileNumber] = useState(`+44 ${myDetails.mobileNumber} `)
 
     useEffect(() => {
-        if (!myDetails) {
-            handleMyDetails();
-        }
-
-        if (!userLogged) {
-            navigate('/signup')
-        }
-    }, [userLogged, myDetails]);
+        handlePersonalDetails();
+    }, []);
 
     const handleChanges = () => {
-        if (epassword && email === conEmail && newPassword === conPassword && alterNumber) {
-            handle_Changes({ any: 'details', title, firstName, lastName, email, epassword, newPassword, mobNumber, alterNumber })
-            setAltNumber('')
-            setConpassword('')
-            setConEmail('')
-            setNpassword('')
-            setEpassword('')
+        if (existingPassword && email === confirmEmail && newPassword === confirmPassword) {
+            handleUpdateUser({ title, firstName, lastName, email, existingPassword, newPassword, mobileNumber, alternativeNumber })
+            setAlternativeNumber('')
+            setConfirmPassword('')
+            setConfirmEmail('')
+            setNewpassword('')
+            setExistingPassword('')
             setEmail('')
         }
-        else {
-            setIES({ ...inputErrStyle, errorStyle: style.errorStyle })
-            setTimeout(() => { setIES({}) }, 2000)
-        }
-    }
-
-    const handleLogout = () => {
-        localStorage.removeItem('myAccessToken')
-        handleUserLogged()
-        navigate('/')
     }
 
     return (<Container fluid className='inventory'>
         <Row className='d-flex justify-content-center align-items-center m-0 navbar '>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end text-white mx-0 me-0 w-100'>
-                <button
-                    className='inventory__navbar-btn'
-                    onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
-                >
-                    {userLogged ? 'Logout' : 'Login/register'}
-                </button>
-            </Col>
 
             <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
-                <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                <button className='trolley-title-btn' onClick={() => handleNavigation('/')}>
                     Express
                 </button>
             </Col>
@@ -79,7 +46,7 @@ const MyDetails = ({ handle_Changes, handleMyDetails, handleUserLogged }) => {
 
         <Row className='d-flex justify-content-start align-items-center'>
             <Col className='back-col'>
-                <button onClick={() => navigate('/useraccount')} className='back-button'>
+                <button onClick={() => handleNavigation('/useraccount')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
                     <span className='back-text'>My Account</span>
                 </button>
@@ -128,37 +95,37 @@ const MyDetails = ({ handle_Changes, handleMyDetails, handleUserLogged }) => {
 
                     <div className='input-section'>
                         <label className='input-label' htmlFor='email'>Email Address</label>
-                        <input style={inputErrStyle.errorStyle} type='email' onInput={(event) => setEmail(event.target.value)} id='email' className='w-100 personalInput' />
+                        <input value={email} type='email' onInput={(event) => setEmail(event.target.value)} id='email' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
-                        <label className='input-label' htmlFor='conemail'>Confrim Email Address</label>
-                        <input style={inputErrStyle.errorStyle} type='email' onInput={(event) => setConEmail(event.target.value)} id='conemail' className='w-100 personalInput' />
+                        <label className='input-label' htmlFor='confirmEmail'>Confrim Email Address</label>
+                        <input type='email' value={confirmEmail} onInput={(event) => setConfirmEmail(event.target.value)} id='confirmEmail' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
-                        <label className='input-label' htmlFor='epassword'>Existing password <span style={{ fontWeight: 'lighter' }}>(required for changes)</span></label>
-                        <input style={inputErrStyle.errorStyle} type='password' onInput={(event) => setEpassword(event.target.value)} id='epassword' className='w-100 personalInput' />
+                        <label className='input-label' htmlFor='existingPassword'>Existing password <span style={{ fontWeight: 'lighter' }}>(required for changes)</span></label>
+                        <input type='password' value={existingPassword} onInput={(event) => setExistingPassword(event.target.value)} id='existingPassword' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
                         <label className='input-label' htmlFor='npassword'>New Password</label>
-                        <input style={inputErrStyle.errorStyle} type='password' onInput={(event) => setNpassword(event.target.value)} id='npassword' className='w-100 personalInput' />
+                        <input type='password' value={newPassword} onInput={(event) => setNewpassword(event.target.value)} id='npassword' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
-                        <label className='input-label' htmlFor='conpassword'>Confrim New Password</label>
-                        <input style={inputErrStyle.errorStyle} type='password' onInput={(event) => setConpassword(event.target.value)} id='conpassword' className='w-100 personalInput' />
+                        <label className='input-label' htmlFor='confirmPassword'>Confrim New Password</label>
+                        <input type='password' value={confirmPassword} onInput={(event) => setConfirmPassword(event.target.value)} id='confirmPassword' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
-                        <label className='input-label' htmlFor='mobNumber'>Mobile Number</label>
-                        <input style={inputErrStyle.errorStyle} value={mobNumber} onInput={(event) => SetmobNumber(event.target.value)} id='mobNumber' className='w-100 personalInput' />
+                        <label className='input-label' htmlFor='mobileNumber'>Mobile Number</label>
+                        <input value={mobileNumber} onInput={(event) => SetMobileNumber(event.target.value)} id='mobileNumber' className='w-100 personalInput' />
                     </div>
 
                     <div className='input-section'>
                         <label className='input-label' htmlFor='altNum'>Alternate Number<span style={{ fontWeight: 'lighter' }}>(optional)</span></label>
-                        <input style={inputErrStyle.errorStyle} onInput={(event) => setAltNumber(event.target.value)} id='altNum' className='w-100 personalInput' />
+                        <input value={alternativeNumber} onInput={(event) => setAlternativeNumber(event.target.value)} id='altNum' className='w-100 personalInput' />
                     </div>
 
                     <div className='centered-button-section'>
@@ -166,7 +133,7 @@ const MyDetails = ({ handle_Changes, handleMyDetails, handleUserLogged }) => {
                     </div>
 
                     <div className='centered-button-section'>
-                        <button className='action-button cancel-button' onClick={() => navigate('/useraccount')}>Cancel</button>
+                        <button className='action-button cancel-button' onClick={() => handleNavigation('/useraccount')}>Cancel</button>
                     </div>
                 </Col>
             </Col>

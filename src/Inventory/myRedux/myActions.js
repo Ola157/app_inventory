@@ -11,377 +11,420 @@ const actionTypes = {
     CLEAR_MODAL: "CLEAR_MODAL",
     ADDRESS: "ADDRESS",
     PERSONALDETAILS: "PERSONAL_DETAILS",
-    ALL_ORDERS: 'ALL_ORDERS',
-    SHOW_ORDER: "SHOW_ORDER",
+    ALL_RECORDS: 'ALL_RECORDS',
+    RECORD: 'RECORD',
     LOG_OUT: "LOG_OUT",
-    REMOVE_ITEM: "REMOVE_ITEM"
+    REMOVE_ITEM: "REMOVE_ITEM",
+    CLEAR_CART: "CLEAR_CART",
+    VIEWED_ITEM: 'VIEWED_ITEM',
+    SEARCHED_ITEM: "SEARCHED_ITEM",
+    MESSAGE: "MESSAGE",
+    MESSAGE_CANCEL: 'MESSAGE_CANCEL',
+    IS_REG: 'IS_REG'
 };
 
-export const handleFetch = () => async (dispatch) => {
+export const handleAddGoods = (data) => (dispatch) => {
+    const { item, quantity, image, price, description } = data;
+    let formData = new FormData();
+    formData.append('image', image);
+    formData.append('item', item);
+    formData.append('quantity', quantity);
+    formData.append('price', price);
+    formData.append('description', description);
 
-    try {
-        const response = await axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods');
-        const { allGoods } = response.data;
-        dispatch({ type: actionTypes.ALL_GOODS, payload: allGoods });
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-export const handleAddGoods = (goodsDetails, customerQuantity, addItem, itemEdit) => async () => {
-    let { item, quantity, image, price, detail } = goodsDetails
-    if (item !== '' && quantity !== '' && price !== '' && detail !== '' && image !== '') {
-        let formData = new FormData()
-        formData.append("image", image)
-        formData.append("item", item)
-        formData.append("quantity", quantity)
-        formData.append("price", price)
-        formData.append("detail", detail)
-        formData.append("itemEdit", itemEdit)
-        formData.append('addItem', addItem)
-        formData.append('customerQuantity', customerQuantity)
-
-        try {
-            await axios.post('https://inventory-be-seven.vercel.app/store/addGoods', formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/formdata'
-                    }
-                }
-            )
-        }
-        catch (err) { console.error(err) }
-
-    }
-
-    else { alert('inputs cant be blank') }
-
-}
-
-export const handleFetchCart = () => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    try {
-        let response = await axios.get('https://inventory-be-seven.vercel.app/user/fetchcart', {
+    axios
+        // .post('http://localhost:9810/store/addGoods', formData, {
+        .post('https://inventory-be-seven.vercel.app/store/addGoods', formData, {
             headers: {
-                'Authorization': `Bearer ${myJwt}`
+                'Content-Type': 'multipart/formdata',
+            },
+        })
+        .then((response) => {
+            const { message } = response.data;
+            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+
+export const handleGetGoods = () => (dispatch) => {
+    axios
+        // .get('http://localhost:9810/store/getgoods')
+        .get('https://inventory-be-seven.vercel.app/store/getgoods')
+        .then((response) => {
+            const { goods } = response.data;
+            dispatch({ type: actionTypes.ALL_GOODS, payload: { goods } });
+        })
+        .catch((error) => {
+            console.error('Error while fetching goods:', error);
+        });
+};
+
+export const handleCartPull = (kind) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+    // axios.get('http://localhost:9810/user/pullCart', {
+    axios.get('https://inventory-be-seven.vercel.app/user/pullCart', {
+        headers: {
+            'Authorization': `Bearer ${myJwt}`
+        }
+    })
+        .then((response) => {
+            const { cart } = response.data;
+            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart, kind } });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+export const handleUserQuantity = (itemId, userQuantity) => (dispatch) => {
+    dispatch({ type: actionTypes.HANDLE_CART, payload: { itemId, userQuantity } });
+
+    const myJwt = localStorage.getItem('accessToken');
+    setTimeout(() => {
+        // axios.post(`http://localhost:9810/user/cart/${itemId}`, { userQuantity }, {
+        axios.post(`https://inventory-be-seven.vercel.app/user/cart/${itemId}`, { userQuantity }, {
+            headers: {
+                'Authorization': `Bearer ${myJwt}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
-        let { cart } = response.data
-        dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: cart })
-    }
-    catch (err) {
-        console.log(err)
-    }
-}
+            .catch((error) => {
+                console.log(error);
+            });
+    }, 500);
+};
 
+export const handleCartChanges = (type, itemId) => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
 
-export const handleAllCart = (type, itemId, goods) => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    if (type === 'add' || type === 'subtract' || type === 'addItem' || type === 'cancel') {
-        dispatch({ type: actionTypes.HANDLE_CART, payload: { type, itemId } })
-        setTimeout(async () => {
-            try {
-                let custQty = goods.find(item => item._id == itemId)
-                let { customerQuantity } = custQty
-                await axios.post(`https://inventory-be-seven.vercel.app/user/cart/${itemId}`, { newCustomerQuantity: customerQuantity }, {
-                    headers: {
-                        'Authorization': `Bearer ${myJwt}`,
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-            }
-            catch (err) { console.log(err) }
-        }, 2000)
-    }
-
-    if (type === 'empty') {
-        try {
-            await axios.delete('https://inventory-be-seven.vercel.app/user/clearCart', {
+    if (type === 'clearcart') {
+        axios
+            // .delete('http://localhost:9810/user/clearCart', {
+            .delete('https://inventory-be-seven.vercel.app/user/clearCart', {
                 headers: {
-                    'Authorization': `Bearer ${myJwt}`,
+                    'Authorization': `Bearer ${myJwt}`
                 }
             })
-        }
-        catch (err) { console.log(err) }
+            .then((response) => {
+                const { message } = response.data;
+                dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                dispatch({ type: actionTypes.CLEAR_CART });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     if (type === 'removeItem') {
-        try {
-            let response = await axios.patch(`https://inventory-be-seven.vercel.app/user/removeItem/${itemId}`, null, {
-                headers: {
-                    'Authorization': `Bearer ${myJwt}`,
-                }
-            });
-
-            let { cart } = response.data;
-            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: cart });
-        } catch (err) {
-            console.log(err);
-        }
         dispatch({ type: actionTypes.REMOVE_ITEM, payload: { itemId } });
+        axios
+            // .patch(`http://localhost:9810/user/removeItem/${itemId}`, null, {
+            .patch(`https://inventory-be-seven.vercel.app/user/removeItem/${itemId}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${myJwt}`
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
+};
 
-}
-
-export const handleCheckingOut = () => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    try {
-        const response = await axios.post('https://inventory-be-seven.vercel.app/store/checkout', null, {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`,
-            }
+export const handleViewed = (itemId) => (dispatch) => {
+    axios
+        // .get(`http://localhost:9810/store/viewmore/${itemId}`)
+        .get(`https://inventory-be-seven.vercel.app/store/viewmore/${itemId}`)
+        .then((response) => {
+            const { viewed } = response.data;
+            dispatch({ type: actionTypes.VIEWED_ITEM, payload: { viewed } });
+        })
+        .catch((error) => {
+            console.error(error);
         });
-        dispatch({ type: actionTypes.CHECK_OUT, payload: response.data })
+};
 
+export const handleSearch = (event) => (dispatch) => {
+    if (!event) {
+        dispatch({ type: actionTypes.SEARCHED_ITEM, payload: { items: event } });
+    } else if (event) {
+        setTimeout(() => {
+            axios
+                // .get(`http://localhost:9810/store/searchItem/${event}`)
+                .get(`https://inventory-be-seven.vercel.app/store/searchItem/${event}`)
+                .then((response) => {
+                    const { items, message } = response.data;
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                    dispatch({ type: actionTypes.SEARCHED_ITEM, payload: { items } });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 800);
     }
-    catch (err) { console.log(err) }
-}
+};
 
-export const handle_Amends = (data) => async (dispatch) => {
-    let { any, _id, nimage, nitem, nquantity, nprice, ndetail } = data
+export const handleCheckingOut = () => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
+    axios
+        // .post('http://localhost:9810/store/checkout', null, {
+        .post(`https://inventory-be-seven.vercel.app/store/checkout`, null, {
 
-    switch (any) {
-        case 'edit':
-            try {
-                await axios.patch(`https://inventory-be-seven.vercel.app/store/editItem/${_id}`, null)
+            headers: {
+                'Authorization': `Bearer ${myJwt}`
             }
-            catch (err) { console.error(err) }
-            break;
-        case 'done':
-            try {
-                let formData = new FormData()
-                formData.append("item", nitem)
-                formData.append("quantity", nquantity)
-                formData.append("price", nprice)
-                formData.append("detail", ndetail)
-                formData.append("image", nimage)
+        })
+        .then((response) => {
+            const { message } = response.data;
+            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            dispatch({ type: actionTypes.CHECK_OUT, payload: { message } });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
 
-                await axios.post(`https://inventory-be-seven.vercel.app/store/editDone/${_id}`, formData, {
+export const handleProductChanges = (data) => () => {
+    let { type, _id, newImage, newItem, newQuantity, newPrice, newDescription } = data;
+
+    switch (type) {
+        case 'edit':
+            console.log('hi')
+            axios.patch(`https://inventory-be-seven.vercel.app/store/edit/${_id}`, null)
+                // axios.patch(`http://localhost:9810/store/edit/${_id}`, null)
+                .catch((error) => {
+                    console.error(error);
+                });
+            break;
+        case 'save':
+            let formData = new FormData();
+            formData.append("item", newItem);
+            formData.append("quantity", newQuantity);
+            formData.append("price", newPrice);
+            formData.append("image", newImage);
+            formData.append("description", newDescription);
+
+            axios
+                .post(`https://inventory-be-seven.vercel.app/store/save/${_id}`, formData, {
+                    // .post(`http://localhost:9810/store/save/${_id}`, formData, {
+
                     headers: {
                         'Content-Type': 'multipart/formdata'
                     }
                 })
-            }
-            catch (err) { console.error(err) }
+                .catch((error) => {
+                    console.error(error);
+                });
             break;
-        case 'remove':
-            try {
-                await axios.delete(`https://inventory-be-seven.vercel.app/store/deleteItem/${_id}`, null)
-            }
-            catch (err) { console.error(err) }
+        case 'delete':
+            axios
+                .delete(`https://inventory-be-seven.vercel.app/store/delete/${_id}`, null)
+                // .delete(`http://localhost:9810/store/delete/${_id}`, null)
+                .catch((error) => {
+                    console.error(error);
+                });
             break;
-    }
-}
-
-export const handle_Email_Password = (data) => async (dispatch) => {
-    let { type, email, title, password, firstName, lastName, mobNumber } = data
-    if (type === 'signup') {
-        try {
-            let response = await axios.post('https://inventory-be-seven.vercel.app/user/register', { email, title, password, firstName, lastName, mobNumber }, {
-
-                // let response = await axios.post('https://inventory-be-seven.vercel.app/user/register', { email, title, password, firstName, lastName, mobNumber }, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })
-            if (response.data === 'registration successful') {
-                dispatch({ type: actionTypes.REG_SUCCESS })
-            }
-
-            else if (response.data === 'user already exist') {
-                dispatch({ type: actionTypes.MODAL_RESPONSE, action: response.data })
-            }
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-
-    if (type === 'login') {
-        try {
-            let response = await axios.post('https://inventory-be-seven.vercel.app/user/login', { email, password }, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            })
-
-            if (response.data !== 'That email or password doesn’t look right. Please try again') {
-                let { myAccessToken } = response.data
-                localStorage.setItem('myAccessToken', myAccessToken)
-                dispatch({ type: actionTypes.LOGIN_SUCCESS })
-            }
-
-            else if (response.data === 'That email or password doesn’t look right. Please try again') {
-                dispatch({ type: actionTypes.MODAL_RESPONSE, payload: response.data })
-            }
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-    // if (type === 'forgotPassword') {
-    //     try {
-    //         let response = await axios.post('httpss://inventory-be-seven.vercel.app/user/forgotPassword', { email, password })
-    //     }
-    //     catch (err) {
-
-    //     }
-    // }
-}
-
-export const handleModal = () => (dispatch) => {
-    dispatch({ type: actionTypes.CLEAR_MODAL })
-}
-
-export const handleChanges = (data) => async (dispatch) => {
-    let { any } = data
-    let myJwt = localStorage.getItem('myAccessToken')
-    if (any === 'address') {
-        try {
-            let response = await axios.post('https://inventory-be-seven.vercel.app/user/addAddress', { data }, {
-                headers: {
-                    'Authorization': `Bearer ${myJwt}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            let { address } = response.data
-            dispatch({ type: actionTypes.ADDRESS, payload: address })
-        }
-        catch (err) { console.error(err) }
-    }
-
-    if (any === 'details') {
-        try {
-            let { title, firstName, lastName, email, epassword, newPassword, mobNumber, alterNumber } = data
-            let response = await axios.post('https://inventory-be-seven.vercel.app/user/personalDetails', { title, firstName, lastName, email, epassword, newPassword, mobNumber, alterNumber }, {
-                headers: {
-                    'Authorization': `Bearer ${myJwt}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            if (response.data.email) {
-                dispatch({ type: actionTypes.PERSONALDETAILS, payload: { title, firstName, lastName, email, newPassword, mobNumber, alterNumber } })
-            }
-            else if (response.data === 'incorrect password') {
-                dispatch({ type: actionTypes.MODAL_RESPONSE, payload: response.data })
-            }
-        }
-        catch (err) { console.error(err) }
-    }
-}
-
-export const fetchPastOrders = () => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    try {
-        let response = await axios.get('https://inventory-be-seven.vercel.app/user/fetchAllOrders', {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`
-            }
-        })
-        let { allOrders } = response.data
-        dispatch({ type: actionTypes.ALL_ORDERS, payload: allOrders })
-    }
-    catch (err) { console.error(err) }
-}
-
-export const handle_Display_Order = (id) => async (dispatch) => {
-
-    dispatch({ type: actionTypes.SHOW_ORDER, payload: id })
-}
-
-export const handle_My_Address = () => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    try {
-        let response = await axios.get('https://inventory-be-seven.vercel.app/user/getAddress', {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`
-            }
-        })
-        let { address } = response.data
-        dispatch({ type: actionTypes.ADDRESS, payload: address })
-    }
-    catch (err) { console.error(err) }
-}
-
-export const handle_My_Details = () => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken')
-    try {
-        let response = await axios.get('https://inventory-be-seven.vercel.app/user/getDetails', {
-            // let response = await axios.get('https://inventory-be-seven.vercel.app/user/getDetails', {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`
-            }
-        })
-        let { title, email, firstName, lastName, mobNumber, alterNumber } = response.data
-        dispatch({ type: actionTypes.PERSONALDETAILS, payload: { title, email, firstName, lastName, mobNumber, alterNumber } })
-    }
-    catch (err) { console.error(err) }
-}
-
-export const handle_Adress_Amends = (type, addressId) => async (dispatch) => {
-    let myJwt = localStorage.getItem('myAccessToken');
-    try {
-        switch (type) {
-            case 'edit':
-                try {
-                    let response = await axios.patch(`https://inventory-be-seven.vercel.app/user/editAddress/${addressId}`,
-                        null,
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${myJwt}`,
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }
-                    )
-                    let { address } = response.data
-                    dispatch({ type: actionTypes.ADDRESS, payload: address })
-                }
-                catch (err) { console.error(err) }
-                break;
-
-            case 'cancel':
-                try {
-                    let response = await axios.patch(`https://inventory-be-seven.vercel.app/user/editAddress/${type}`,
-                        null,
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${myJwt}`,
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }
-                    )
-                    let { address } = response.data
-                    dispatch({ type: actionTypes.ADDRESS, payload: address })
-                }
-                catch (err) { console.error(err) }
-                break;
-
-            case 'delete':
-                try {
-                    let response = await axios.delete(`https://inventory-be-seven.vercel.app/user/deleteAddress/${addressId}`,
-                        {
-                            headers: {
-                                'Authorization': `Bearer ${myJwt}`,
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }
-                    );
-                    let { address } = response.data
-                    dispatch({ type: actionTypes.ADDRESS, payload: address })
-                }
-                catch (err) { console.error(err) }
-                break;
-
-            default:
-                break;
-        }
-    }
-    catch (err) {
-        console.error(err);
+        case 'cancel':
+            axios.patch(`https://inventory-be-seven.vercel.app/store/cancel/${_id}`, null).catch((error) => {
+                console.error(error);
+            });
+            break;
     }
 };
 
-export const handle_Logged_In = () => (dispatch) => {
+export const handleAuth = (data) => (dispatch) => {
+    const { type, email, title, password, firstName, lastName, mobNumber } = data;
 
-    dispatch({ type: actionTypes.LOG_OUT })
+    if (type === 'signup') {
+        axios
+            .post('https://inventory-be-seven.vercel.app/user/register', { email, title, password, firstName, lastName, mobNumber }, {
+                // .post('http://localhost:9810/user/register', { email, title, password, firstName, lastName, mobNumber }, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then((response) => {
+                const { message } = response.data;
+                if (message === 'Registration successful') {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                    dispatch({ type: actionTypes.REG_SUCCESS });
+                    dispatch({ type: actionTypes.IS_REG });
+                } else if (message === 'User already exists') {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    if (type === 'login') {
+        axios
+            // .post('http://localhost:9810/user/login', { email, password }, {
+            .post('https://inventory-be-seven.vercel.app/user/login', { email, password }, {
+
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then((response) => {
+                const { message, accessToken } = response.data;
+                if (message === "login successful") {
+                    localStorage.setItem('accessToken', accessToken);
+                    dispatch({ type: actionTypes.LOGIN_SUCCESS });
+                } else {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+};
+
+export const AddAddress = (data) => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
+    axios
+        .post('https://inventory-be-seven.vercel.app/user/addAddress', { data }, {
+            // .post('http://localhost:9810/user/addAddress', { data }, {
+            headers: {
+                'Authorization': `Bearer ${myJwt}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+            const { message } = response.data
+            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+export const handleUpdateDetails = (data) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+    axios
+        .post('https://inventory-be-seven.vercel.app/user/updateDetails', data, {
+            // .post('http://localhost:9810/user/updateDetails', data, {
+            headers: {
+                'Authorization': `Bearer ${myJwt}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then((response) => {
+            const { message } = response.data;
+            if (message === 'Incorrect password') {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+export const handleRecords = () => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+    axios
+        // .get('http://localhost:9810/user/records', {
+        .get('https://inventory-be-seven.vercel.app/user/records', {
+            headers: {
+                'Authorization': `Bearer ${myJwt}`
+            }
+        }
+        )
+        .then((response) => {
+            const { records, message } = response.data;
+            if (records) return dispatch({ type: actionTypes.ALL_RECORDS, payload: records });
+            return dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+
+export const handleFetchAddress = () => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
+    axios
+        .get('https://inventory-be-seven.vercel.app/user/getAddress', {
+            // .get('http://localhost:9810/user/getAddress', {
+
+            headers: {
+                'Authorization': `Bearer ${myJwt}`
+            }
+        })
+        .then((response) => {
+            const { address, message } = response.data;
+            dispatch({ type: actionTypes.ADDRESS, payload: address });
+            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+export const handleFetchPersonalDetails = () => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
+    axios
+        .get('https://inventory-be-seven.vercel.app/user/getDetails', {
+            headers: {
+                'Authorization': `Bearer ${myJwt}`
+            }
+        })
+        .then((response) => {
+            const { user } = response.data;
+            dispatch({ type: actionTypes.PERSONALDETAILS, payload: user });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+export const handleAddressDelete = (addressId) => () => {
+    console.log('hi')
+    let myJwt = localStorage.getItem('accessToken');
+    axios.delete(`https://inventory-be-seven.vercel.app/user/deleteAddress/${addressId}`, {
+        // axios.delete(`http://localhost:9810/user/deleteAddress/${addressId}`, {
+
+        headers: {
+            'Authorization': `Bearer ${myJwt}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+        .catch((error) => {
+            console.error(error);
+        });
+
+};
+
+export const handleRecord = (recordId) => (dispatch) => {
+    let myJwt = localStorage.getItem('accessToken');
+    axios.get(`https://inventory-be-seven.vercel.app/user/getcartRecord/${recordId}`, {
+        // axios.get(`http://localhost:9810/user/getcartRecord/${recordId}`, {
+        headers: {
+            'Authorization': `Bearer ${myJwt}`
+        }
+    }).then((response) => {
+        const { cartRecord } = response.data;
+        dispatch({ type: actionTypes.RECORD, payload: { cartRecord } });
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+export const handleMessage = (message) => (dispatch) => {
+    dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+};
+
+export const handleMessageCancel = () => (dispatch) => {
+    dispatch({ type: actionTypes.MESSAGE_CANCEL });
+};
+
+export const handleSignOut = () => (dispatch) => {
+    dispatch({ type: actionTypes.LOG_OUT });
+};
+
+export const handleIsReg = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.IS_REG, payload: { value } });
 }

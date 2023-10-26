@@ -1,105 +1,272 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AdminPage from './Inventory/AdminPage'
 import ViewMore from './Inventory/ViewMore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Trolley from './Inventory/Trolley';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPastOrders, handleAddGoods, handleAllCart, handle_Amends, handleChanges, handleCheckingOut, handleFetch, handleFetchCart, handleModal, handle_Adress_Amends, handle_Display_Order, handle_Email_Password, handle_Logged_In, handle_My_Address, handle_My_Details, handle_Search } from './Inventory/myRedux/myActions';
+import {
+  AddAddress,
+  handleAddGoods,
+  handleAddressDelete,
+  handleAuth,
+  handleCartChanges,
+  handleCartPull,
+  handleCheckingOut,
+  handleFetchAddress,
+  handleFetchPersonalDetails,
+  handleGetGoods,
+  handleIsReg,
+  handleMessage,
+  handleMessageCancel,
+  handleProductChanges,
+  handleRecord,
+  handleRecords,
+  handleSearch,
+  handleSignOut,
+  handleUpdateDetails,
+  handleUserQuantity,
+  handleViewed,
+} from './Inventory/myRedux/myActions';
+
+
 import RegistrationPage from './Inventory/signIn';
 import UserPage from './Inventory/UserPage';
 import UserAccount from './Inventory/userAccount';
-import AllOrders from './Inventory/myOrders';
 import MyDetails from './Inventory/myDetails';
 import MyAddress from './Inventory/address';
 import MyPreference from './Inventory/preferencePage';
+import Records from './Inventory/myOrders';
+import RecordPage from './Inventory/record';
 
 const App = () => {
-  let dispatch = useDispatch();
-  let goods = useSelector(state => state.allGoods)
-  let customerQuantity = 0
-  let addItem = true;
-  let itemEdit = true;
-  let [modalInfo, setModalInfo] = useState('');
+  const dispatch = useDispatch();
+  const isLogged = useSelector(state => state.isLogged)
+  const message = useSelector(state => state.message)
+  const navigate = useNavigate()
 
-  const handleItemModal = (newModal) => {
-    setModalInfo(newModal)
-  }
+  useEffect(() => {
+    if (!isLogged) return
+    handlePullCart()
+  }, [isLogged])
 
-  const handleAddItem = (goodsDetails) => {
-    dispatch(handleAddGoods(goodsDetails, customerQuantity, addItem, itemEdit))
+  const handleAddItem = (data) => {
+    dispatch(handleAddGoods(data))
   }
 
   const handleGoods = () => {
-    dispatch(handleFetch())
+    dispatch(handleGetGoods())
   }
 
-  const handleCart = (type, itemId) => {
-    dispatch(handleAllCart(type, itemId, goods))
+  const cartHandler = (type, itemId) => {
+    dispatch(handleCartChanges(type, itemId));
   }
 
-  const handle_Fetch_Cart = () => {
-    dispatch(handleFetchCart())
+  const handlePullCart = (kind) => {
+    dispatch(handleCartPull(kind))
+  }
+
+  const handleAddClick = (data) => {
+    const { itemId, newUserQuantity, quantity, page } = data;
+
+    if (!isLogged) {
+      return handleNavigation(`/signIn/${page}/${itemId}/${1}`);
+    } else if (quantity > newUserQuantity + 1) {
+      dispatch(handleUserQuantity(itemId, newUserQuantity + 1));
+    } else if (quantity >= newUserQuantity + 1) {
+      dispatch(handleUserQuantity(itemId, quantity));
+    } else if (quantity < newUserQuantity + 1) {
+      handleIncomingMessage(`Item Out Of Stock, only ${quantity} available`);
+    }
+    setTimeout(() => {
+      handlePullCart()
+    }, 1000)
+  };
+
+
+  const handleSubtractClick = (data) => {
+    const { itemId, newUserQuantity } = data;
+    if (newUserQuantity > 1) {
+      dispatch(handleUserQuantity(itemId, newUserQuantity - 1));
+    } else {
+      dispatch(handleUserQuantity(itemId, 0));
+    }
+    setTimeout(() => {
+      handlePullCart()
+    }, 1000)
+  };
+
+  const handleViewedItem = (itemId) => {
+    dispatch(handleViewed(itemId))
+  }
+
+  const handleSearchedItem = (event) => {
+    dispatch(handleSearch(event))
   }
 
   const handleCheckOut = () => {
     dispatch(handleCheckingOut())
   }
 
-  const handleEditDelete = (data) => {
-    dispatch(handle_Amends(data))
+  const handleProductAmends = (data) => {
+    dispatch(handleProductChanges(data))
   }
 
-  const handleLogin_SignUp = (data) => {
-    dispatch(handle_Email_Password(data))
+  const handleAuthentication = (data) => {
+    dispatch(handleAuth(data))
   }
 
-  const handle_Modal = () => {
-    dispatch(handleModal())
+  const handleLogOut = () => {
+    localStorage.removeItem('accessToken')
+    handleNavigation('/')
+    dispatch(handleSignOut())
   }
 
-  const handle_Changes = (data) => {
-    dispatch(handleChanges(data))
+  const handleIncomingMessage = (message) => {
+    dispatch(handleMessage(message))
   }
 
-  const handleFetchPastOrder = () => {
-    dispatch(fetchPastOrders())
+  const handleCancelMessage = () => {
+    dispatch(handleMessageCancel())
   }
 
-  const handleDisplay = (id) => {
-    dispatch(handle_Display_Order(id))
+  const handleAddAddress = (data) => {
+    dispatch(AddAddress(data))
   }
 
-  const handleMyAddress = () => {
-    dispatch(handle_My_Address())
+  const handleUpdateUser = (data) => {
+    dispatch(handleUpdateDetails(data))
   }
 
-  const handleMyDetails = () => {
-    dispatch(handle_My_Details())
+  const handleOrderRecords = () => {
+    dispatch(handleRecords())
   }
 
-  const handleAmends = (type, addressId) => {
-    dispatch(handle_Adress_Amends(type, addressId))
+  const handleGetAddress = () => {
+    dispatch(handleFetchAddress())
   }
-  const handleUserLogged = () => {
-    dispatch(handle_Logged_In())
+
+  const handlePersonalDetails = () => {
+    dispatch(handleFetchPersonalDetails())
+  }
+
+  const handleAmends = (addressId) => {
+    dispatch(handleAddressDelete(addressId))
+    setTimeout(() => {
+      handleGetAddress()
+    }, 1000)
+  }
+
+  const handleNavigation = (page) => {
+    navigate(page)
+    if (!message) return
+    handleCancelMessage()
+  }
+
+  const handleIsRegister = (value) => {
+    dispatch(handleIsReg(value))
+    if (!message) return
+    handleCancelMessage()
+  }
+
+  const handleRecordPull = (recordId) => {
+    dispatch(handleRecord(recordId))
   }
 
   return (
     <>
 
       <Routes>
-        <Route path='/*' element={<UserPage handleItemModal={handleItemModal} modalInfo={modalInfo} handleUserLogged={handleUserLogged} handle_Modal={handle_Modal} handleGoods={handleGoods} handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
-        <Route path='/adminpage' element={<AdminPage handleAddItem={handleAddItem} handleEditDelete={handleEditDelete} />} />
-        <Route path='/viewmore/:itemId' element={<ViewMore handleCart={handleCart} handle_Fetch_Cart={handle_Fetch_Cart} />} />
-        <Route path='/trolley' element={<Trolley handleCart={handleCart} handleCheckOut={handleCheckOut} handle_Modal={handle_Modal} handle_Fetch_Cart={handle_Fetch_Cart} />} />
-        <Route path='/signIn/:page/:itemId' element={<RegistrationPage handleItemModal={handleItemModal} modalInfo={modalInfo} handleCart={handleCart} handleLogin_SignUp={handleLogin_SignUp} handle_Modal={handle_Modal} />} />
-        <Route path='/useraccount' element={<UserAccount handleMyDetails={handleMyDetails} handleUserLogged={handleUserLogged} handle_Fetch_Cart={handle_Fetch_Cart} />} />
-        <Route path='/allorders' element={<AllOrders handleUserLogged={handleUserLogged} handleDisplay={handleDisplay} handleFetchPastOrder={handleFetchPastOrder} />} />
-        <Route path='mydetails' element={<MyDetails handleUserLogged={handleUserLogged} handle_Changes={handle_Changes} handleMyDetails={handleMyDetails} />} />
-        <Route path='address' element={<MyAddress handleUserLogged={handleUserLogged} handle_Changes={handle_Changes} handleMyAddress={handleMyAddress} handleAmends={handleAmends} />} />
-        <Route path='mypref' element={<MyPreference handleUserLogged={handleUserLogged} />} />
+        <Route path='/*'
+          element={<UserPage
+            handleAddClick={handleAddClick}
+            handleSubtractClick={handleSubtractClick}
+            handleLogOut={handleLogOut}
+            handleNavigation={handleNavigation}
+            handleCancelMessage={handleCancelMessage}
+            handlePullCart={handlePullCart}
+            handleSearchedItem={handleSearchedItem}
+            handleGoods={handleGoods}
+            cartHandler={cartHandler}
+          />} />
+
+        <Route path='/adminpage'
+          element={<AdminPage
+            handleNavigation={handleNavigation}
+            handleAddItem={handleAddItem}
+            handleProductAmends={handleProductAmends} />} />
+
+        <Route path='/viewmore/:itemId'
+          element={<ViewMore
+            handleNavigation={handleNavigation}
+            handleAddClick={handleAddClick}
+            handleSubtractClick={handleSubtractClick}
+            handleLogOut={handleLogOut}
+            handleCancelMessage={handleCancelMessage}
+            handleIncomingMessage={handleIncomingMessage}
+            cartHandler={cartHandler}
+            handleViewedItem={handleViewedItem}
+          />} />
+
+        <Route path='/trolley'
+          element={<Trolley
+            handlePullCart={handlePullCart}
+            handleNavigation={handleNavigation}
+            handleCancelMessage={handleCancelMessage}
+            cartHandler={cartHandler}
+            handleCheckOut={handleCheckOut} />} />
+
+        <Route path='/signIn/:page/:itemId/:userQuantity'
+          element={<RegistrationPage
+            handlePullCart={handlePullCart}
+            handleAddClick={handleAddClick}
+            handleIsRegister={handleIsRegister}
+            handleNavigation={handleNavigation}
+            handleCancelMessage={handleCancelMessage}
+            handleIncomingMessage={handleIncomingMessage}
+            cartHandler={cartHandler}
+            handleAuthentication={handleAuthentication} />} />
+
+        <Route path='/useraccount'
+          element={<UserAccount
+            handleNavigation={handleNavigation}
+            handlePersonalDetails={handlePersonalDetails}
+            handleLogOut={handleLogOut} />} />
+
+        <Route path='/allorders'
+          element={<Records
+            handleNavigation={handleNavigation}
+            handleLogOut={handleLogOut}
+            handleOrderRecords={handleOrderRecords} />} />
+
+        <Route path='/record/:recordId'
+          element={<RecordPage
+            handleRecordPull={handleRecordPull}
+            handleNavigation={handleNavigation}
+          />}
+        />
+
+        <Route path='/mydetails'
+          element={<MyDetails
+            handleNavigation={handleNavigation}
+            handleUpdateUser={handleUpdateUser}
+            handleLogOut={handleLogOut}
+            handlePersonalDetails={handlePersonalDetails} />} />
+
+        <Route path='/address'
+          element={<MyAddress
+            handleNavigation={handleNavigation}
+            handleLogOut={handleLogOut}
+            handleIncomingMessage={handleIncomingMessage}
+            handleAddAddress={handleAddAddress}
+            handleGetAddress={handleGetAddress}
+            handleAmends={handleAmends} />} />
+
+        <Route path='/mypref'
+          element={<MyPreference
+            handleNavigation={handleNavigation}
+            handleLogOut={handleLogOut} />} />
       </Routes >
     </>
 

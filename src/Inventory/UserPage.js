@@ -1,114 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { CiCircleAlert } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
-import axios from 'axios';
 
 const UserPage = ({
-    handleCart,
     handleGoods,
-    handle_Fetch_Cart,
-    handleUserLogged,
-    handle_Modal,
-    handleItemModal,
-    modalInfo
+    handlePullCart,
+    handleLogOut,
+    handleCancelMessage,
+    modifyValue,
+    handleSearchedItem,
+    handleNavigation,
+    handleAddClick,
+    handleSubtractClick
 }) => {
-    const navigate = useNavigate()
-    let products = useSelector(state => state.allGoods)
-    let userLogged = useSelector(state => state.userLoggedIn)
-    let cart = useSelector(state => state.cart)
-    let [searched, setSearch] = useState('')
-    let [total, setTotal] = useState('')
-    let [searchId, setItemId] = useState('')
-
+    const products = useSelector(state => state.goods)
+    const isLogged = useSelector(state => state.isLogged)
+    const total = useSelector(state => state.total)
+    const cart = useSelector(state => state.cart)
+    const searched = useSelector(state => state.searched)
+    const message = useSelector(state => state.message)
 
     useEffect(() => {
-        let checkActivity = products ? products.find((item) => item.customerQuantity > 0) : ''
-        if (!products.length) {
-            handleGoods();
-        }
-        if (userLogged && !checkActivity) {
-            setTimeout(() => { handleLogout() }, 1200000)
-        }
+        handleGoods();
+        handlePullCustomerCart()
+    }, [])
 
-        if (userLogged) {
-            handle_Fetch_Cart();
-        }
-        if (cart) {
-            const total = cart.reduce((acc, item) => acc + item.customerQuantity * item.price, 0);
-            setTotal(total);
-        }
-    }, [userLogged, products, cart]);
-
-    const handleSearch = (itemId) => {
-        handleItemModal(false)
-        setTimeout(async () => {
-            setItemId(itemId)
-            try {
-                const response = await axios.get(`https://inventory-be-seven.vercel.app/store/searchItem/${itemId}`);
-                let { findItem } = response.data;
-
-                if (findItem) {
-                    handleItemModal(false)
-                    return setSearch(findItem);
-                } else {
-                    handleItemModal(response.data);
-                }
-            }
-            catch (err) {
-                console.error(err);
-            }
-        }, 800)
-        if (!itemId) {
-            setSearch('')
-        }
-    }
-
-    const handleLogout = () => {
-        localStorage.removeItem('myAccessToken')
-        handleUserLogged()
-        handle_Modal()
-    }
-
-    const handleQty = (type, id) => {
-        handleItemModal(false)
-        let checkQtyAvailable = products.find(item => item._id === id)
-        let { customerQuantity, quantity } = checkQtyAvailable
-        if (userLogged) {
-            switch (type) {
-                case 'add':
-                    if (quantity > customerQuantity && quantity > 0) {
-                        return handleCart(type, id)
-                    }
-                    else (
-                        handleItemModal(`Limited Stock, Only ${quantity} available`)
-                    )
-                    break;
-                case 'subtract':
-                    if (customerQuantity <= 1) {
-                        return handleCart('cancel', id)
-                    }
-                    if (customerQuantity > 0) {
-                        return handleCart(type, id)
-                    }
-                    break;
-                case 'addItem':
-                    if (quantity <= 1) {
-                        return handleItemModal('Out of Stock, Item to be replenished soon')
-                    }
-                    else {
-                        handleCart(type, id)
-                    }
-                    break;
-            }
-        }
-        else {
-            navigate(`/signIn/${type}/${id}`);
-        }
+    const handlePullCustomerCart = () => {
+        if (!isLogged) return
+        handlePullCart('updatequantity');
     }
 
     return (< Container fluid className='inventory' >
@@ -116,8 +39,8 @@ const UserPage = ({
         <Row className='inventory__navbar'>
             <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-actions'>
                 <div className='d-flex'>
-                    {userLogged && (
-                        <button className='inventory__navbar-btn' onClick={() => navigate("/useraccount")}>
+                    {isLogged && (
+                        <button className='inventory__navbar-btn' onClick={() => handleNavigation("/useraccount")}>
                             <BiUserCircle className='inventory__navbar-icon' />
                             My account
                         </button>
@@ -125,16 +48,16 @@ const UserPage = ({
 
                     <button
                         className='inventory__navbar-btn'
-                        onClick={userLogged ? () => handleLogout() : () => navigate(`/signIn/${'home'}/${'home'}`)}
+                        onClick={isLogged ? () => handleLogOut() : () => handleNavigation(`/signIn/${'homepage'}/${'user'}/${'login'}`)}
                     >
-                        {userLogged ? 'Logout' : 'Login/register'}
+                        {isLogged ? 'Logout' : 'Login/register'}
                     </button>
                 </div>
 
-                <button className='inventory__navbar-btn inventory__navbar-cart' onClick={userLogged ? () => navigate('/trolley') : () => navigate('/signIn')}>
-                    {userLogged && cart.length >= 1 && <span className='inventory__navbar-cart-count'>{cart.length}</span>}
+                <button className='inventory__navbar-btn inventory__navbar-cart' onClick={() => handleNavigation('/trolley')}>
+                    {cart.length > 0 ? <span className='inventory__navbar-cart-count'>{cart.length}</span> : ''}
                     <AiOutlineShoppingCart className='inventory__navbar-icon' />
-                    {userLogged ? `$${total}` : `$0.00`}
+                    {total ? `$${total}` : '$0.00'}
                 </button>
             </Col>
 
@@ -143,62 +66,93 @@ const UserPage = ({
             </Col>
 
             <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-search'>
-                <input className='inventory__search-input' placeholder='Search products' onInput={(event) => handleSearch(event.target.value)} />
+                <input className='inventory__search-input' placeholder='Search products' onInput={(event) => handleSearchedItem(event.target.value)} />
             </Col>
         </Row>
 
         {
-            modalInfo &&
+            message &&
             <Row className='inventory__alert my-2'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
                     <>
                         <CiCircleAlert />
-                        {modalInfo}
+                        {message}
                     </>
-                    <button className='inventory__alert-close' onClick={() => handleItemModal(false)}> <MdOutlineCancel /> </button>
+                    <button className='inventory__alert-close' onClick={() => handleCancelMessage()}> <MdOutlineCancel /> </button>
                 </Col>
             </Row>
         }
 
+
         <Row className='inventory__products'>
-            {products && !searched &&
-                products.map((item, index) => (
-                    <Col lg={2} md={3} sm={3} xs={5} className='inventory__product' key={index}>
+            {products.length > 0 && searched.length < 1 &&
+                products.map((item, index) => {
+                    return (
+                        <Col lg={2} md={3} sm={3} xs={5} className='inventory__product' key={index}>
+                            {item.image && (
+                                <div className='item-image my-2'>
+                                    <img src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${item.image}`} alt={item.item} />
+                                </div>
+                            )}
+                            <span className='inventory__product-name my-2'>{item.item}</span>
+                            <div className='inventory__product-actions'>
+
+                                {item.addItem === false ? (
+                                    <button className='inventory__product-btn'
+                                        onClick={() => handleAddClick({ itemId: item._id, newUserQuantity: item.userQuantity, quantity: item.quantity, page: 'homepage' })}>
+                                        Add
+                                    </button>
+                                ) : (
+                                    <div className='inventory__product-qty'>
+                                        <button className='inventory__product-btn m-1'
+                                            onClick={() => handleSubtractClick({ itemId: item._id, newUserQuantity: item.userQuantity, quantity: item.quantity })}
+                                        >-</button>
+                                        <input className='inventory__product-input' value={item.userQuantity} readOnly />
+                                        <button className='inventory__product-btn m-1'
+                                            onClick={() => handleAddClick({ itemId: item._id, newUserQuantity: item.userQuantity, quantity: item.quantity })}>
+                                            +</button>
+                                    </div>
+                                )}
+                            </div>
+                            <button
+                                className='inventory__product-more'
+                                // onClick={isLogged ? () => handleNavigation(`/viewmore/${item._id}`) : () => handleNavigation(`/signIn/${'viewmore'}/${item._id}`)}
+                                onClick={() => handleNavigation(`/viewmore/${item._id}`)}
+                            >
+                                View More
+                            </button>
+                        </Col>
+                    );
+                })}
+
+
+            {searched.length > 0 ?
+                searched.map((item, index) => (
+                    <Col lg={2} md={3} sm={3} xs={5} key={index} className='inventory__product'>
+                        <div className='item-image my-2'>
+                            {item.image && <img src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${item.image}`} />}
+                        </div>
                         <span className='inventory__product-name'>{item.item}</span>
                         <div className='inventory__product-actions'>
-                            {item.addItem ?
-                                <button className='inventory__product-btn' onClick={() => handleQty('addItem', item._id)}>Add</button>
+                            {!item.addItem ?
+                                <button className='inventory__product-btn' onClick={() => modifyValue('addItem', item._id, item.userQuantity, 'homepage')}>Add</button>
                                 :
                                 <div className='inventory__product-qty'>
-                                    <button className='inventory__product-btn m-1' onClick={() => handleQty('subtract', item._id)}>-</button>
-                                    <input className='inventory__product-input' value={item.customerQuantity} readOnly />
-                                    <button className='inventory__product-btn m-1' onClick={() => handleQty('add', item._id)}>+</button>
+                                    <button className='inventory__product-btn m-1'
+                                        onClick={() => handleSubtractClick({ itemId: item._id, newUserQuantity: item.userQuantity, quantity: item.quantity })}
+                                    >-</button>
+                                    <input className='inventory__product-input' value={item.userQuantity} readOnly />
+                                    <button className='inventory__product-btn m-1'
+                                        onClick={() => handleAddClick({ itemId: item._id, newUserQuantity: item.userQuantity, quantity: item.quantity })}
+                                    >+</button>
                                 </div>
                             }
                         </div>
-                        <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${item._id} `) : () => navigate(`/signIn/${'viewmore'}/${item._id}`)}>view more</button>
+                        <button className='inventory__product-more' onClick={() => handleNavigation(`/viewmore/${item._id} `)}>view more</button>
                     </Col>
-                ))
-            }
-
-            {searched &&
-                <Col lg={2} md={3} sm={3} xs={5} className='inventory__product'>
-                    <span className='inventory__product-name'>{searched.item}</span>
-                    <div className='inventory__product-actions'>
-                        {searched.addItem ?
-                            <button className='inventory__product-btn' onClick={() => handleQty('addItem', searched._id)}>Add</button>
-                            :
-                            <div className='inventory__product-qty'>
-                                <button className='inventory__product-btn' onClick={() => handleQty('subtract', searched._id)}>-</button>
-                                <input className='inventory__product-input' value={searched.customerQuantity} readOnly />
-                                <button className='inventory__product-btn' onClick={() => handleQty('add', searched._id)}>+</button>
-                            </div>
-                        }
-                    </div>
-                    <button className='inventory__product-more' onClick={userLogged ? () => navigate(`/viewmore/${searched._id} `) : () => navigate(`/signIn/${'viewmore'}/${searched._id}`)}>view more</button>
-                </Col>
-            }
+                )) : null}
         </Row>
+
         <footer className="inventory__footer">
             <Container>
                 <Row>

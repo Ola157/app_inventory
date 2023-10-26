@@ -1,105 +1,189 @@
 const initialState = {
-    allGoods: [],
+    goods: [],
     cart: [],
-    userLoggedIn: false,
-    modal: '',
-    allOrders: [],
+    isLogged: false,
+    isClickRegister: false,
+    records: [],
     personalDetails: {},
     address: {},
+    searched: [],
+    viewed: {},
+    message: '',
+    cartRecord: []
 }
 
 const myReducer = (state = initialState, action) => {
     switch (action.type) {
         case "ALL_GOODS":
+            const { goods } = action.payload;
+            let updatedCart;
+
+            if (state.cart.length) {
+                updatedCart = state.goods.map((good) => {
+                    const matchedItem = state.goods.find((item) => good.itemId === item._id);
+                    return {
+                        ...good,
+                        userQuantity: matchedItem ? matchedItem.userQuantity : good.userQuantity,
+                        addItem: matchedItem ? matchedItem.addItem : good.addItem,
+                    };
+                });
+            }
             return {
                 ...state,
-                allGoods: action.payload,
+                searched: [],
+                goods: updatedCart
+                    ? updatedCart
+                    : goods.map((good) => ({
+                        ...good,
+                        userQuantity: 0,
+                        _id: good._id,
+                        addItem: false,
+                    })),
+            };
+
+
+        case 'MESSAGE':
+            const { message } = action.payload
+            return {
+                ...state,
+                message
+            }
+
+        case "MESSAGE_CANCEL":
+            return {
+                ...state,
+                message: ''
             }
 
         case "HANDLE_CARTFETCH":
+            const { cart, kind } = action.payload
+            const total = cart.reduce((acc, item) => acc + item.cost, 0);
             return {
                 ...state,
-                cart: action.payload
-            }
-
-        case "MODAL_RESPONSE":
-            return {
-                ...state,
-                modal: action.payload
+                goods: kind === 'updatequantity' ?
+                    state.goods.map(good => {
+                        const matchedCartItem = cart.find(cartItem => cartItem.itemId === good._id);
+                        if (matchedCartItem) {
+                            return {
+                                ...good,
+                                userQuantity: matchedCartItem.userQuantity,
+                                addItem: matchedCartItem.addItem
+                            };
+                        }
+                        return good;
+                    }) : state.goods,
+                cart,
+                total
             }
 
         case "HANDLE_CART":
-            let { type, itemId } = action.payload
-            let updateGood = state.allGoods.map(good => {
+            const { userQuantity, itemId } = action.payload;
+            const updatingCart = state.goods.map(good => {
                 if (good._id === itemId) {
-                    return {
-                        ...good,
-                        addItem: type === 'addItem' ? false :
-                            type === 'cancel' ? good.addItem = true
-                                : good.addItem,
-                        customerQuantity: type === 'addItem' ? good.customerQuantity = 1
-                            : type == 'add' ? good.customerQuantity += 1
-                                : type === 'subtract' ? good.customerQuantity -= 1 :
-                                    type === 'cancel' ? good.customerQuantity = 0
-                                        : good.customerQuantity
-                    }
+                    const updatedGood = { ...good };
 
+                    updatedGood.addItem = userQuantity > 0 ? true : userQuantity < 1 ? false : updatedGood.addItem;
+
+                    updatedGood.userQuantity = userQuantity;
+
+                    return updatedGood;
                 }
+                return good;
+            });
 
-                if (type === 'empty') {
-
-                    return {
-                        ...good,
-                        customerQuantity: 0,
-                    }
-                }
-
-                return good
-            })
             return {
                 ...state,
-                allGoods: updateGood,
+                goods: updatingCart,
+                viewed: state.viewed ? updatingCart.find(item => itemId === item._id) : state.viewed,
+                searched: state.searched.length > 0 ? state.searched
+                    .map(searched => updatingCart.find(item => searched._id === item._id))
+                    .filter(reViewed => reViewed) : state.searched,
+                total: state.cart.length ? state.cart.reduce((acc, item) => acc + item.cost, 0) : state.total
+            };
+
+
+        case "SEARCHED_ITEM":
+            const { items } = action.payload
+            let updateSearched = []
+            for (const searched of items) {
+                const matchedItem = state.goods.find(item => item._id == searched._id);
+                if (matchedItem) {
+                    updateSearched.push(matchedItem)
+                }
+            }
+            return {
+                ...state,
+                searched: updateSearched
             }
 
         case "REMOVE_ITEM":
-            let updateRemovedItem = state.allGoods.map(good => good._id === action.payload.itemId ? {
-                ...good,
-                customerQuantity: good.customerQuantity = 0,
-                addItem: true
-            } : good)
+            let updatedGood = state.goods.map(good => good._id == action.payload.itemId ?
+                ({
+                    ...good,
+                    userQuantity: 0,
+                    addItem: false
+                }) : good)
+
+            let cartFilter = state.cart.filter(good => good.itemId != action.payload.itemId)
             return {
                 ...state,
-                allGoods: updateRemovedItem
+                goods: updatedGood,
+                cart: cartFilter
+            }
+
+        case "CLEAR_CART":
+            let updateCleared = state.goods.map(good => ({
+                ...good,
+                userQuantity: 0,
+                addItem: false,
+            }))
+            return {
+                ...state,
+                goods: updateCleared,
+                cart: []
+            }
+
+        case "VIEWED_ITEM":
+            const { viewed } = action.payload
+            const matchedProd = state.goods.find(item => item._id === viewed._id)
+            if (matchedProd) {
+                viewed.userQuantity = matchedProd.userQuantity
+                viewed.addItem = matchedProd.addItem
+            }
+            return {
+                ...state,
+                viewed: viewed
             }
 
         case "CHECK_OUT":
             return {
                 ...state,
-                allGoods: state.allGoods.map((good) => action.payload === 'payment successful' ? ({
+                goods: state.goods.map((good) => ({
                     ...good,
-                    customerQuantity: 0,
+                    userQuantity: 0,
                     addItem: true,
-                }) : good),
-                modal: action.payload === 'payment successful' ? `${action.payload}, thanks for shopping with us` : state.modal
+                }))
             }
 
         case "LOGIN_SUCCESS":
             return {
                 ...state,
-                userLoggedIn: true
+                isLogged: true
             }
 
         case "REG_SUCCESS":
             return {
                 ...state,
-                userLoggedIn: 'Registered'
+                isLogged: 'Registered'
             }
 
-        case "CLEAR_MODAL":
+        case 'RECORD':
+            const { cartRecord } = action.payload
             return {
                 ...state,
-                modal: ''
+                cartRecord
             }
+
         case "ADDRESS":
             return {
                 ...state,
@@ -107,30 +191,53 @@ const myReducer = (state = initialState, action) => {
             }
 
         case "PERSONAL_DETAILS":
-            let { title, email, firstName, lastName, mobNumber, alterNum } = action.payload
+            let { title, email, firstName, lastName, mobileNumber, alternativeNumber } = action.payload
             return {
                 ...state,
-                personalDetails: { title, email, firstName, lastName, mobNumber, alterNum }
+                personalDetails: { title, email, firstName, lastName, mobileNumber, alternativeNumber }
             }
-        case "ALL_ORDERS":
+        case "ALL_RECORDS":
             return {
                 ...state,
-                allOrders: action.payload
+                records: action.payload
             }
         case "SHOW_ORDER":
-            let showOrder = state.allOrders.map((orders) => action.payload === orders._id ? ({
+            let showOrder = state.records.map((orders) => action.payload === orders._id ? ({
                 ...orders,
                 showOrder: !orders.showOrder
             }) : orders)
             return {
                 ...state,
-                allOrders: showOrder
+                records: showOrder
+            }
+
+        case 'IS_REG':
+            const { value } = action.payload
+            return {
+                ...state,
+                isClickRegister: value
             }
 
         case "LOG_OUT":
+            let allGoods = state.goods.map(item => item.addItem ? ({
+                ...item,
+                addItem: false,
+                userQuantity: 0
+            }) : item)
+
             return {
                 ...state,
-                userLoggedIn: false
+                cart: [],
+                goods: allGoods,
+                isLogged: false,
+                records: [],
+                personalDetails: {},
+                address: {},
+                searched: [],
+                viewed: {},
+                message: '',
+                total: '',
+                cartRecord: []
             }
     }
     return state

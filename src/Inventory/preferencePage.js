@@ -1,41 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { usehandleNavigation } from 'react-router-dom'
 import { BiUserCircle } from "react-icons/bi";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 
-const MyPreference = ({ handleUserLogged }) => {
-    const navigate = useNavigate('')
-    let userLogged = useSelector(state => state.userLoggedIn)
-
-    useEffect(() => {
-        if (!userLogged) {
-            navigate('/signup')
-
-        }
-
-    }, [userLogged]);
-
-    const handleLogout = () => {
-        localStorage.removeItem('myAccessToken')
-        handleUserLogged()
-        navigate('/')
-    }
+const MyPreference = ({ handleLogOut, handleNavigation }) => {
+    const isLogged = useSelector(state => state.isLogged)
 
     return (<Container fluid className='inventory'>
         <Row className='d-flex justify-content-center align-items-center m-0 navbar '>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end text-white mx-0 me-0 w-100'>
-                <button
-                    className='inventory__navbar-btn'
-                    onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
-                >
-                    {userLogged ? 'Logout' : 'Login/register'}
-                </button>
-            </Col>
-
             <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
-                <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                <button className='trolley-title-btn' onClick={() => handleNavigation('/')}>
                     Express
                 </button>
             </Col>
@@ -43,7 +19,7 @@ const MyPreference = ({ handleUserLogged }) => {
 
         <Row className='d-flex justify-content-start align-items-center'>
             <Col className='back-col'>
-                <button onClick={() => navigate('/useraccount')} className='back-button'>
+                <button onClick={() => handleNavigation('/useraccount')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
                     <span className='back-text'>My Account</span>
                 </button>
@@ -73,11 +49,11 @@ const MyPreference = ({ handleUserLogged }) => {
         <Row className='d-flex justify-content-center'>
             <Col lg={4} md={6} sm={6} xs={8}>
                 <div className='centered-button-section'>
-                    <button className='action-button save-button' onClick={() => navigate('/useraccount')}>Save Preference</button>
+                    <button className='action-button save-button' onClick={() => handleNavigation('/useraccount')}>Save Preference</button>
                 </div>
 
                 <div className='centered-button-section'>
-                    <button className='action-button cancel-button' onClick={() => navigate('/useraccount')}>Cancel</button>
+                    <button className='action-button cancel-button' onClick={() => handleNavigation('/useraccount')}>Cancel</button>
                 </div>
             </Col >
         </Row >

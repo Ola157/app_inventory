@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { usehandleNavigation } from 'react-router-dom';
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from 'react-redux';
-import { BiUserCircle } from "react-icons/bi";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 
-const UserAccount = ({ handleMyDetails, handleUserLogged }) => {
-    const navigate = useNavigate()
+const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) => {
     let firstNAME = useSelector(state => state.personalDetails.firstName)
-    let userLogged = useSelector(state => state.userLoggedIn)
+    let isLogged = useSelector(state => state.isLogged)
     const [accountLinks, setLinks] = useState([
         { title: 'Personal Details', description: 'Manage Your Personal And Security Details', link: '/mydetails' },
         { title: 'Addresses', description: 'Manage Your Delivery And Billing Address', link: '/address' },
@@ -17,36 +15,14 @@ const UserAccount = ({ handleMyDetails, handleUserLogged }) => {
     ])
 
     useEffect(() => {
-        if (!userLogged) {
-            navigate('/signup')
-
-        }
-
-        if (!firstNAME) {
-            handleMyDetails();
-        }
-    }, [userLogged]);
-
-
-    const handleLogout = () => {
-        localStorage.removeItem('myAccessToken')
-        handleUserLogged()
-        navigate('/')
-    }
+        handlePersonalDetails();
+    }, []);
 
     return (<Container fluid className='inventory'>
         <Row className='d-flex justify-content-center align-items-center m-0 navbar '>
-            <Col lg={12} md={12} sm={12} xs={12} className='d-flex justify-content-end text-white mx-0 me-0 w-100'>
-                <button
-                    className='inventory__navbar-btn'
-                    onClick={userLogged ? () => handleLogout() : () => navigate("/signIn")}
-                >
-                    {userLogged ? 'Logout' : 'Login/register'}
-                </button>
-            </Col>
 
             <Col lg={12} md={12} sm={12} xs={12} className='inventory__navbar-title'>
-                <button className='trolley-title-btn' onClick={() => navigate('/')}>
+                <button className='trolley-title-btn' onClick={() => handleNavigation('/')}>
                     Express
                 </button>
             </Col>
@@ -54,7 +30,7 @@ const UserAccount = ({ handleMyDetails, handleUserLogged }) => {
 
         <Row className='d-flex justify-content-start align-items-center'>
             <Col className='back-col'>
-                <button onClick={() => navigate('/')} className='back-button'>
+                <button onClick={() => handleNavigation('/')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
                     <span className='back-text'>Homepage</span>
                 </button>
@@ -74,7 +50,7 @@ const UserAccount = ({ handleMyDetails, handleUserLogged }) => {
                 <div className='header-title'>My Orders</div>
                 <div className='action-description'>Manage scheduled orders and view previous ones.</div>
                 <div className='d-flex justify-content-center'>
-                    <button className='action-btn' onClick={() => navigate('/allorders')}>
+                    <button className='action-btn' onClick={() => handleNavigation('/allorders')}>
                         See all orders <MdKeyboardArrowRight />
                     </button>
                 </div>
@@ -84,7 +60,7 @@ const UserAccount = ({ handleMyDetails, handleUserLogged }) => {
         <Row className='user-settings-section'>
             {accountLinks.map((item, index) => (
                 <Col lg={3} key={index} className='settings-box'>
-                    <button className='settings-btn' onClick={() => navigate(item.link)}>
+                    <button className='settings-btn' onClick={() => handleNavigation(item.link)}>
                         <div className='settings-header'>
                             <span className='settings-title'>{item.title}</span>
                             <MdKeyboardArrowRight />
