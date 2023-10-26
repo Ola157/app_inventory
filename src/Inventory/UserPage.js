@@ -116,7 +116,6 @@ const UserPage = ({
                             </div>
                             <button
                                 className='inventory__product-more'
-                                // onClick={isLogged ? () => handleNavigation(`/viewmore/${item._id}`) : () => handleNavigation(`/signIn/${'viewmore'}/${item._id}`)}
                                 onClick={() => handleNavigation(`/viewmore/${item._id}`)}
                             >
                                 View More

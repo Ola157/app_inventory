@@ -66,7 +66,7 @@ const Trolley = ({
                                         </td>
                                         <td className='text-center border-0'>{item.item}</td>
                                         <td className='d-flex justify-content-center align-items-center border-0'>
-                                            <input className='border text-center' style={{ width: "2em", height: '2em' }}
+                                            <input className='border text-center' style={{ width: "4em", height: '2em' }}
                                                 value={item.userQuantity}
                                                 readOnly />
                                         </td>
