@@ -49,7 +49,7 @@ const Trolley = ({
         {cart.length > 0 ? (
             <>
                 <Row className='trolley-summary-row'>
-                    <Col lg={7} md={6} sm={10} xs={10}>
+                    <Col lg={7} md={6} sm={10} xs={10} className='text-center'>
                         <Table className='trolley-table'>
 
                             <thead>
