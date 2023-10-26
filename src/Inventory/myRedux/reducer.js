@@ -140,7 +140,8 @@ const myReducer = (state = initialState, action) => {
             return {
                 ...state,
                 goods: updateCleared,
-                cart: []
+                cart: [],
+                total: ''
             }
 
         case "VIEWED_ITEM":
