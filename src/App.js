@@ -10,6 +10,7 @@ import {
   AddAddress,
   handleAddGoods,
   handleAddressDelete,
+  handleAllRecords,
   handleAuth,
   handleCartChanges,
   handleCartPull,
@@ -22,7 +23,6 @@ import {
   handleMessageCancel,
   handleProductChanges,
   handleRecord,
-  handleRecords,
   handleSearch,
   handleSignOut,
   handleUpdateDetails,
@@ -44,6 +44,7 @@ const App = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(state => state.isLogged)
   const message = useSelector(state => state.message)
+  const isClickRegister = useSelector(state => state.isClickRegister)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -146,7 +147,7 @@ const App = () => {
   }
 
   const handleOrderRecords = () => {
-    dispatch(handleRecords())
+    dispatch(handleAllRecords())
   }
 
   const handleGetAddress = () => {
@@ -166,6 +167,9 @@ const App = () => {
 
   const handleNavigation = (page) => {
     navigate(page)
+    if (isClickRegister) {
+      handleIsRegister(false)
+    }
     if (!message) return
     handleCancelMessage()
   }

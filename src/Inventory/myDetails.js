@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { usehandleNavigation } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 
@@ -10,12 +9,12 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
     let [existingPassword, setExistingPassword] = useState('');
     let [newPassword, setNewpassword] = useState('')
     let [confirmPassword, setConfirmPassword] = useState('')
-    let [alternativeNumber, setAlternativeNumber] = useState('')
     const myDetails = useSelector(state => state.personalDetails)
     let [title, setTitle] = useState(myDetails.title)
     let [firstName, setFirstName] = useState(myDetails.firstName)
     let [lastName, setLastName] = useState(myDetails.lastName)
     let [mobileNumber, SetMobileNumber] = useState(`+44 ${myDetails.mobileNumber} `)
+    let [alternativeNumber, setAlternativeNumber] = useState(`+44 ${myDetails.alternativeNumber} `)
 
     useEffect(() => {
         handlePersonalDetails();

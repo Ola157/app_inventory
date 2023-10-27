@@ -113,6 +113,9 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
                                         <select value={title} className='input-field h-100' onInput={event => setTitle(event.target.value)}>
                                             <option value="">Select</option>
                                             <option value="mr">Mr</option>
+                                            <option value="mr">Mrs</option>
+                                            <option value="mr">Miss</option>
+                                            <option value="mr">Ms</option>
                                         </select>
                                     </Col>
                                     <Col lg={5} md={5} sm={10} xs={10}>

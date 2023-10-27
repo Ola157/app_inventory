@@ -14,6 +14,41 @@ const initialState = {
 
 const myReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'REG_SUCCESS':
+
+            return {
+                ...state,
+                isClickRegister: action.payload.value
+            }
+
+        case "LOGIN_SUCCESS":
+            return {
+                ...state,
+                isLogged: true
+            }
+
+        case "LOG_OUT":
+            let allGoods = state.goods.map(item => item.addItem ? ({
+                ...item,
+                addItem: false,
+                userQuantity: 0
+            }) : item)
+
+            return {
+                ...state,
+                cart: [],
+                goods: allGoods,
+                isLogged: false,
+                records: [],
+                personalDetails: {},
+                address: {},
+                searched: [],
+                viewed: {},
+                message: '',
+                total: '',
+                cartRecord: []
+            }
+
         case "ALL_GOODS":
             const { goods } = action.payload;
             let updatedCart;
@@ -41,7 +76,6 @@ const myReducer = (state = initialState, action) => {
                     })),
             };
 
-
         case 'MESSAGE':
             const { message } = action.payload
             return {
@@ -53,6 +87,32 @@ const myReducer = (state = initialState, action) => {
             return {
                 ...state,
                 message: ''
+            }
+
+        case "VIEWED_ITEM":
+            const { viewed } = action.payload
+            const matchedProd = state.goods.find(item => item._id === viewed._id)
+            if (matchedProd) {
+                viewed.userQuantity = matchedProd.userQuantity
+                viewed.addItem = matchedProd.addItem
+            }
+            return {
+                ...state,
+                viewed: viewed
+            }
+
+        case "SEARCHED_ITEM":
+            const { items } = action.payload
+            let updateSearched = []
+            for (const searched of items) {
+                const matchedItem = state.goods.find(item => item._id == searched._id);
+                if (matchedItem) {
+                    updateSearched.push(matchedItem)
+                }
+            }
+            return {
+                ...state,
+                searched: updateSearched
             }
 
         case "HANDLE_CARTFETCH":
@@ -101,21 +161,6 @@ const myReducer = (state = initialState, action) => {
                 total: state.cart.length ? state.cart.reduce((acc, item) => acc + item.cost, 0) : state.total
             };
 
-
-        case "SEARCHED_ITEM":
-            const { items } = action.payload
-            let updateSearched = []
-            for (const searched of items) {
-                const matchedItem = state.goods.find(item => item._id == searched._id);
-                if (matchedItem) {
-                    updateSearched.push(matchedItem)
-                }
-            }
-            return {
-                ...state,
-                searched: updateSearched
-            }
-
         case "REMOVE_ITEM":
             let updatedGood = state.goods.map(good => good._id == action.payload.itemId ?
                 ({
@@ -144,18 +189,6 @@ const myReducer = (state = initialState, action) => {
                 total: ''
             }
 
-        case "VIEWED_ITEM":
-            const { viewed } = action.payload
-            const matchedProd = state.goods.find(item => item._id === viewed._id)
-            if (matchedProd) {
-                viewed.userQuantity = matchedProd.userQuantity
-                viewed.addItem = matchedProd.addItem
-            }
-            return {
-                ...state,
-                viewed: viewed
-            }
-
         case "CHECK_OUT":
             return {
                 ...state,
@@ -167,19 +200,13 @@ const myReducer = (state = initialState, action) => {
                 cart: []
             }
 
-        case "LOGIN_SUCCESS":
+        case "ALL_CART_RECORDS":
             return {
                 ...state,
-                isLogged: true
+                records: action.payload
             }
 
-        case "REG_SUCCESS":
-            return {
-                ...state,
-                isLogged: 'Registered'
-            }
-
-        case 'RECORD':
+        case 'CART_RECORD':
             const { cartRecord } = action.payload
             return {
                 ...state,
@@ -197,49 +224,6 @@ const myReducer = (state = initialState, action) => {
             return {
                 ...state,
                 personalDetails: { title, email, firstName, lastName, mobileNumber, alternativeNumber }
-            }
-        case "ALL_RECORDS":
-            return {
-                ...state,
-                records: action.payload
-            }
-        case "SHOW_ORDER":
-            let showOrder = state.records.map((orders) => action.payload === orders._id ? ({
-                ...orders,
-                showOrder: !orders.showOrder
-            }) : orders)
-            return {
-                ...state,
-                records: showOrder
-            }
-
-        case 'IS_REG':
-            const { value } = action.payload
-            return {
-                ...state,
-                isClickRegister: value
-            }
-
-        case "LOG_OUT":
-            let allGoods = state.goods.map(item => item.addItem ? ({
-                ...item,
-                addItem: false,
-                userQuantity: 0
-            }) : item)
-
-            return {
-                ...state,
-                cart: [],
-                goods: allGoods,
-                isLogged: false,
-                records: [],
-                personalDetails: {},
-                address: {},
-                searched: [],
-                viewed: {},
-                message: '',
-                total: '',
-                cartRecord: []
             }
     }
     return state
