@@ -70,7 +70,6 @@ const App = () => {
 
   const handleAddClick = (data) => {
     const { itemId, newUserQuantity, quantity, page } = data;
-    console.log(newUserQuantity)
     if (!isLogged) {
       return handleNavigation(`/signIn/${page}/${itemId}`);
     } else if (quantity > newUserQuantity + 1) {

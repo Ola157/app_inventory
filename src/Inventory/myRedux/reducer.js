@@ -13,7 +13,6 @@ const initialState = {
 }
 
 const myReducer = (state = initialState, action) => {
-    console.log(action.type)
     switch (action.type) {
         case 'REG_SUCCESS':
 
