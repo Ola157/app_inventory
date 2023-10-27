@@ -107,6 +107,9 @@ const App = () => {
 
   const handleCheckOut = () => {
     dispatch(handleCheckingOut())
+    setTimeout(() => {
+      handlePullCart()
+    }, 1000)
   }
 
   const handleProductAmends = (data) => {
@@ -133,6 +136,9 @@ const App = () => {
 
   const handleAddAddress = (data) => {
     dispatch(AddAddress(data))
+    setTimeout(() => {
+      handleGetAddress()
+    }, 1000)
   }
 
   const handleUpdateUser = (data) => {
@@ -155,7 +161,7 @@ const App = () => {
     dispatch(handleAddressDelete(addressId))
     setTimeout(() => {
       handleGetAddress()
-    }, 1000)
+    }, 500)
   }
 
   const handleNavigation = (page) => {

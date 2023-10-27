@@ -162,8 +162,9 @@ const myReducer = (state = initialState, action) => {
                 goods: state.goods.map((good) => ({
                     ...good,
                     userQuantity: 0,
-                    addItem: true,
-                }))
+                    addItem: false
+                })),
+                cart: []
             }
 
         case "LOGIN_SUCCESS":

@@ -36,6 +36,7 @@ const Records = ({ handleOrderRecords, handleNavigation }) => {
                 records.map((order, i) => (
                     <Col key={i} lg={8} md={8} sm={12} xs={12} className='order-container'>
                         <button className='order-toggle' onClick={() => handleNavigation(`/record/${order.cartId}`)}>
+                            <span>{i + 1}</span>
                             <span className='order-date'>{order.date}</span>
                             <span className='order-icon'><MdKeyboardArrowRight className='icon' /></span>
                         </button>
