@@ -36,7 +36,7 @@ const RecordPage = ({ handleRecordPull, handleNavigation }) => {
         </Row>
 
         <Row className="justify-content-center">
-            <Col lg={8} md={8} sm={9} xs={9} className="table-responsive">
+            <Col lg={8} md={10} sm={12} xs={12} className="table-responsive">
                 <Table bordered>
                     <thead>
                         <tr>
