@@ -13,6 +13,7 @@ const initialState = {
 }
 
 const myReducer = (state = initialState, action) => {
+    console.log(action.type)
     switch (action.type) {
         case 'REG_SUCCESS':
 
@@ -120,7 +121,7 @@ const myReducer = (state = initialState, action) => {
             const total = cart.reduce((acc, item) => acc + item.cost, 0);
             return {
                 ...state,
-                goods: kind === 'updatequantity' ?
+                goods: kind === 'updatequantity' && cart.length ?
                     state.goods.map(good => {
                         const matchedCartItem = cart.find(cartItem => cartItem.itemId === good._id);
                         if (matchedCartItem) {

@@ -70,9 +70,9 @@ const App = () => {
 
   const handleAddClick = (data) => {
     const { itemId, newUserQuantity, quantity, page } = data;
-
+    console.log(newUserQuantity)
     if (!isLogged) {
-      return handleNavigation(`/signIn/${page}/${itemId}/${1}`);
+      return handleNavigation(`/signIn/${page}/${itemId}`);
     } else if (quantity > newUserQuantity + 1) {
       dispatch(handleUserQuantity(itemId, newUserQuantity + 1));
     } else if (quantity >= newUserQuantity + 1) {
@@ -198,7 +198,6 @@ const App = () => {
             handlePullCart={handlePullCart}
             handleSearchedItem={handleSearchedItem}
             handleGoods={handleGoods}
-            cartHandler={cartHandler}
           />} />
 
         <Route path='/adminpage'
@@ -215,7 +214,6 @@ const App = () => {
             handleLogOut={handleLogOut}
             handleCancelMessage={handleCancelMessage}
             handleIncomingMessage={handleIncomingMessage}
-            cartHandler={cartHandler}
             handleViewedItem={handleViewedItem}
           />} />
 
@@ -227,7 +225,7 @@ const App = () => {
             cartHandler={cartHandler}
             handleCheckOut={handleCheckOut} />} />
 
-        <Route path='/signIn/:page/:itemId/:userQuantity'
+        <Route path='/signIn/:page/:itemId'
           element={<RegistrationPage
             handlePullCart={handlePullCart}
             handleAddClick={handleAddClick}
@@ -235,7 +233,6 @@ const App = () => {
             handleNavigation={handleNavigation}
             handleCancelMessage={handleCancelMessage}
             handleIncomingMessage={handleIncomingMessage}
-            cartHandler={cartHandler}
             handleAuthentication={handleAuthentication} />} />
 
         <Route path='/useraccount'

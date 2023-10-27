@@ -14,7 +14,7 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
     let [title, setTitle] = useState('')
     let [mobileNumber, setMobileNumber] = useState('')
     const isLogged = useSelector(state => state.isLogged)
-    const { page, itemId, userQuantity } = useParams()
+    const { page, itemId } = useParams()
     const message = useSelector(state => state.message)
     const isClickRegister = useSelector(state => state.isClickRegister)
 
@@ -28,11 +28,11 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
         }
         if (page === 'viewmore') {
             handleNavigation(`/viewmore/${itemId}`);
-            handleAddClick(itemId, userQuantity);
+            handleAddClick({ itemId, newUserQuantity: 0 });
         } else if (page === 'viewmore') {
             handleNavigation(`/viewmore/${itemId}`);
         } else if (page === 'homepage') {
-            handleAddClick(itemId, userQuantity);
+            handleAddClick({ itemId, newUserQuantity: 0 });
             handleNavigation('/');
         } else if (page === 'homepage') {
             handleNavigation('/');
