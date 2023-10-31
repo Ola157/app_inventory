@@ -203,7 +203,11 @@ const myReducer = (state = initialState, action) => {
         case "ALL_CART_RECORDS":
             return {
                 ...state,
-                records: action.payload
+                records: action.payload.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateA - dateB;
+                })
             }
 
         case 'CART_RECORD':

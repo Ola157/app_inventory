@@ -48,7 +48,7 @@ const UserPage = ({
 
                     <button
                         className='inventory__navbar-btn'
-                        onClick={isLogged ? () => handleLogOut() : () => handleNavigation(`/signIn/${'homepage'}/${'user'}/${'login'}`)}
+                        onClick={isLogged ? () => handleLogOut() : () => handleNavigation(`/signIn/${'homepage'}/${'user'}`)}
                     >
                         {isLogged ? 'Logout' : 'Login/register'}
                     </button>
@@ -151,17 +151,14 @@ const UserPage = ({
                     </Col>
                 )) : null}
         </Row>
-
-        <footer className="inventory__footer">
-            <Container>
-                <Row>
-                    <Col lg={12} className='text-center'>
-                        <p className="inventory__footer-text">
-                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
-                        </p>
-                    </Col>
-                </Row>
-            </Container>
+        <footer className="footer-container">
+            <Row className='inventory-footer'>
+                <Col lg={12} className='text-center'>
+                    <p >
+                        &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                    </p>
+                </Col>
+            </Row>
         </footer>
 
     </Container >)

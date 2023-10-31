@@ -136,16 +136,14 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
                 </Col>
             </Col>
         </Row>
-        <footer className="inventory__footer">
-            <Container>
-                <Row>
-                    <Col lg={12} className='text-center'>
-                        <p className="inventory__footer-text">
-                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
-                        </p>
-                    </Col>
-                </Row>
-            </Container>
+        <footer className="footer-container">
+            <Row className='inventory-footer'>
+                <Col lg={12} className='text-center'>
+                    <p >
+                        &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                    </p>
+                </Col>
+            </Row>
         </footer>
     </Container >)
 }

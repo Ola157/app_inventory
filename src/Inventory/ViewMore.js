@@ -68,7 +68,7 @@ const ViewMore = ({
         </Row>
 
         {message &&
-            < Row className='inventory__alert my-2'>
+            < Row className='inventory__alert my-1'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
                     <>
                         <CiCircleAlert />
@@ -79,7 +79,7 @@ const ViewMore = ({
             </Row>
         }
 
-        <Row className='d-flex justify-content-center m-2'>
+        <Row className='d-flex justify-content-center m-1'>
 
             <Col lg={12} md={12} sm={12} xs={12} className='details-container'>
                 <div className='details-content'>
@@ -111,16 +111,14 @@ const ViewMore = ({
             }
         </Row>
 
-        <footer className="inventory__footer">
-            <Container>
-                <Row>
-                    <Col lg={12} className='text-center'>
-                        <p className="inventory__footer-text">
-                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
-                        </p>
-                    </Col>
-                </Row>
-            </Container>
+        <footer className="footer-container  mt-1">
+            <Row className='inventory-footer'>
+                <Col lg={12} className='text-center'>
+                    <p >
+                        &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                    </p>
+                </Col>
+            </Row>
         </footer>
     </Container >)
 }

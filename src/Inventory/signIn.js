@@ -26,12 +26,9 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
         if (!isLogged) {
             return;
         }
-        if (page === 'viewmore') {
+        else if (page === 'viewmore') {
             handleNavigation(`/viewmore/${itemId}`);
-            handleAddClick({ itemId, newUserQuantity: 0 });
-        } else if (page === 'viewmore') {
-            handleNavigation(`/viewmore/${itemId}`);
-        } else if (page === 'homepage') {
+        } else if (page === 'homepage' && itemId) {
             handleAddClick({ itemId, newUserQuantity: 0 });
             handleNavigation('/');
         } else if (page === 'homepage') {
@@ -156,16 +153,14 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
                 )}
             </Col>
         </Row >
-        <footer className="inventory__footer">
-            <Container>
-                <Row>
-                    <Col lg={12} className='text-center'>
-                        <p className="inventory__footer-text">
-                            &copy; {new Date().getFullYear()} Express. All Rights Reserved.
-                        </p>
-                    </Col>
-                </Row>
-            </Container>
+        <footer className="footer-container">
+            <Row className='inventory-footer'>
+                <Col lg={12} className='text-center'>
+                    <p >
+                        &copy; {new Date().getFullYear()} Express. All Rights Reserved.
+                    </p>
+                </Col>
+            </Row>
         </footer>
     </Container >)
 }

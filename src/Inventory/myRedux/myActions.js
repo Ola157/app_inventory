@@ -24,7 +24,6 @@ const actionTypes = {
 
 const myJwt = localStorage.getItem('accessToken');
 
-
 export const handleAuth = (data) => (dispatch) => {
     const { type, email, title, password, firstName, lastName, mobNumber } = data;
 
@@ -181,20 +180,17 @@ export const handleSearch = (event) => (dispatch) => {
 };
 
 export const handleCartPull = (kind) => (dispatch) => {
-    ;
     // axios.get('http://localhost:9810/user/pullCart', {
     axios.get('https://inventory-be-seven.vercel.app/user/pullCart', {
         headers: {
             'Authorization': `Bearer ${myJwt}`
         }
-    })
-        .then((response) => {
-            const { cart } = response.data;
-            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart, kind } });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    }).then((response) => {
+        const { cart } = response.data;
+        dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart, kind } });
+    }).catch((error) => {
+        console.log(error);
+    });
 };
 
 export const handleCartChanges = (type, itemId) => (dispatch) => {
@@ -380,30 +376,26 @@ export const handleAddressDelete = (addressId) => () => {
 };
 
 export const handleFetchPersonalDetails = () => (dispatch) => {
-    axios
-        .get('https://inventory-be-seven.vercel.app/user/getDetails', {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`
-            }
-        })
-        .then((response) => {
-            const { user } = response.data;
-            dispatch({ type: actionTypes.PERSONALDETAILS, payload: user });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    axios.get('https://inventory-be-seven.vercel.app/user/getDetails', {
+        headers: {
+            'Authorization': `Bearer ${myJwt}`
+        }
+    }).then((response) => {
+        const { user } = response.data;
+        dispatch({ type: actionTypes.PERSONALDETAILS, payload: user });
+    }).catch((error) => {
+        console.error(error);
+    });
 };
 
 export const handleUpdateDetails = (data) => (dispatch) => {
-    axios
-        .post('https://inventory-be-seven.vercel.app/user/updateDetails', data, {
-            // .post('http://localhost:9810/user/updateDetails', data, {
-            headers: {
-                'Authorization': `Bearer ${myJwt}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
+    axios.post('https://inventory-be-seven.vercel.app/user/updateDetails', data, {
+        // .post('http://localhost:9810/user/updateDetails', data, {
+        headers: {
+            'Authorization': `Bearer ${myJwt}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
         .then((response) => {
             const { message } = response.data;
             if (message === 'Incorrect password') {
