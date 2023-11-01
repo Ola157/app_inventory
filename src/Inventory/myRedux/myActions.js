@@ -267,7 +267,6 @@ export const handleProductChanges = (data) => () => {
 
     switch (type) {
         case 'edit':
-            console.log('hi')
             axios.patch(`https://inventory-be-seven.vercel.app/store/edit/${_id}`, null)
                 // axios.patch(`http://localhost:9810/store/edit/${_id}`, null)
                 .catch((error) => {

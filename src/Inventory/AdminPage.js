@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
-import { Link, usehandleNavigation } from 'react-router-dom';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 import axios from 'axios';
 
@@ -12,22 +11,20 @@ const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => 
     let [image, setImage] = useState('');
     let [description, setDescription] = useState('');
     let [products, setProducts] = useState('')
-    let [img, setImg] = useState('')
 
     useEffect(() => {
         handleFetch()
     })
 
 
-    const handleFetch = async () => {
-        try {
-            let response = await axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods')
-            let { allGoods } = response.data
-            setProducts(allGoods)
-        }
-        catch (err) {
-            console.log(err)
-        }
+    const handleFetch = () => {
+        axios.get('https://inventory-be-seven.vercel.app/store/getAllgoods')
+            .then((response) => {
+                const { goods } = response.data
+                setProducts(goods)
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
 
@@ -66,7 +63,7 @@ const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => 
             </Row>
 
 
-            <Row className='admin-input-row'>
+            <Row className='admin-input-row m-2'>
                 <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
                     <input className='admin-input' value={item} placeholder='Item Name' onInput={event => setItem(event.target.value)} />
                 </Col>
@@ -80,7 +77,10 @@ const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => 
                     <input className='admin-input' value={description} placeholder='Description' onInput={event => setDescription(event.target.value)} />
                 </Col>
                 <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
-                    <input className='admin-input' type='file' value={img} onChange={selectImage} />
+                    <label htmlFor='image'>{!image ? 'Select Image' : image.name}</label>
+                </Col>
+                <Col className='d-none'>
+                    <input id='image' className='admin-input' type='file' onChange={selectImage} />
                 </Col>
                 <Col className='admin-input-col' lg={2} md={3} sm={10} xs={10}>
                     <button className='admin-add-btn' onClick={() => handleAdd()}>ADD</button>
@@ -88,7 +88,7 @@ const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => 
             </Row>
 
             {products &&
-                <Row className='admin-products-row'>
+                <Row className='admin-products-row m-2'>
                     {products.map((each, index) => (
                         <Col className='admin-product-col' key={index} lg={3} md={3} sm={5} xs={10}>
                             <DisplayItems each={each} handleProductAmends={handleProductAmends} handleFetch={handleFetch} />

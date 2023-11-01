@@ -39,7 +39,7 @@ const Trolley = ({
         </Row>
 
         {message && (
-            <Row className='trolley-modal-row'>
+            <Row className='trolley-modal-row m-2'>
                 <Col lg={4} md={6} sm={12} xs={12} className='trolley-modal-col'>
                     {message}
                 </Col>
@@ -48,7 +48,7 @@ const Trolley = ({
 
         {cart.length > 0 ? (
             <>
-                <Row className='trolley-summary-row'>
+                <Row className='trolley-summary-row m-2'>
                     <Col sm={12} xs={12} lg={6} md={6} className='table-responsive'>
                         <Table className='trolley-table'>
 
@@ -106,7 +106,7 @@ const Trolley = ({
                 </Row>
             </>
         ) : (
-            <Row className='trolley-empty-row'>
+            <Row className='trolley-empty-row m-2'>
                 <Col lg={4} md={6} sm={12} xs={12} className='text-center'>
                     <span>Cart Empty</span>
                 </Col>

@@ -38,7 +38,7 @@ const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) 
         </Row>
 
 
-        <Row className='welcome-section'>
+        <Row className='welcome-section m-2'>
             <Col className='text-center'>
                 <div className='header-title'>Welcome, {firstNAME}</div>
                 <div className='welcome-subtitle'>Here’s where you’ll find all your account details.</div>
@@ -57,7 +57,7 @@ const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) 
             </Col>
         </Row>
 
-        <Row className='user-settings-section'>
+        <Row className='user-settings-section m-2'>
             {accountLinks.map((item, index) => (
                 <Col lg={3} key={index} className='settings-box'>
                     <button className='settings-btn' onClick={() => handleNavigation(item.link)}>

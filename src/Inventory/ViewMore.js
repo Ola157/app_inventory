@@ -68,7 +68,7 @@ const ViewMore = ({
         </Row>
 
         {message &&
-            < Row className='inventory__alert my-1'>
+            < Row className='inventory__alert m-1'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
                     <>
                         <CiCircleAlert />
@@ -81,7 +81,7 @@ const ViewMore = ({
 
         <Row className='d-flex justify-content-center m-1'>
 
-            <Col lg={12} md={12} sm={12} xs={12} className='details-container'>
+            <Col lg={12} md={12} sm={12} xs={12} className='details-container m-1'>
                 <div className='details-content'>
                     Discover More About This Product
                 </div>

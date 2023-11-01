@@ -30,7 +30,7 @@ const Records = ({ handleOrderRecords, handleNavigation }) => {
             </Col>
         </Row>
 
-        <Row className='orders-row'>
+        <Row className='orders-row m-2'>
             <Col className='orders-header' lg={12} md={12} sm={12} xs={12}>My orders</Col>
             {records.length && !message ?
                 records.map((order, i) => (

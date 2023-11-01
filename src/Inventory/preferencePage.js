@@ -26,14 +26,14 @@ const MyPreference = ({ handleLogOut, handleNavigation }) => {
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-2'>
             <Col lg={6} md={6} sm={12} xs={12} className='mb-2'>
                 <h4 className='header-title'>Groceries preferences</h4>
                 <p className='text-center' style={{ fontSize: '.9em' }}> We want to know how you like things done. So here's where you can set your product substitution and marketing communication preferences.</p>
             </Col>
         </Row>
 
-        <Row className='user-action-section'>
+        <Row className='user-action-section m-2'>
             <Col lg={6} className='action-box'>
                 <h4 className='header-title'>Product substitution</h4>
                 <p className='text-start' style={{ fontSize: '.9em' }}>  If an item in your online order isn't available, we can substitute it with another similar product. And if you're not happy with the substitute item, you can just return it on the spot to your delivery driver for a full refund.

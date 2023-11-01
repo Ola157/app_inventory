@@ -51,7 +51,7 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
             </Col>
         </Row>
 
-        <Row className='centered-row'>
+        <Row className='centered-row m-2'>
             <Col className='centered-text' lg={5} md={6} sm={12} xs={12}>
                 <span className='header-title'>Personal Information</span>
                 <p className='info-text'>Review and modify your personal account details here.</p>
@@ -59,7 +59,7 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-center'>
+        <Row className='d-flex justify-content-center m-2'>
             <Col className='bg-white d-flex justify-content-center py-3 my-5' lg={10} md={10} sm={12} xs={12}>
                 <Col lg={4} md={4} sm={12} xs={12}>
                     <div className='input-section'>

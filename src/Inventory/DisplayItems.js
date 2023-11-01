@@ -8,8 +8,7 @@ const InputPage = ({ each: { item, quantity, price, description, image, editItem
     let [newImage, setNewImage] = useState('')
 
     const setImage = e => {
-        let newImage = e.target.files[0]
-        setNewImage(newImage)
+        setNewImage(e.target.files[0])
     }
 
     const handleChanges = (type) => {
@@ -18,15 +17,25 @@ const InputPage = ({ each: { item, quantity, price, description, image, editItem
         handleFetch()
     };
 
-    return (<Container className='display-items-con'>
+
+    return (<Container>
         <div className='product-header'>
             Product
         </div>
         <hr className='product-divider' />
-        <div className='item-image'>
-            {!editItem ? <img src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${image}`} />
-                : <input className='product-input' type='file' placeholder='image' onInput={setImage} />}
+
+        {!editItem ? <div className='item-image'>
+            <img src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${image}`} />
         </div>
+            :
+            <>
+                <input id='newimage' className='product-input d-none' type='file' placeholder='image' onChange={setImage} />
+                <label className='image-label' htmlFor='newimage'>{!newImage ? 'Select Image' : newImage.name}</label>
+            </>
+        }
+
+        <hr className='product-divider' />
+
 
         <div className='product-field'>
             {!editItem ? item :
@@ -50,19 +59,20 @@ const InputPage = ({ each: { item, quantity, price, description, image, editItem
         <hr className='product-divider' />
 
 
-        {!editItem
-            ?
-            <div className='product-actions'>
-                <button className='btn-edit' onClick={() => handleChanges('edit')}>Edit</button>
-                <button className='btn-delete' onClick={() => handleChanges('delete')}> Delete</button>
-            </div>
-            :
-            <div className='product-actions'>
-                <button className='btn-save' onClick={() => handleChanges('save')}>Save</button>
-                <button className='btn-cancel' onClick={() => handleChanges('cancel')}>Cancel</button>
-            </div>
+        {
+            !editItem
+                ?
+                <div className='product-actions'>
+                    <button className='btn-edit' onClick={() => handleChanges('edit')}>Edit</button>
+                    <button className='btn-delete' onClick={() => handleChanges('delete')}> Delete</button>
+                </div>
+                :
+                <div className='product-actions'>
+                    <button className='btn-save' onClick={() => handleChanges('save')}>Save</button>
+                    <button className='btn-cancel' onClick={() => handleChanges('cancel')}>Cancel</button>
+                </div>
         }
 
-    </Container>)
+    </Container >)
 }
 export default InputPage;

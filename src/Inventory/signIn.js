@@ -69,7 +69,7 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
             </Col>
         </Row>
 
-        <Row className='justify-content-center'>
+        <Row className='justify-content-center m-2'>
             <Col lg={4} className='form-col'>
                 {message && (<>
                     <Row className="modal-alert">

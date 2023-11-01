@@ -65,14 +65,14 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
 
         {
             message &&
-            <Row className='inventory__alert my-2'>
+            <Row className='inventory__alert m-2'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
                     {message}
                 </Col>
             </Row>
         }
 
-        < Row className='d-flex justify-content-center'>
+        < Row className='d-flex justify-content-center m-2'>
             <Col className='text-center'>
                 <span className='header-title'>My Address</span>
                 <span className='my-2 d-block'>{!myAddress.length ? 'You do not have any saved addresses.' : "Here's where you can edit, add or delete your delivery and billing addresses"}
@@ -86,7 +86,7 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
 
 
         {isShowAddress ?
-            <Row className='d-flex justify-content-center pt-0 bg-white'>
+            <Row className='d-flex justify-content-center pt-0 bg-white m-2'>
                 <Col className='d-flex justify-content-center py-3 mb-5' lg={10} md={10} sm={12} xs={12}>
                     <Col lg={4} md={4} sm={12} xs={12}>
                         <div className='input-section'>
@@ -152,7 +152,7 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
             : null}
 
         {!isShowAddress &&
-            <Row className='d-flex justify-content-center'>
+            <Row className='d-flex justify-content-center m-2'>
                 {Array.isArray(myAddress) &&
                     myAddress.map((myaddy, index) =>
                         <Col key={index} lg={4} md={8} sm={12} xs={12} className='bg-white p-3 m-1'>
