@@ -125,8 +125,9 @@ const UserPage = ({
                 })}
 
 
-            {searched.length > 0 ?
-                searched.map((item, index) => (
+            {!searched.length ?
+                null
+                : searched.map((item, index) => (
                     <Col lg={2} md={3} sm={3} xs={5} key={index} className='inventory__product'>
                         <div className='item-image my-2'>
                             {item.image && <img src={`https://expressbuckett.s3.eu-west-2.amazonaws.com/inventory/${item.image}`} />}
@@ -149,7 +150,7 @@ const UserPage = ({
                         </div>
                         <button className='inventory__product-more' onClick={() => handleNavigation(`/viewmore/${item._id} `)}>view more</button>
                     </Col>
-                )) : null}
+                ))}
         </Row>
         <footer className="footer-container">
             <Row className='inventory-footer'>

@@ -171,11 +171,9 @@
 
  .footer-container {
    display: flex;
-   justify-content: center;
    flex-direction: column;
-   min-height: 10vh;
    width: 100%;
-   margin: 0;
+   margin-top: 3em;
  }
 
  .inventory-footer {
@@ -183,12 +181,11 @@
    color: white;
    padding: 10px 0;
    text-align: center;
-   margin: 0;
    width: 100%;
    box-sizing: border-box;
-   top: 3em;
+   position: fixed;
    bottom: 0;
-   position: relative;
+   margin: 0;
  }
 
  .signInpage {

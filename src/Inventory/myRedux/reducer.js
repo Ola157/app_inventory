@@ -13,6 +13,7 @@ const initialState = {
 }
 
 const myReducer = (state = initialState, action) => {
+    console.log(action.type)
     switch (action.type) {
         case 'REG_SUCCESS':
 
@@ -112,7 +113,7 @@ const myReducer = (state = initialState, action) => {
             }
             return {
                 ...state,
-                searched: updateSearched
+                searched: items.length ? updateSearched : []
             }
 
         case "HANDLE_CARTFETCH":
