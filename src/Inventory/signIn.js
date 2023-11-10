@@ -141,7 +141,7 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
                     </Col>
                 </Row>
 
-                {!isClickRegister && (
+                {!isClickRegister ? (
                     <Row className='signup-prompt'>
                         <Col>
                             <Col className='prompt-text'>New To Super Groceries?</Col>
@@ -150,7 +150,13 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
                             </Col>
                         </Col>
                     </Row>
-                )}
+                ) :
+                    <Row className='signup-prompt '>
+                        <Col className='d-flex justify-content-center'>
+                            Existing User?
+                            <button className='signup-button' onClick={() => handleIsRegister(false)}>Sign In</button>
+                        </Col>
+                    </Row>}
             </Col>
         </Row >
         <footer className="footer-container">
