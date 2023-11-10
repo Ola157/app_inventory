@@ -84,7 +84,7 @@ const UserPage = ({
         }
 
 
-        <Row className='inventory__products'>
+        <Row className='inventory__products m-0'>
             {products.length > 0 && searched.length < 1 &&
                 products.map((item, index) => {
                     return (

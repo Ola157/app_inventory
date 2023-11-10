@@ -42,7 +42,7 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-start align-items-center'>
+        <Row className='back-row'>
             <Col className='back-col'>
                 <button onClick={() => handleNavigation('/useraccount')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />

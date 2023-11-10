@@ -60,7 +60,7 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
             </Col>
         </Navbar>
 
-        <Row className='d-flex justify-content-start align-items-center'>
+        <Row className='back-row'>
             <Col className='back-col'>
                 <button onClick={() => handleNavigation('/')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
@@ -71,18 +71,13 @@ const RegistrationPage = ({ handleAuthentication, handleAddClick, handleIncoming
 
         <Row className='justify-content-center m-2'>
             <Col lg={4} className='form-col'>
-                {message && (<>
+                {message && (
                     <Row className="modal-alert">
                         <Col className="modal-content" lg={8} md={5} sm={6} xs={8}>
                             <div>{message}</div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col className='messagebtn'>
-                            {message === 'User already exists' && <button onClick={() => handleIsRegister(false)}>Click to sign in</button>}
-                        </Col>
-                    </Row>
-                </>)}
+                )}
 
                 <Row className='justify-content-start header-row'>
                     <Col className='description'>

@@ -26,7 +26,7 @@ const RecordPage = ({ handleRecordPull, handleNavigation }) => {
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-start align-items-center'>
+        <Row className='back-row'>
             <Col className='back-col'>
                 <button onClick={() => handleNavigation('/allorders')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />

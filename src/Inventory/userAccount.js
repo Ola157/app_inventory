@@ -28,7 +28,7 @@ const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) 
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-start align-items-center'>
+        <Row className='back-row'>
             <Col className='back-col'>
                 <button onClick={() => handleNavigation('/')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
@@ -45,7 +45,7 @@ const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) 
             </Col>
         </Row>
 
-        <Row className='user-action-section'>
+        <Row className='user-action-section m-0'>
             <Col lg={6} className='action-box'>
                 <div className='header-title'>My Orders</div>
                 <div className='action-description'>Manage scheduled orders and view previous ones.</div>

@@ -84,12 +84,6 @@ const myReducer = (state = initialState, action) => {
                 message
             }
 
-        case "MESSAGE_CANCEL":
-            return {
-                ...state,
-                message: ''
-            }
-
         case "VIEWED_ITEM":
             const { viewed } = action.payload
             const matchedProd = state.goods.find(item => item._id === viewed._id)

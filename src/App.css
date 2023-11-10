@@ -369,6 +369,7 @@
    display: flex;
    justify-content: start;
    align-items: center;
+   margin: 0;
  }
 
  .back-col {
@@ -879,4 +880,10 @@
    width: 15em;
    height: 10em;
    border-radius: 2.4px;
+ }
+
+ .preference-row {
+   margin: 0 !important;
+   display: flex;
+   justify-content: center;
  }

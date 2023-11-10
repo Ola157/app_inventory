@@ -18,7 +18,6 @@ const actionTypes = {
     VIEWED_ITEM: 'VIEWED_ITEM',
     SEARCHED_ITEM: "SEARCHED_ITEM",
     MESSAGE: "MESSAGE",
-    MESSAGE_CANCEL: 'MESSAGE_CANCEL',
     REG_SUCCESS: 'REG_SUCCESS'
 };
 
@@ -43,6 +42,9 @@ export const handleAuth = (data) => (dispatch) => {
                 } else if (message === 'User already exists') {
                     dispatch({ type: actionTypes.MESSAGE, payload: { message } });
                 }
+                setTimeout(() => {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+                }, 2000)
             })
             .catch((error) => {
                 console.log(error);
@@ -66,6 +68,9 @@ export const handleAuth = (data) => (dispatch) => {
                 } else {
                     dispatch({ type: actionTypes.MESSAGE, payload: { message } });
                 }
+                setTimeout(() => {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+                }, 2000)
             })
             .catch((error) => {
                 console.log(error);
@@ -113,6 +118,9 @@ export const handleAddGoods = (data) => (dispatch) => {
         .then((response) => {
             const { message } = response.data;
             dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            setTimeout(() => {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+            }, 2000)
         })
         .catch((error) => {
             console.error(error);
@@ -131,7 +139,10 @@ export const handleAllRecords = () => (dispatch) => {
         .then((response) => {
             const { records, message } = response.data;
             if (records) return dispatch({ type: actionTypes.ALL_CART_RECORDS, payload: records });
-            return dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            setTimeout(() => {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+            }, 2000)
         })
         .catch((error) => {
             console.error(error);
@@ -140,10 +151,10 @@ export const handleAllRecords = () => (dispatch) => {
 
 export const handleMessage = (message) => (dispatch) => {
     dispatch({ type: actionTypes.MESSAGE, payload: { message } });
-};
 
-export const handleMessageCancel = () => (dispatch) => {
-    dispatch({ type: actionTypes.MESSAGE_CANCEL });
+    setTimeout(() => {
+        dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+    }, 2000)
 };
 
 export const handleViewed = (itemId) => (dispatch) => {
@@ -171,6 +182,9 @@ export const handleSearch = (event) => (dispatch) => {
                     const { items, message } = response.data;
                     dispatch({ type: actionTypes.MESSAGE, payload: { message } });
                     dispatch({ type: actionTypes.SEARCHED_ITEM, payload: { items } });
+                    setTimeout(() => {
+                        dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+                    }, 2000)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -206,6 +220,9 @@ export const handleCartChanges = (type, itemId) => (dispatch) => {
                 const { message } = response.data;
                 dispatch({ type: actionTypes.MESSAGE, payload: { message } });
                 dispatch({ type: actionTypes.CLEAR_CART });
+                setTimeout(() => {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+                }, 2000)
             })
             .catch((error) => {
                 console.log(error);
@@ -256,6 +273,9 @@ export const handleCheckingOut = () => (dispatch) => {
             const { message } = response.data;
             dispatch({ type: actionTypes.MESSAGE, payload: { message } });
             dispatch({ type: actionTypes.CHECK_OUT, payload: { message } });
+            setTimeout(() => {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+            }, 2000)
         })
         .catch((error) => {
             console.log(error);
@@ -334,6 +354,9 @@ export const AddAddress = (data) => (dispatch) => {
         }).then((response) => {
             const { message } = response.data
             dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            setTimeout(() => {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+            }, 2000)
         })
         .catch((error) => {
             console.error(error);
@@ -353,6 +376,9 @@ export const handleFetchAddress = () => (dispatch) => {
             const { address, message } = response.data;
             dispatch({ type: actionTypes.ADDRESS, payload: address });
             dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+            setTimeout(() => {
+                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+            }, 2000)
         })
         .catch((error) => {
             console.error(error);
@@ -399,6 +425,9 @@ export const handleUpdateDetails = (data) => (dispatch) => {
             const { message } = response.data;
             if (message === 'Incorrect password') {
                 dispatch({ type: actionTypes.MESSAGE, payload: { message } });
+                setTimeout(() => {
+                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
+                }, 2000)
             }
         })
         .catch((error) => {

@@ -130,10 +130,6 @@ const App = () => {
     dispatch(handleMessage(message))
   }
 
-  const handleCancelMessage = () => {
-    dispatch(handleMessageCancel())
-  }
-
   const handleAddAddress = (data) => {
     dispatch(AddAddress(data))
     setTimeout(() => {
@@ -169,14 +165,11 @@ const App = () => {
     if (isClickRegister) {
       handleIsRegister(false)
     }
-    if (!message) return
-    handleCancelMessage()
+
   }
 
   const handleIsRegister = (value) => {
     dispatch(handleIsReg(value))
-    if (!message) return
-    handleCancelMessage()
   }
 
   const handleRecordPull = (recordId) => {
@@ -193,7 +186,6 @@ const App = () => {
             handleSubtractClick={handleSubtractClick}
             handleLogOut={handleLogOut}
             handleNavigation={handleNavigation}
-            handleCancelMessage={handleCancelMessage}
             handlePullCart={handlePullCart}
             handleSearchedItem={handleSearchedItem}
             handleGoods={handleGoods}
@@ -211,7 +203,6 @@ const App = () => {
             handleAddClick={handleAddClick}
             handleSubtractClick={handleSubtractClick}
             handleLogOut={handleLogOut}
-            handleCancelMessage={handleCancelMessage}
             handleIncomingMessage={handleIncomingMessage}
             handleViewedItem={handleViewedItem}
           />} />
@@ -220,7 +211,6 @@ const App = () => {
           element={<Trolley
             handlePullCart={handlePullCart}
             handleNavigation={handleNavigation}
-            handleCancelMessage={handleCancelMessage}
             cartHandler={cartHandler}
             handleCheckOut={handleCheckOut} />} />
 
@@ -230,7 +220,6 @@ const App = () => {
             handleAddClick={handleAddClick}
             handleIsRegister={handleIsRegister}
             handleNavigation={handleNavigation}
-            handleCancelMessage={handleCancelMessage}
             handleIncomingMessage={handleIncomingMessage}
             handleAuthentication={handleAuthentication} />} />
 

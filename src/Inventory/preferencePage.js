@@ -17,7 +17,7 @@ const MyPreference = ({ handleLogOut, handleNavigation }) => {
             </Col>
         </Row>
 
-        <Row className='d-flex justify-content-start align-items-center'>
+        <Row className='back-row'>
             <Col className='back-col'>
                 <button onClick={() => handleNavigation('/useraccount')} className='back-button'>
                     <PiArrowSquareLeftFill className='back-icon' />
@@ -46,10 +46,11 @@ const MyPreference = ({ handleLogOut, handleNavigation }) => {
                 </div>
             </Col>
         </Row>
-        <Row className='d-flex justify-content-center'>
+
+        <Row className='preference-row'>
             <Col lg={4} md={6} sm={6} xs={8}>
                 <div className='centered-button-section'>
-                    <button className='action-button save-button' onClick={() => handleNavigation('/useraccount')}>Save Preference</button>
+                    <button className='action-button save-button' onClick={() => handleNavigation('/useraccount')}>Save</button>
                 </div>
 
                 <div className='centered-button-section'>
