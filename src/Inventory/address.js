@@ -28,6 +28,7 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
     const handleAddress = () => {
         if (firstName && lastName && buildingNumber || buildingName && flatNumber && street && county && addressName) {
             handleAddAddress({ title, firstName, lastName, buildingNumber, buildingName, flatNumber, street, county, addressName, editId })
+            setEditId('')
             return setShowAddress(false)
         } else {
             handleIncomingMessage("inputs can't be blank")
@@ -75,7 +76,7 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
         < Row className='d-flex justify-content-center m-2'>
             <Col className='text-center'>
                 <span className='header-title'>My Address</span>
-                <span className='my-2 d-block'>{!myAddress.length ? 'You do not have any saved addresses.' : "Here's where you can edit, add or delete your delivery and billing addresses"}
+                <span className='my-2 d-block'>{!Array.isArray(myAddress) ? 'You do not have any saved addresses.' : "Here's where you can edit, add or delete your delivery and billing addresses"}
                 </span>
                 {!isShowAddress && (
                     <div className='d-flex justify-content-center'>

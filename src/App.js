@@ -43,7 +43,6 @@ import RecordPage from './Inventory/record';
 const App = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(state => state.isLogged)
-  const message = useSelector(state => state.message)
   const isClickRegister = useSelector(state => state.isClickRegister)
   const navigate = useNavigate()
 
@@ -79,9 +78,6 @@ const App = () => {
     } else if (quantity < newUserQuantity + 1) {
       handleIncomingMessage(`Item Out Of Stock, only ${quantity} available`);
     }
-    setTimeout(() => {
-      handlePullCart()
-    }, 1000)
   };
 
 
@@ -92,9 +88,6 @@ const App = () => {
     } else {
       dispatch(handleUserQuantity(itemId, 0));
     }
-    setTimeout(() => {
-      handlePullCart()
-    }, 1000)
   };
 
   const handleViewedItem = (itemId) => {
@@ -132,9 +125,7 @@ const App = () => {
 
   const handleAddAddress = (data) => {
     dispatch(AddAddress(data))
-    setTimeout(() => {
-      handleGetAddress()
-    }, 1000)
+
   }
 
   const handleUpdateUser = (data) => {

@@ -5,7 +5,7 @@ const initialState = {
     isClickRegister: false,
     records: [],
     personalDetails: {},
-    address: {},
+    address: [],
     searched: [],
     viewed: {},
     message: '',

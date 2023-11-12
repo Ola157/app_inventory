@@ -21,11 +21,9 @@ const actionTypes = {
     REG_SUCCESS: 'REG_SUCCESS'
 };
 
-const myJwt = localStorage.getItem('accessToken');
 
 export const handleAuth = (data) => (dispatch) => {
     const { type, email, title, password, firstName, lastName, mobNumber } = data;
-
     if (type === 'signup') {
         axios
             .post('https://inventory-be-seven.vercel.app/user/register', { email, title, password, firstName, lastName, mobNumber }, {
@@ -128,6 +126,8 @@ export const handleAddGoods = (data) => (dispatch) => {
 };
 
 export const handleAllRecords = () => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios
         // .get('http://localhost:9810/user/records', {
         .get('https://inventory-be-seven.vercel.app/user/records', {
@@ -194,6 +194,7 @@ export const handleSearch = (event) => (dispatch) => {
 };
 
 export const handleCartPull = (kind) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
     // axios.get('http://localhost:9810/user/pullCart', {
     axios.get('https://inventory-be-seven.vercel.app/user/pullCart', {
         headers: {
@@ -208,6 +209,7 @@ export const handleCartPull = (kind) => (dispatch) => {
 };
 
 export const handleCartChanges = (type, itemId) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
     if (type === 'clearcart') {
         axios
             // .delete('http://localhost:9810/user/clearCart', {
@@ -217,12 +219,9 @@ export const handleCartChanges = (type, itemId) => (dispatch) => {
                 }
             })
             .then((response) => {
-                const { message } = response.data;
-                dispatch({ type: actionTypes.MESSAGE, payload: { message } });
-                dispatch({ type: actionTypes.CLEAR_CART });
-                setTimeout(() => {
-                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
-                }, 2000)
+                const { cart } = response.data;
+                dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart } });
+
             })
             .catch((error) => {
                 console.log(error);
@@ -237,6 +236,9 @@ export const handleCartChanges = (type, itemId) => (dispatch) => {
                 headers: {
                     'Authorization': `Bearer ${myJwt}`
                 }
+            }).then((response) => {
+                const { cart } = response.data;
+                dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart } });
             })
             .catch((error) => {
                 console.log(error);
@@ -245,6 +247,8 @@ export const handleCartChanges = (type, itemId) => (dispatch) => {
 };
 
 export const handleUserQuantity = (itemId, userQuantity) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     dispatch({ type: actionTypes.HANDLE_CART, payload: { itemId, userQuantity } });
     setTimeout(() => {
         // axios.post(`http://localhost:9810/user/cart/${itemId}`, { userQuantity }, {
@@ -253,14 +257,18 @@ export const handleUserQuantity = (itemId, userQuantity) => (dispatch) => {
                 'Authorization': `Bearer ${myJwt}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        })
-            .catch((error) => {
-                console.log(error);
-            });
+        }).then((response) => {
+            const { cart } = response.data;
+            dispatch({ type: actionTypes.HANDLE_CARTFETCH, payload: { cart } });
+        }).catch((error) => {
+            console.log(error);
+        });
     }, 500);
 };
 
 export const handleCheckingOut = () => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios
         // .post('http://localhost:9810/store/checkout', null, {
         .post(`https://inventory-be-seven.vercel.app/store/checkout`, null, {
@@ -330,6 +338,8 @@ export const handleProductChanges = (data) => () => {
 };
 
 export const handleRecord = (recordId) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios.get(`https://inventory-be-seven.vercel.app/user/getcartRecord/${recordId}`, {
         // axios.get(`http://localhost:9810/user/getcartRecord/${recordId}`, {
         headers: {
@@ -344,6 +354,7 @@ export const handleRecord = (recordId) => (dispatch) => {
 }
 
 export const AddAddress = (data) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
     axios
         .post('https://inventory-be-seven.vercel.app/user/addAddress', { data }, {
             // .post('http://localhost:9810/user/addAddress', { data }, {
@@ -352,11 +363,10 @@ export const AddAddress = (data) => (dispatch) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then((response) => {
-            const { message } = response.data
-            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
-            setTimeout(() => {
-                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
-            }, 2000)
+
+            const { address } = response.data;
+            dispatch({ type: actionTypes.ADDRESS, payload: address });
+
         })
         .catch((error) => {
             console.error(error);
@@ -364,6 +374,8 @@ export const AddAddress = (data) => (dispatch) => {
 };
 
 export const handleFetchAddress = () => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios
         .get('https://inventory-be-seven.vercel.app/user/getAddress', {
             // .get('http://localhost:9810/user/getAddress', {
@@ -373,19 +385,17 @@ export const handleFetchAddress = () => (dispatch) => {
             }
         })
         .then((response) => {
-            const { address, message } = response.data;
+            const { address } = response.data;
             dispatch({ type: actionTypes.ADDRESS, payload: address });
-            dispatch({ type: actionTypes.MESSAGE, payload: { message } });
-            setTimeout(() => {
-                dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
-            }, 2000)
         })
         .catch((error) => {
             console.error(error);
         });
 };
 
-export const handleAddressDelete = (addressId) => () => {
+export const handleAddressDelete = (addressId) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios.delete(`https://inventory-be-seven.vercel.app/user/deleteAddress/${addressId}`, {
         // axios.delete(`http://localhost:9810/user/deleteAddress/${addressId}`, {
 
@@ -393,14 +403,18 @@ export const handleAddressDelete = (addressId) => () => {
             'Authorization': `Bearer ${myJwt}`,
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-    })
-        .catch((error) => {
-            console.error(error);
-        });
+    }).then((response) => {
+        const { address } = response.data;
+        dispatch({ type: actionTypes.ADDRESS, payload: address });
+    }).catch((error) => {
+        console.error(error);
+    });
 
 };
 
 export const handleFetchPersonalDetails = () => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
+
     axios.get('https://inventory-be-seven.vercel.app/user/getDetails', {
         headers: {
             'Authorization': `Bearer ${myJwt}`
@@ -414,25 +428,19 @@ export const handleFetchPersonalDetails = () => (dispatch) => {
 };
 
 export const handleUpdateDetails = (data) => (dispatch) => {
+    const myJwt = localStorage.getItem('accessToken');
     axios.post('https://inventory-be-seven.vercel.app/user/updateDetails', data, {
-        // .post('http://localhost:9810/user/updateDetails', data, {
+        // axios.post('http://localhost:9810/user/updateDetails', data, {
         headers: {
             'Authorization': `Bearer ${myJwt}`,
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-    })
-        .then((response) => {
-            const { message } = response.data;
-            if (message === 'Incorrect password') {
-                dispatch({ type: actionTypes.MESSAGE, payload: { message } });
-                setTimeout(() => {
-                    dispatch({ type: actionTypes.MESSAGE, payload: { message: '' } });
-                }, 2000)
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    }).then((response) => {
+        const { user } = response.data;
+        dispatch({ type: actionTypes.PERSONALDETAILS, payload: user });
+    }).catch((error) => {
+        console.error(error);
+    });
 };
 
 
