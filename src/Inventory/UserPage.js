@@ -74,11 +74,8 @@ const UserPage = ({
             message &&
             <Row className='inventory__alert my-2'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
-                    <>
-                        <CiCircleAlert />
-                        {message}
-                    </>
-                    <button className='inventory__alert-close' onClick={() => handleCancelMessage()}> <MdOutlineCancel /> </button>
+                    <CiCircleAlert />
+                    {message}
                 </Col>
             </Row>
         }

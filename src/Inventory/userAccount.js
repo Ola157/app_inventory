@@ -71,6 +71,10 @@ const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) 
             ))}
         </Row>
 
+        <div className='my-4'>
+
+        </div>
+
         <footer className="footer-container">
             <Row className='inventory-footer'>
                 <Col lg={12} className='text-center'>

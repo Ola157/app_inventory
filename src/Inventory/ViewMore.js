@@ -70,11 +70,8 @@ const ViewMore = ({
         {message &&
             < Row className='inventory__alert m-1'>
                 <Col className='inventory__alert-content' lg={4} md={6} sm={10} xs={10}>
-                    <>
-                        <CiCircleAlert />
-                        {message}
-                    </>
-                    <button className='inventory__alert-close' onClick={() => handleCancelMessage()}> <MdOutlineCancel /> </button>
+                    <CiCircleAlert />
+                    {message}
                 </Col>
             </Row>
         }
@@ -110,6 +107,10 @@ const ViewMore = ({
                 </Col>
             }
         </Row>
+
+        <div className='my-4'>
+
+        </div>
 
         <footer className="footer-container  mt-1">
             <Row className='inventory-footer'>
