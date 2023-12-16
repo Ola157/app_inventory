@@ -8,6 +8,14 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   AddAddress,
+  funcAbout,
+  funcHelp,
+  funcLink,
+  funcMenu,
+  funcNavClose,
+  funcSearch,
+  funcStore,
+  funcWeb,
   handleAddGoods,
   handleAddressDelete,
   handleAllRecords,
@@ -39,6 +47,7 @@ import MyAddress from './Inventory/address';
 import MyPreference from './Inventory/preferencePage';
 import Records from './Inventory/myOrders';
 import RecordPage from './Inventory/record';
+import LandingPage from './Inventory/landingpage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,6 +59,38 @@ const App = () => {
     if (!isLogged) return
     handlePullCart()
   }, [isLogged])
+
+
+  const navBtn = (toggleType) => {
+    switch (toggleType) {
+      case 'search':
+        dispatch(funcSearch());
+        break
+      case 'menu':
+        dispatch(funcMenu());
+        break
+      case 'store':
+        dispatch(funcStore());
+        break
+    }
+  }
+
+  const footerBtn = (toggleType) => {
+    switch (toggleType) {
+      case 'help':
+        dispatch(funcHelp())
+        break;
+      case 'about':
+        dispatch(funcAbout())
+        break;
+      case 'website':
+        dispatch(funcWeb())
+        break;
+      case 'links':
+        dispatch(funcLink())
+        break;
+    }
+  }
 
   const handleAddItem = (data) => {
     dispatch(handleAddGoods(data))
@@ -152,7 +193,10 @@ const App = () => {
   }
 
   const handleNavigation = (page) => {
+    dispatch(funcNavClose());
+
     navigate(page)
+
     if (isClickRegister) {
       handleIsRegister(false)
     }
@@ -182,6 +226,12 @@ const App = () => {
             handleGoods={handleGoods}
           />} />
 
+        <Route path='/l' element={<LandingPage
+          footerBtn={footerBtn}
+          navBtn={navBtn}
+          handleNavigation={handleNavigation} />}
+        />
+
         <Route path='/adminpage'
           element={<AdminPage
             handleNavigation={handleNavigation}
@@ -207,6 +257,8 @@ const App = () => {
 
         <Route path='/signIn/:page/:itemId'
           element={<RegistrationPage
+            footerBtn={footerBtn}
+            navBtn={navBtn}
             handlePullCart={handlePullCart}
             handleAddClick={handleAddClick}
             handleIsRegister={handleIsRegister}

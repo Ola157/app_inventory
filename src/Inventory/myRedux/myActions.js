@@ -18,7 +18,14 @@ const actionTypes = {
     VIEWED_ITEM: 'VIEWED_ITEM',
     SEARCHED_ITEM: "SEARCHED_ITEM",
     MESSAGE: "MESSAGE",
-    REG_SUCCESS: 'REG_SUCCESS'
+    LINK: "LINK",
+    WEBSITE: "WEBSITE",
+    SEARCH: "SEARCH",
+    MENU: 'MENU',
+    STORE: "STORE",
+    ABOUT: "ABOUT",
+    HELP: 'HELP',
+    NAV: 'NAV'
 };
 
 
@@ -442,6 +449,39 @@ export const handleUpdateDetails = (data) => (dispatch) => {
         console.error(error);
     });
 };
+
+export const funcSearch = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.SEARCH, payload: { value } })
+}
+
+export const funcMenu = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.MENU, payload: { value } })
+}
+
+export const funcStore = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.STORE, payload: { value } })
+}
+
+export const funcAbout = () => (dispatch) => {
+    dispatch({ type: actionTypes.ABOUT })
+}
+
+export const funcHelp = () => (dispatch) => {
+    dispatch({ type: actionTypes.HELP })
+}
+
+export const funcWeb = () => (dispatch) => {
+    dispatch({ type: actionTypes.WEBSITE })
+}
+
+export const funcLink = () => (dispatch) => {
+    dispatch({ type: actionTypes.LINK })
+}
+
+
+export const funcNavClose = () => (dispatch) => {
+    dispatch({ type: actionTypes.NAV })
+}
 
 
 

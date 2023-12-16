@@ -9,14 +9,19 @@ const initialState = {
     searched: [],
     viewed: {},
     message: '',
-    cartRecord: []
+    cartRecord: [],
+    isMenu: false,
+    isSearch: false,
+    isStore: false,
+    isHelp: false,
+    isAbout: false,
+    isWebsite: false,
+    isLink: false
 }
 
 const myReducer = (state = initialState, action) => {
-    console.log(action.type)
     switch (action.type) {
         case 'REG_SUCCESS':
-
             return {
                 ...state,
                 isClickRegister: action.payload.value
@@ -224,6 +229,63 @@ const myReducer = (state = initialState, action) => {
                 ...state,
                 personalDetails: { title, email, firstName, lastName, mobileNumber, alternativeNumber }
             }
+
+        case "LINK":
+            return {
+                ...state,
+                isLink: !state.isLink
+            }
+
+        case "HELP":
+            return {
+                ...state,
+                isHelp: !state.isHelp
+            }
+
+        case "ABOUT":
+            return {
+                ...state,
+                isAbout: !state.isAbout
+            }
+
+        case "WEBSITE":
+            return {
+                ...state,
+                isWebsite: !state.isWebsite
+            }
+
+        case "STORE":
+            return {
+                ...state,
+                isStore: !state.isStore,
+                isMenu: false,
+                isSearch: false
+            }
+
+        case "MENU":
+            return {
+                ...state,
+                isMenu: !state.isMenu,
+                isStore: false,
+                isSearch: false
+            }
+
+        case "SEARCH":
+            return {
+                ...state,
+                isSearch: !state.isSearch,
+                isStore: false,
+                isMenu: false
+            }
+
+        case "NAVIGATE":
+            return {
+                ...state,
+                isSearch: false,
+                isStore: false,
+                isMenu: false
+            }
+
     }
     return state
 }

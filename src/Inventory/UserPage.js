@@ -151,6 +151,7 @@ const UserPage = ({
                     ))
             }
         </Row >
+
         <footer className="footer-container">
             <Row className='inventory-footer'>
                 <Col lg={12} className='text-center'>
