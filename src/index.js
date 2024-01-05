@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Provider } from 'react-redux';
 import inventory from './Inventory/myRedux';
+import LandingPage from './Inventory/landingpage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

@@ -3,17 +3,21 @@ import AdminPage from './Inventory/AdminPage'
 import ViewMore from './Inventory/ViewMore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
+import './Inventory/navbar/Navcontent.css'
+import './Inventory/carousel/Carousel.css'
 import Trolley from './Inventory/Trolley';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   AddAddress,
   funcAbout,
+  funcCategory,
   funcHelp,
   funcLink,
   funcMenu,
   funcNavClose,
   funcSearch,
+  funcSignIn,
   funcStore,
   funcWeb,
   handleAddGoods,
@@ -62,9 +66,14 @@ const App = () => {
 
 
   const navBtn = (toggleType) => {
+    dispatch(funcCategory(null))
     switch (toggleType) {
       case 'search':
         dispatch(funcSearch());
+        break
+      case 'signin':
+        handleNavigation('/signIn/landing/*')
+        dispatch(funcSignIn());
         break
       case 'menu':
         dispatch(funcMenu());
@@ -74,6 +83,10 @@ const App = () => {
         break
     }
   }
+
+  const toggleCategory = (category) => {
+    dispatch(funcCategory(category))
+  };
 
   const footerBtn = (toggleType) => {
     switch (toggleType) {
@@ -215,7 +228,14 @@ const App = () => {
     <>
 
       <Routes>
-        <Route path='/*'
+        <Route path='/*' element={<LandingPage
+          footerBtn={footerBtn}
+          toggleCategory={toggleCategory}
+          navBtn={navBtn}
+          handleNavigation={handleNavigation} />}
+        />
+
+        <Route path='/grocery'
           element={<UserPage
             handleAddClick={handleAddClick}
             handleSubtractClick={handleSubtractClick}
@@ -226,11 +246,6 @@ const App = () => {
             handleGoods={handleGoods}
           />} />
 
-        <Route path='/l' element={<LandingPage
-          footerBtn={footerBtn}
-          navBtn={navBtn}
-          handleNavigation={handleNavigation} />}
-        />
 
         <Route path='/adminpage'
           element={<AdminPage
@@ -258,6 +273,7 @@ const App = () => {
         <Route path='/signIn/:page/:itemId'
           element={<RegistrationPage
             footerBtn={footerBtn}
+            toggleCategory={toggleCategory}
             navBtn={navBtn}
             handlePullCart={handlePullCart}
             handleAddClick={handleAddClick}

@@ -259,7 +259,8 @@ const myReducer = (state = initialState, action) => {
                 ...state,
                 isStore: !state.isStore,
                 isMenu: false,
-                isSearch: false
+                isSearch: false,
+                isSignIn: false
             }
 
         case "MENU":
@@ -267,7 +268,8 @@ const myReducer = (state = initialState, action) => {
                 ...state,
                 isMenu: !state.isMenu,
                 isStore: false,
-                isSearch: false
+                isSearch: false,
+                isSignIn: false,
             }
 
         case "SEARCH":
@@ -275,15 +277,33 @@ const myReducer = (state = initialState, action) => {
                 ...state,
                 isSearch: !state.isSearch,
                 isStore: false,
+                isMenu: false,
+                isSignIn: false
+            }
+        case "SIGNIN":
+            return {
+                ...state,
+                isSignIn: !state.isSignIn,
+                isSearch: false,
+                isStore: false,
                 isMenu: false
             }
-
-        case "NAVIGATE":
+        case "NAV":
             return {
                 ...state,
                 isSearch: false,
                 isStore: false,
-                isMenu: false
+                isMenu: false,
+                activeCategory: null
+            }
+
+        case 'CATEGORY':
+            const { category } = action.payload
+            return {
+                ...state,
+                activeCategory: state.activeCategory === category || category == null ?
+                    null :
+                    category,
             }
 
     }

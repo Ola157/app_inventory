@@ -25,7 +25,9 @@ const actionTypes = {
     STORE: "STORE",
     ABOUT: "ABOUT",
     HELP: 'HELP',
-    NAV: 'NAV'
+    NAV: 'NAV',
+    CATEGORY: 'CATEGORY',
+    SIGNIN: 'SIGNIN'
 };
 
 
@@ -462,6 +464,10 @@ export const funcStore = (value) => (dispatch) => {
     dispatch({ type: actionTypes.STORE, payload: { value } })
 }
 
+export const funcSignIn = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.SIGNIN, payload: { value } })
+}
+
 export const funcAbout = () => (dispatch) => {
     dispatch({ type: actionTypes.ABOUT })
 }
@@ -481,6 +487,11 @@ export const funcLink = () => (dispatch) => {
 
 export const funcNavClose = () => (dispatch) => {
     dispatch({ type: actionTypes.NAV })
+}
+
+export const funcCategory = (category) => (dispatch) => {
+    dispatch({ type: actionTypes.CATEGORY, payload: { category } })
+
 }
 
 

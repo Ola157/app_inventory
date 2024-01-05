@@ -19,6 +19,11 @@ import { RiTiktokLine } from "react-icons/ri";
 import { FaPinterest } from "react-icons/fa6";
 import { FaSquareYoutube } from "react-icons/fa6";
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import Footer from './Footer'
+import NavBar from './navbar/Navbar'
+import NavContent from './navbar/NavStoreContent'
+import Navmenu from './navbar/Navmenu'
+import MenuComponent from './navbar/MenuComponent'
 
 const RegistrationPage = ({
     handleAuthentication,
@@ -26,6 +31,7 @@ const RegistrationPage = ({
     handleIncomingMessage,
     handleNavigation,
     navBtn,
+    toggleCategory,
     footerBtn }) => {
 
     let [email, setEmail] = useState('')
@@ -39,11 +45,7 @@ const RegistrationPage = ({
     const message = useSelector(state => state.message)
     let [isClickRegister, setRegister] = useState(false)
     const isMenu = useSelector(state => state.isMenu)
-    const isLink = useSelector(state => state.isLink)
-    const isWebsite = useSelector(state => state.isWebsite)
-    const isHelp = useSelector(state => state.isHelp)
-    const isAbout = useSelector(state => state.isAbout)
-
+    const activeCategory = useSelector(state => state.activeCategory)
 
     useEffect(() => {
         homePageReturn();
@@ -54,6 +56,14 @@ const RegistrationPage = ({
         if (page === 'register') {
             setRegister(true)
         }
+
+        let inventoryNav = document.querySelector('.inventoryNav')
+        let respondLi = document.querySelector('.responding-li')
+        let menuContent = document.querySelector('.menu-content')
+
+        respondLi.classList.add('bg-switch')
+        menuContent.classList.add('shortHeight')
+        inventoryNav.classList.add('height-reduction')
 
     }, [])
 
@@ -87,48 +97,17 @@ const RegistrationPage = ({
     }
 
     return (<Container fluid className='inventory'>
-        <nav className={`inventory-nav signin-nav ${isMenu ? 'active' : ''}`}>
 
-            <div className="user-div">
-                <div className="user-logdiv">
-                    <button onClick={() => handleNavigation('/')}>Express.com</button>
-                    <button>Contact us</button>
-                    <button>Help</button>
-                    <button><span>Feedback</span></button>
-                </div>
-            </div>
+        <NavBar toggleCategory={toggleCategory}
+            activeCategory={activeCategory}
+            page={page}
+            navBtn={navBtn}
+            handleNavigation={handleNavigation} />
 
-            <div className={`inventory-brand ${isMenu ? 'active' : ''}`}>
-                <div className="inventory-brand-div">
-                    <h4>Express</h4>
-                </div>
-            </div>
-
-            <div className="menu-div">
-                <button className={isMenu ? 'active' : ''} onClick={() => navBtn('menu')}>Menu
-                    <MdKeyboardArrowDown size={25} />
-                </button>
-            </div>
-
-            <div className="menu-container">
-
-                <div className={`menu-content ${isMenu ? 'active' : ''}`}>
-                    <ul className="menu-content-ul menu-signin-content">
-                        <li className='d-none'><button><span>Groceries</span> <span></span><MdArrowForwardIos /></button></li>
-                        <li className='d-none'><button><span>F&F Clothing </span><span><MdArrowForwardIos /></span></button></li>
-                        <li className='d-none'><button><span>Express Clubcard</span> <span><MdArrowForwardIos /></span></button></li>
-                        <li className='d-none'><button><span>Express Bank</span> <span><MdArrowForwardIos /></span></button></li>
-                        <li className='d-none'><button><span>Express Mobile</span> <span><MdArrowForwardIos /></span></button></li>
-                        <li className='d-none'><button><span>Recipes</span> <span><MdArrowForwardIos /></span></button></li>
-                        <li><button onClick={() => handleNavigation('/')}>Express.com</button></li>
-                        <li><button>Contact us</button></li>
-                        <li><button>Help</button></li>
-                        <li><button><span>Feedback</span></button></li>
-                    </ul>
-                </div>
-
-            </div>
-        </nav>
+        <MenuComponent
+            page={page}
+            navBtn={navBtn}
+            handleNavigation={handleNavigation} />
 
         <section className={`authentication-section ${isMenu ? 'active' : ''}`}>
 
@@ -211,86 +190,11 @@ const RegistrationPage = ({
                     }
                 </div>
             </div>
+
         </section>
 
 
-        <footer>
-            <div className="footer-content">
-                <div className="footer-div-ul">
-                    <ul>
-                        <li className={`eventli ${isHelp ? 'active' : ''}`} onClick={() => footerBtn('help')}>
-                            <span>Here to help</span>
-                            <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" />
-                        </li>
-
-                        <div className={`spanhidden ${isHelp ? 'active' : ''}`}>
-                            <li><span>Help & FAQs</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Contact us</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                        </div>
-                    </ul>
-
-                    <ul>
-                        <li className={`eventli ${isAbout ? 'active' : ''}`} onClick={() => footerBtn('about')}>
-                            <span>About Express</span>
-                            <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" />
-                        </li>
-
-                        <span className={`spanhidden ${isAbout ? 'active' : ''}`}>
-
-                            <li><span>Store vacancies</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Careers</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>PLC</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Sustainability</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Our little helps</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                        </span>
-                    </ul>
-
-
-                    <ul>
-                        <li className={`eventli ${isWebsite ? 'active' : ''}`} onClick={() => footerBtn('website')}>
-                            <span>Our website</span>
-                            <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" />
-                        </li>
-
-                        <span className={`spanhidden ${isWebsite ? 'active' : ''}`}>
-                            <li><span>Terms & Conditions</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Privacy & Cookie Policy</span> <MdOutlineArrowForwardIos size={25} className="d-sm-block d-md-none" /></li>
-                            <li><span>Privacy Center</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Site map</span> <MdOutlineArrowForwardIos size={25} className="d-sm-block d-md-none" /></li>
-                            <li><span>Accessibility</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                        </span>
-                    </ul>
-
-                    <ul>
-                        <li className={`eventli ${isLink ? 'active' : ''}`} onClick={() => footerBtn('links')}>
-                            <span>Useful links</span>
-                            <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" />
-                        </li>
-                        <span className={`spanhidden ${isLink ? 'active' : ''}`}>
-                            <li><span>Pharmacy</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Product recall</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Store locator</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Bags of Help</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                            <li><span>Rate this page</span> <MdOutlineArrowForwardIos size={25} className=" d-sm-block d-md-none" /></li>
-                        </span>
-                    </ul>
-                </div>
-
-                <p>
-                    Follow us  <FaFacebookF size={30} />
-                    <FaInstagram size={30} />
-                    <FaPinterest size={30} />
-                    <IoLogoTwitter size={30} />
-                    <RiTiktokLine size={30} />
-                    <FaSquareYoutube size={30} />
-                </p>
-            </div>
-            <div className="rights-div">
-                <p >
-                    &copy; {new Date().getFullYear()} Express. All Rights Reserved.
-                </p>
-            </div>
-        </footer>
+        <Footer footerBtn={footerBtn} />
     </Container >)
 }
 export default RegistrationPage
