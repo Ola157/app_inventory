@@ -1,35 +1,19 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { PiArrowSquareLeftFill } from 'react-icons/pi'
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { MdArrowForwardIos } from "react-icons/md";
-import { IoIosSearch } from "react-icons/io";
-import { GiCompass } from "react-icons/gi";
-import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { SlLocationPin } from "react-icons/sl";
-import { FaRegUser } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa";
-import { IoLogoTwitter } from "react-icons/io";
-import { RiTiktokLine } from "react-icons/ri";
-import { FaPinterest } from "react-icons/fa6";
-import { FaSquareYoutube } from "react-icons/fa6";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-import Footer from './Footer'
+import Footer from './footer/Footer'
 import NavBar from './navbar/Navbar'
-import NavContent from './navbar/NavStoreContent'
-import Navmenu from './navbar/Navmenu'
 import MenuComponent from './navbar/MenuComponent'
+import useNavigator from './custom-hooks/use-Navigation'
 
 const RegistrationPage = ({
     handleAuthentication,
     handleAddClick,
     handleIncomingMessage,
-    handleNavigation,
     navBtn,
     toggleCategory,
     footerBtn }) => {
@@ -46,6 +30,7 @@ const RegistrationPage = ({
     let [isClickRegister, setRegister] = useState(false)
     const isMenu = useSelector(state => state.isMenu)
     const activeCategory = useSelector(state => state.activeCategory)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         homePageReturn();
@@ -56,16 +41,30 @@ const RegistrationPage = ({
         if (page === 'register') {
             setRegister(true)
         }
-
         let inventoryNav = document.querySelector('.inventoryNav')
         let respondLi = document.querySelector('.responding-li')
         let menuContent = document.querySelector('.menu-content')
+        const storeContent = document.querySelector('.store-content')
 
+        storeContent.classList.add('hidden-element')
         respondLi.classList.add('bg-switch')
         menuContent.classList.add('shortHeight')
-        inventoryNav.classList.add('height-reduction')
 
-    }, [])
+    }, [isMenu])
+
+    useEffect(() => {
+        handleMenu()
+    }, [isMenu])
+
+    const handleMenu = () => {
+        const inventoryContainer = document.querySelector('.inventory');
+
+        if (isMenu) {
+            inventoryContainer.classList.add('active');
+        } else {
+            inventoryContainer.classList.remove('active');
+        }
+    }
 
     const homePageReturn = () => {
         if (!isLogged) {
@@ -97,17 +96,15 @@ const RegistrationPage = ({
     }
 
     return (<Container fluid className='inventory'>
-
-        <NavBar toggleCategory={toggleCategory}
-            activeCategory={activeCategory}
-            page={page}
-            navBtn={navBtn}
-            handleNavigation={handleNavigation} />
+        <div>
+            <NavBar
+                page={page}
+            />
+        </div>
 
         <MenuComponent
             page={page}
-            navBtn={navBtn}
-            handleNavigation={handleNavigation} />
+        />
 
         <section className={`authentication-section ${isMenu ? 'active' : ''}`}>
 

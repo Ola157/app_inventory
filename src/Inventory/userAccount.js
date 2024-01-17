@@ -4,10 +4,13 @@ import { usehandleNavigation } from 'react-router-dom';
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from 'react-redux';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
-const UserAccount = ({ handlePersonalDetails, handleLogOut, handleNavigation }) => {
+const UserAccount = ({ handlePersonalDetails, handleLogOut }) => {
     let firstNAME = useSelector(state => state.personalDetails.firstName)
     let isLogged = useSelector(state => state.isLogged)
+    const [handleNavigation] = useNavigator()
+
     const [accountLinks, setLinks] = useState([
         { title: 'Personal Details', description: 'Manage Your Personal And Security Details', link: '/mydetails' },
         { title: 'Addresses', description: 'Manage Your Delivery And Billing Address', link: '/address' },

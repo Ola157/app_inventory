@@ -5,6 +5,8 @@ import { BiUserCircle } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { CiCircleAlert } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
+import useNavigator from './custom-hooks/use-Navigation';
+import useQuantity from './custom-hooks/use-Quantity';
 
 const UserPage = ({
     handleGoods,
@@ -13,9 +15,6 @@ const UserPage = ({
     handleCancelMessage,
     modifyValue,
     handleSearchedItem,
-    handleNavigation,
-    handleAddClick,
-    handleSubtractClick
 }) => {
     const products = useSelector(state => state.goods)
     const isLogged = useSelector(state => state.isLogged)
@@ -23,6 +22,8 @@ const UserPage = ({
     const cart = useSelector(state => state.cart)
     const searched = useSelector(state => state.searched)
     const message = useSelector(state => state.message)
+    const [handleNavigation] = useNavigator()
+    const [handleAddClick, handleSubtractClick] = useQuantity()
 
     useEffect(() => {
         handleGoods();

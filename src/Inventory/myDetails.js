@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
-const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }) => {
+const MyDetails = ({ handleUpdateUser, handlePersonalDetails }) => {
     let [email, setEmail] = useState('')
     let [confirmEmail, setConfirmEmail] = useState('')
     let [existingPassword, setExistingPassword] = useState('');
@@ -15,6 +16,7 @@ const MyDetails = ({ handleUpdateUser, handlePersonalDetails, handleNavigation }
     let [lastName, setLastName] = useState(myDetails.lastName)
     let [mobileNumber, SetMobileNumber] = useState(`+44 ${myDetails.mobileNumber} `)
     let [alternativeNumber, setAlternativeNumber] = useState(`+44 ${myDetails.alternativeNumber} `)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handlePersonalDetails();

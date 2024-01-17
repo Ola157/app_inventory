@@ -3,10 +3,12 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
-const Records = ({ handleOrderRecords, handleNavigation }) => {
+const Records = ({ handleOrderRecords }) => {
     const records = useSelector(state => state.records)
     const message = useSelector(state => state.message)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handleOrderRecords()

@@ -1,18 +1,21 @@
 import React from "react";
 import CategoryList from "./Navcategory";
 import { IoCloseSharp } from "react-icons/io5";
+import useNavigator from "../custom-hooks/use-Navigation";
+import useCategory from "../custom-hooks/use-category";
 
 
-const Navmenu = ({ activeCategory, toggleCategory, navBtn }) => {
-
+const Navmenu = ({ }) => {
+    const [handleToggleCategory, toggleDepartment, toggleInnerDepartment, handleNavBtn] = useCategory()
 
     const multiFunc = () => {
         if (window.innerWidth > 830) {
-            toggleCategory(null)
+            handleToggleCategory(null)
         } else {
-            navBtn('menu')
+            handleNavBtn('menu')
         }
     }
+
 
     return (
         <div>
@@ -22,12 +25,9 @@ const Navmenu = ({ activeCategory, toggleCategory, navBtn }) => {
                 </button>
             </span>
 
-            <CategoryList category="grocery" activeCategory={activeCategory} toggleCategory={toggleCategory} />
-            <CategoryList category="clothing" activeCategory={activeCategory} toggleCategory={toggleCategory} />
-            <CategoryList category="clubcard" activeCategory={activeCategory} toggleCategory={toggleCategory} />
-            <CategoryList category="bank" activeCategory={activeCategory} toggleCategory={toggleCategory} />
-            <CategoryList category="mobile" activeCategory={activeCategory} toggleCategory={toggleCategory} />
-            <CategoryList category="recipe" activeCategory={activeCategory} toggleCategory={toggleCategory} />
+            <CategoryList />
+
+
         </div >
     );
 };

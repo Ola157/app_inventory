@@ -89,6 +89,22 @@ div.carousel_item div:first-of-type {
     width: 50%;
 }
 
+.carousel-image-div span {
+    position: absolute;
+    float: right;
+    text-align: end;
+    width: 100%;
+    font-weight: 900;
+    font-size: 45px;
+    bottom: 5px;
+    right: 5px;
+    text-shadow: rgba(0, 83, 159, .7) .3px 2.5px;
+    line-height: normal;
+    color: rgb(0, 83, 159);
+    font-family: 'Lemon', serif;
+    font-family: 'Open Sans', sans-serif;
+}
+
 div.carousel_item div:first-of-type h4 {
     color: rgb(255, 255, 255);
     font-family: 'Montserrat', sans-serif;

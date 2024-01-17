@@ -1,71 +1,51 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { MdArrowBackIos } from "react-icons/md";
+import ShoppingDept from "./NavShoppingDept";
+import useCategory from "../custom-hooks/use-category";
+import useNavigator from "../custom-hooks/use-Navigation";
 
 
-const CategoryList = ({ category, activeCategory, toggleCategory }) => {
+const CategoryList = ({ }) => {
 
-    const categories = {
-        grocery: [
-            "Shop groceries",
-            "Shop homeware",
-            "My account",
-            "Delivery saver",
-            "Inspiration and events",
-            "Favourites",
-        ],
-        clothing: [
-            "Browse F&F clothing",
-            "Browse women clothing",
-            "Browse school uniform",
-            "Browse men clothing",
-            "Browse kids clothing",
-        ],
-        clubcard: [
-            "Browse Clubcard",
-            "Clubcard plus",
-            "Join Clubcard",
-            "About Clubcard",
-            "Collect points",
-            "Spend vouchers",
-        ],
-        bank: [
-            "Browse Express bank",
-            "Clubcard pay+",
-            "Credit cards",
-            "Loans",
-            "Savings",
-            "Car insurance",
-        ],
-        mobile: [
-            "Shop all mobile",
-            "Pay monthly phones",
-            "SIM only contracts",
-            "Pay as you go phones",
-            "Pay as you go SIMs",
-            "SIM free phones",
-        ],
-        recipe: [
-            "Recipe inspiration",
-            "Under 30 minute meals",
-            "Healthy recipes",
-            "Budget meals",
-            "Baking",
-            "Food Love Stories",
-        ],
-    };
+    const activeCategory = useSelector(state => state.activeCategory)
+    const categories = useSelector(state => state.categories)
+    const activeDepartment = useSelector(state => state.activeDepartment)
+    const shoppingDept = useSelector(state => state.department)
+    const page = useSelector(state => state.page)
+    const [handleToggleCategory, toggleDepartment, toggleInnerDepartment, handleNavBtn] = useCategory()
+    const [handleNavigation] = useNavigator()
 
-    return (
-        <ul className={activeCategory === category ? 'active' : ''}>
-            <li className="d-flex justify-content-start p-0 px-1 py-1 d-block d-md-none">
-                <button onClick={() => toggleCategory(null)}>
-                    <span className="me-1"><MdArrowBackIosNew size={20} /></span>   Back
-                </button>
-            </li>
-            {categories[category].map((item, index) => (
-                <li key={index}><a>{item}</a></li>
-            ))}
-        </ul>
-    );
+    return (<>
+
+        {
+            Object.keys(categories).map((category, index) => (
+                <ul key={index} className={activeCategory === category ? 'active' : ''}>
+                    <li className="d-flex justify-content-start p-0 px-1 py-1 d-block d-md-none">
+                        <button onClick={() => handleToggleCategory(null)}>
+                            <span className="me-1"><MdArrowBackIosNew size={20} /></span>   Back
+                        </button>
+                    </li>
+                    {categories[category].map((item, i) => {
+
+                        const newITEM = Object.keys(shoppingDept).find(a => a === item);
+
+                        return (
+                            <li key={i} onClick={page === 'GROCERYPAGE' ?
+                                () => toggleDepartment(item) :
+                                () => handleNavigation('shopgrocery')} className={activeDepartment === item && page === 'GROCERYPAGE' ? 'clicked' : ''}>
+                                <span style={{ textDecoration: 'none' }}>{item}{newITEM && <MdArrowBackIos className="svg_grocery" />}</span>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ))
+        }
+
+
+        <ShoppingDept toggleInnerDepartment={toggleInnerDepartment} />
+    </>);
 };
 
 export default CategoryList

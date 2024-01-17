@@ -22,12 +22,18 @@ const actionTypes = {
     WEBSITE: "WEBSITE",
     SEARCH: "SEARCH",
     MENU: 'MENU',
+    GMENU: 'GMENU',
     STORE: "STORE",
     ABOUT: "ABOUT",
     HELP: 'HELP',
     NAV: 'NAV',
     CATEGORY: 'CATEGORY',
-    SIGNIN: 'SIGNIN'
+    SIGNIN: 'SIGNIN',
+    STOREMENULANDINGPAGE: 'STOREMENU-LANDINGPAGE',
+    STOREMENUGROCERYPAGE: 'STOREMENU-GROCERYPAGE',
+    DEPARTMENT: 'DEPARTMENT',
+    ITEMDEPARTMENT: 'ITEMDEPARTMENT',
+    ISPAUSE: 'ISPAUSE'
 };
 
 
@@ -460,6 +466,15 @@ export const funcMenu = (value) => (dispatch) => {
     dispatch({ type: actionTypes.MENU, payload: { value } })
 }
 
+export const funcPause = (boolean) => (dispatch) => {
+    dispatch({ type: actionTypes.ISPAUSE, payload: { boolean } })
+}
+
+export const funcGMenu = (value) => (dispatch) => {
+    dispatch({ type: actionTypes.GMENU, payload: { value } })
+
+}
+
 export const funcStore = (value) => (dispatch) => {
     dispatch({ type: actionTypes.STORE, payload: { value } })
 }
@@ -491,7 +506,22 @@ export const funcNavClose = () => (dispatch) => {
 
 export const funcCategory = (category) => (dispatch) => {
     dispatch({ type: actionTypes.CATEGORY, payload: { category } })
+}
 
+export const funcDepartment = (department, deptcategory) => (dispatch) => {
+    dispatch({ type: actionTypes.DEPARTMENT, payload: { department, deptcategory } })
+}
+
+export const funcItemDepartment = (itemDepartment) => (dispatch) => {
+    dispatch({ type: actionTypes.ITEMDEPARTMENT, payload: { itemDepartment } })
+}
+
+export const groceryNavStore = () => (dispatch) => {
+    dispatch({ type: actionTypes.STOREMENUGROCERYPAGE })
+}
+
+export const landingNavStore = () => (dispatch) => {
+    dispatch({ type: actionTypes.STOREMENULANDINGPAGE })
 }
 
 

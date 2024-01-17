@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { usehandleNavigation } from 'react-router-dom'
 import { BiUserCircle } from "react-icons/bi";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
-const MyPreference = ({ handleLogOut, handleNavigation }) => {
+const MyPreference = ({ handleLogOut }) => {
     const isLogged = useSelector(state => state.isLogged)
+    const [handleNavigation] = useNavigator()
 
     return (<Container fluid className='inventory'>
         <Row className='d-flex justify-content-center align-items-center m-0 navbar '>

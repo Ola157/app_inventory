@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux'
 import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
-const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNavigation, handleIncomingMessage }) => {
+const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleIncomingMessage }) => {
     let [title, setTitle] = useState('')
     let [firstName, setFirstName] = useState('')
     let [lastName, setLastName] = useState('')
@@ -19,6 +20,7 @@ const MyAddress = ({ handleAddAddress, handleGetAddress, handleAmends, handleNav
     const myAddress = useSelector(state => state.address)
     const message = useSelector(state => state.message)
     let [isShowAddress, setShowAddress] = useState(false)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handleGetAddress()

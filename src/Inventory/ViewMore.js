@@ -7,14 +7,14 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 import { MdOutlineCancel } from "react-icons/md";
+import useNavigator from './custom-hooks/use-Navigation';
 
 const ViewMore = ({
     handleAddClick,
     handleSubtractClick,
     handleLogOut,
     handleCancelMessage,
-    handleViewedItem,
-    handleNavigation }) => {
+    handleViewedItem }) => {
 
     const { itemId } = useParams();
     let isLogged = useSelector(state => state.isLogged)
@@ -22,6 +22,7 @@ const ViewMore = ({
     const total = useSelector(state => state.total)
     const viewed = useSelector(state => state.viewed)
     const message = useSelector(state => state.message)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handleViewedItem(itemId)

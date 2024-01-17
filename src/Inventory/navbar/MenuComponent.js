@@ -7,13 +7,17 @@ import { IoCloseSharp } from "react-icons/io5";
 import Navmenu from "./Navmenu";
 import { SlLocationPin } from "react-icons/sl";
 import { FaRegUser } from "react-icons/fa";
+import useNavigator from "../custom-hooks/use-Navigation";
+import useCategory from "../custom-hooks/use-category";
 
-const MenuComponent = ({ toggleCategory, activeCategory, page, navBtn, handleNavigation }) => {
+const MenuComponent = ({ page }) => {
 
     const isMenu = useSelector(state => state.isMenu)
     const isSearch = useSelector(state => state.isSearch)
     const isStore = useSelector(state => state.isStore)
-
+    const activeCategory = useSelector(state => state.activeCategory)
+    const [handleNavigation] = useNavigator()
+    const [handleToggleCategory, toggleDepartment, toggleInnerDepartment, handleNavBtn] = useCategory()
 
     return (
         <div className="menu-container">
@@ -22,25 +26,24 @@ const MenuComponent = ({ toggleCategory, activeCategory, page, navBtn, handleNav
                     <ul className="menu-content-ul">
                         <div className={`responding-li ${activeCategory ? 'slidediv' : ''}`}>
                             <li className="d-flex justify-content-end py-1">
-                                <button onClick={() => navBtn('menu')}>
+                                <button onClick={() => handleNavBtn('menu')}>
                                     Close <span><IoCloseSharp size={20} /></span>
                                 </button>
                             </li>
-                            <li onClick={!page ? () => toggleCategory('grocery') : () => handleNavigation('/')}>
+                            <li onClick={!page ? () => handleToggleCategory('grocery') : () => handleNavigation('/')}>
                                 {!page ? <><span>Groceries</span> <span></span><MdArrowForwardIos size={20} /></> : 'Express.com'}</li>
 
-                            <li onClick={() => toggleCategory(!page && 'clothing')}>{!page ? <><span>F&F Clothing</span> <span></span><MdArrowForwardIos size={20} /></> : 'Contact us'}</li>
-                            <li onClick={() => toggleCategory(!page && 'clubcard')}>{!page ? <><span>Express Clubcard</span> <span></span><MdArrowForwardIos size={20} /></> : 'Help'}</li>
-                            <li onClick={() => toggleCategory(!page && 'bank')}>{!page ? <><span>Express Bank</span> <span></span><MdArrowForwardIos size={20} /></> : 'Feedback'}</li>
-                            <li onClick={() => toggleCategory('mobile')}><span>Express Mobile</span> <span><MdArrowForwardIos size={20} /></span></li>
-                            <li onClick={() => toggleCategory('recipe')}><span>Recipes</span> <span><MdArrowForwardIos size={20} /></span></li>
+                            <li onClick={() => handleToggleCategory(!page && 'clothing')}>{!page ? <><span>F&F Clothing</span> <span></span><MdArrowForwardIos size={20} /></> : 'Contact us'}</li>
+                            <li onClick={() => handleToggleCategory(!page && 'clubcard')}>{!page ? <><span>Express Clubcard</span> <span></span><MdArrowForwardIos size={20} /></> : 'Help'}</li>
+                            <li onClick={() => handleToggleCategory(!page && 'bank')}>{!page ? <><span>Express Bank</span> <span></span><MdArrowForwardIos size={20} /></> : 'Feedback'}</li>
+                            <li onClick={() => handleToggleCategory('mobile')}><span>Express Mobile</span> <span><MdArrowForwardIos size={20} /></span></li>
+                            <li onClick={() => handleToggleCategory('recipe')}><span>Recipes</span> <span><MdArrowForwardIos size={20} /></span></li>
                         </div>
 
                         <div className={`innerrespondingdiv ${activeCategory ? 'slidediv' : page ? 'hidden-element' : ''}`}>
                             <li>
                                 <Navmenu
-                                    activeCategory={activeCategory}
-                                    toggleCategory={toggleCategory} />
+                                />
                             </li>
                         </div>
 

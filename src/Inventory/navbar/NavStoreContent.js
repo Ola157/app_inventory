@@ -1,51 +1,34 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import useCategory from "../custom-hooks/use-category";
+import { GiHamburgerMenu } from "react-icons/gi";
 
-const NavContent = ({ page, toggleCategory }) => {
+const NavContent = ({ page }) => {
     const activeCategory = useSelector((state) => state.activeCategory);
+    const storeNavMenu = useSelector(state => state.storeNavMenu)
+    const isMenu = useSelector(state => state.isMenu)
+
+    const [handleToggleCategory, toggleDepartment, toggleInnerDepartment, handleNavBtn] = useCategory()
 
     return (
-        <div className={`store-content ${page ? 'hidden-element' : ''}`}>
+        <div className={`store-content`}>
+            <div className="store-content-div">
+                <ul className="store-content-ul">
 
-            <ul className="store-content-ul">
-                <li
-                    onClick={() => toggleCategory('grocery')}
-                    className={activeCategory === 'grocery' ? 'active' : ''}
-                >
-                    Groceries
-                </li>
-                <li
-                    onClick={() => toggleCategory('clothing')}
-                    className={activeCategory === 'clothing' ? 'active' : ''}
-                >
-                    F&F Clothing
-                </li>
-                <li
-                    onClick={() => toggleCategory('clubcard')}
-                    className={activeCategory === 'clubcard' ? 'active' : ''}
-                >
-                    Express Clubcard
-                </li>
-                <li
-                    onClick={() => toggleCategory('bank')}
-                    className={activeCategory === 'bank' ? 'active' : ''}
-                >
-                    Express Bank
-                </li>
-                <li
-                    onClick={() => toggleCategory('mobile')}
-                    className={activeCategory === 'mobile' ? 'active' : ''}
-                >
-                    Express Mobile
-                </li>
-                <li
-                    onClick={() => toggleCategory('recipe')}
-                    className={activeCategory === 'recipe' ? 'active' : ''}
-                >
-                    Recipes
-                </li>
-            </ul>
-        </div>
+                    {storeNavMenu && storeNavMenu.map((menu, index) => (
+                        <li
+                            key={index}
+                            onClick={() => handleToggleCategory(menu.category)}
+                            className={activeCategory === menu.category ? 'active' : ''}
+                        >
+                            {menu.name}
+                        </li>))}
+
+                </ul>
+            </div>
+
+
+        </div >
     );
 };
 

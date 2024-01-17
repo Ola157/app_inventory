@@ -3,14 +3,16 @@ import DisplayItems from './DisplayItems';
 import { Col, Container, Navbar, Row } from 'react-bootstrap';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
 import axios from 'axios';
+import useNavigator from './custom-hooks/use-Navigation';
 
-const AdminPage = ({ handleAddItem, handleProductAmends, handleNavigation }) => {
+const AdminPage = ({ handleAddItem, handleProductAmends }) => {
     let [item, setItem] = useState('');
     let [quantity, setQty] = useState('');
     let [price, setPrice] = useState('');
     let [image, setImage] = useState('');
     let [description, setDescription] = useState('');
     let [products, setProducts] = useState('')
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handleFetch()

@@ -1,0 +1,261 @@
+.footer-note {
+    margin: 24px 0;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 3em;
+    padding: 0;
+}
+
+.inventory-footer {
+    background-color: #2c3e50;
+    color: white;
+    margin: 0 !important;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-note p {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: rgb(102, 102, 102);
+    font-family: "TESCO Modern", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.57;
+}
+
+footer {
+    border: none;
+    border-top: 1px rgb(170, 170, 170) solid;
+    box-shadow: 0px .5px 1px .2px rgb(157, 156, 156);
+    background-color: rgb(246, 246, 246) !important;
+    position: relative;
+    bottom: 0 !important;
+    left: 0;
+    right: 0;
+    padding-top: 24px;
+    /* margin-left: -20px;
+    margin-right: -20px; */
+    z-index: 4;
+    transition: position 500ms ease-in-out;
+
+}
+
+.footer-content svg {
+    padding: 5px;
+    border-radius: 50%;
+    margin: 0 .2rem;
+    transition: box-shadow 250ms ease-in-out;
+}
+
+.footer-content p {
+    padding: calc(22px);
+    font-size: 14px;
+    letter-spacing: -.7px;
+    color: rgb(79, 79, 79);
+    margin: 0%;
+}
+
+.footer-content p svg:nth-child(1) {
+    background-color: rgb(0, 83, 159);
+    color: white;
+}
+
+.footer-content p svg:nth-child(1):hover {
+    box-shadow: 0px 0px 1.5px 3px rgb(41, 138, 198)
+}
+
+.footer-content p svg:nth-child(2) {
+    background-color: red;
+    color: white;
+}
+
+.footer-content p svg:nth-child(2):hover {
+    box-shadow: 0px 0px 1px 3px rgb(227, 124, 124)
+}
+
+.footer-content p svg:nth-child(3) {
+    background-color: red;
+    color: white;
+}
+
+.footer-content p svg:nth-child(3):hover {
+    box-shadow: 0px 0px 1px 3px rgb(227, 124, 124)
+}
+
+.footer-content p svg:nth-child(4) {
+    background-color: rgb(29, 161, 242);
+    color: white;
+}
+
+.footer-content p svg:nth-child(4):hover {
+    box-shadow: 0px 0px 1px 3px rgb(147, 177, 206)
+}
+
+.footer-content p svg:nth-child(5) {
+    background-color: black;
+    color: white;
+}
+
+.footer-content p svg:nth-child(5):hover {
+    box-shadow: 0px 0px 1px 3px rgb(93, 92, 92)
+}
+
+.footer-content p svg:nth-child(6) {
+    background-color: red;
+    color: white;
+}
+
+.footer-content p svg:nth-child(6):hover {
+    box-shadow: 0px 0px 1px 3px rgb(227, 124, 124)
+}
+
+footer .footer-div-ul {
+    display: flex;
+    justify-content: space-around;
+}
+
+footer .footer-div-ul ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+footer .footer-div-ul ul li {
+    font-size: 14px;
+    letter-spacing: -.7px;
+    color: rgb(79, 79, 79);
+    cursor: pointer;
+    margin: 1rem 0;
+}
+
+footer .footer-div-ul ul li:hover {
+    text-decoration: underline;
+}
+
+footer .footer-div-ul ul li:first-of-type:not(.spanhidden li) {
+    font-weight: 550;
+}
+
+footer .footer-div-ul ul li:first-of-type:not(.spanhidden li) {
+    text-decoration: none;
+}
+
+
+
+@media(max-width:830px) {
+    footer {
+        padding: 0 !important;
+    }
+
+    .footer-div-ul {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .footer-div-ul ul {
+        margin: 0 !important;
+        list-style: none;
+        overflow: hidden;
+        border-bottom: 1px white solid;
+    }
+
+    .footer-div-ul ul li {
+        padding: 12px 20px;
+        width: 100%;
+        outline: 1px solid white;
+        color: rgb(51, 51, 51);
+        margin: 0 !important;
+        position: relative;
+        background-color: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-div-ul svg {
+        margin: 0 !important;
+    }
+
+    li.eventli {
+        z-index: 3;
+        background-color: rgb(238, 237, 237);
+    }
+
+    .footer-div-ul ul li.eventli.active span:nth-of-type(2) {
+        transform: rotate(270deg);
+        box-shadow: 0px 0px 0px 4px rgb(148, 148, 148) !important;
+    }
+
+    .footer-div-ul ul li:hover {
+        text-decoration: underline !important;
+    }
+
+    .footer-div-ul ul li.eventli:hover span:nth-of-type(2),
+    .footer-div-ul ul .spanhidden li:hover span:nth-of-type(2) {
+        box-shadow: 0px 0px 0px 4px rgb(148, 148, 148) !important;
+    }
+
+    .footer-div-ul ul li.eventli span:nth-of-type(2) {
+        border-radius: 50%;
+        border: 1px rgb(19, 19, 19) solid;
+        transform: rotate(90deg);
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 250ms ease-in-out, box-shadow 250ms ease-in-out;
+    }
+
+    .footer-div-ul ul .spanhidden span:nth-of-type(2) {
+        transform: rotate(360deg);
+        border-radius: 50%;
+        border: 1px rgb(19, 19, 19) solid;
+        font-weight: bold;
+        transition: transform 250ms ease-in-out, box-shadow 250ms ease-in-out;
+    }
+
+    .footer-div-ul ul .spanhidden {
+        display: block;
+        height: 0;
+        z-index: 1;
+        border: none;
+        width: 100%;
+        background-color: rgb(238, 237, 237);
+        color: black;
+        transition: height .3s ease-in-out 0s;
+    }
+
+    .footer-div-ul ul:nth-child(1) .spanhidden.active {
+        height: 95px;
+    }
+
+
+    .footer-div-ul ul:nth-child(2) .spanhidden.active,
+    .footer-div-ul ul:nth-child(3) .spanhidden.active,
+    .footer-div-ul ul:nth-child(4) .spanhidden.active {
+        height: 244px;
+    }
+
+    .footer-div-ul ul .spanhidden li {
+        font-size: 14px;
+        letter-spacing: -.7px;
+        color: rgb(79, 79, 79);
+        cursor: pointer;
+        font-weight: normal !important;
+        width: 100%;
+    }
+
+    .footer-content p svg {
+        transform: scale(1.2);
+        margin: 0 6px;
+    }
+
+}

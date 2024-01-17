@@ -2,16 +2,17 @@ import React, { useEffect } from 'react';
 import { Col, Container, Navbar, Row, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from './custom-hooks/use-Navigation';
 
 const Trolley = ({
     cartHandler,
     handleCheckOut,
-    handleNavigation,
     handlePullCart }) => {
 
     const cart = useSelector(state => state.cart)
     const total = useSelector(state => state.total)
     const message = useSelector(state => state.message)
+    const [handleNavigation] = useNavigator()
 
     useEffect(() => {
         handlePullCart()

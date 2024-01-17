@@ -3,11 +3,14 @@ import { Col, Container, Row, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PiArrowSquareLeftFill } from "react-icons/pi";
+import useNavigator from "./custom-hooks/use-Navigation";
 
-const RecordPage = ({ handleRecordPull, handleNavigation }) => {
+const RecordPage = ({ handleRecordPull }) => {
     const cartRecord = useSelector(state => state.cartRecord)
     const { recordId } = useParams()
     let [total, setTotal] = useState('')
+    const [handleNavigation] = useNavigator()
+
     useEffect(() => {
         handleRecordPull(recordId)
     }, [])
